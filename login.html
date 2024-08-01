@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login page</title>
+
+  <link rel="icon" href="images/icon.png">
+  <link rel="stylesheet" href="styles/Theme_Dark.css">
+</head>
+<body>
+
+  <p class="app-logo">Trackify</p>
+
+  <div class="main-container">
+
+    <input class="text-input username-input" type="text" placeholder="Username">
+    <input class="text-input password-input" type="password" placeholder="Password">
+
+    <label class="remember-me-label">
+
+      <input class="remember-me" type="checkbox">Remember me
+
+    </label>
+    
+
+    <div class="submit-container">
+
+      <button class="login">Login</button>
+      <button class="sign-up">Sign Up!</button>
+
+    </div>
+
+  </div>
+
+  <div class="error-message">
+
+    Incorrect <span class="error-focus">Username</span> or <span class="error-focus">Password</span>. Please enter Valid Username and Password.
+
+  </div>
+
+  <script type="module" src="scripts/login.js"></script>
+  
+</body>
+</html>
