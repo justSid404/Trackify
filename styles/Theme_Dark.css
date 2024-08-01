@@ -164,6 +164,8 @@ body {
 
   background-color: white;
 
+  font-size: 12px;
+
   border: solid 2px rgb(218, 48, 48);
   border-radius: 10px;
 
@@ -178,6 +180,13 @@ body {
 
   font-weight: bold;
   color: rgb(218, 48, 48);
+
+}
+
+.error-message p {
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 
 }
 
