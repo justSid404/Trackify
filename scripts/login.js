@@ -50,6 +50,30 @@ function login() {
   }
 }
 
+usernameInputElement.addEventListener('keydown', (event) => {
+
+  if(event.key === 'Enter'){
+    //Code to verify user login and redirect to home page if user is valid else shows error
+    login();
+    usernameInputElement.value = '';
+    passwordInputElement.value = '';
+    rememberMeInputElement.checked = false;
+  }
+
+});
+
+passwordInputElement.addEventListener('keydown', (event) => {
+
+  if(event.key === 'Enter'){
+    //Code to verify user login and redirect to home page if user is valid else shows error
+    login();
+    usernameInputElement.value = '';
+    passwordInputElement.value = '';
+    rememberMeInputElement.checked = false;
+  }
+
+});
+
 
 loginBtnElement.addEventListener('click', () => {
 
