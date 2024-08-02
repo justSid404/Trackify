@@ -53,6 +53,23 @@ body {
   align-items: center;
 
   margin: 0px 0px 0px 0px;
+  padding: 0px 7vw 0px 7vw;
+
+  overflow-x: scroll;
+
+  width: 100vw;
+
+}
+
+.card-holder-zero {
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+
+  margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
   overflow-x: scroll;

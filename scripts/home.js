@@ -12,6 +12,14 @@ if(localStorage.getItem('userLogged') !== null) {
 //Home page default transition
 document.body.classList.add('fade-in');
 
+//Layout handling
+if(trackers.length === 0) {
+  cardHolderElement.classList.add('card-holder-zero');
+} else {
+  cardHolderElement.classList.remove('card-holder-zero');
+}
+
+//Code to add new Tracker
 createTrackerElement.addEventListener('click', () => {
 
   const newCardhtml = `
@@ -23,6 +31,7 @@ createTrackerElement.addEventListener('click', () => {
   </div>`;
 
   cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
+  cardHolderElement.classList.remove('card-holder-zero');
   document.querySelector(`.card-holder`).scrollTo({
     left: 0,
     behavior: 'smooth'
@@ -32,5 +41,7 @@ createTrackerElement.addEventListener('click', () => {
     id: trackers.length,
     name: `tracker-card-${trackers.length}`
   });
+
+  console.log(trackers);
 
 })
