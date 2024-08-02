@@ -4,6 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
 let users = [];
+let userLogged;
 
 const mainContainerElement = document.querySelector('.main-container');
 const usernameInputElement = document.querySelector('.username-input');
@@ -59,6 +60,8 @@ function login() {
       if(user.password === passwordInputElement.value) {
 
         isUserAuthorized = true;
+        userLogged = user;
+        localStorage.setItem('userLogged', JSON.stringify(userLogged));
 
       }
 

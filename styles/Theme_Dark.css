@@ -190,6 +190,36 @@ body {
 
 }
 
+.create-tracker {
+
+  background-color: #ff9900;
+
+  border: none;
+  border-radius: 1000px;
+
+  width: 100px;
+  height: 100px;
+
+}
+
+.tracker-container {
+
+  background-color: white;
+
+  border: solid 4px #00cc99;
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 80vw;
+  height: 80vh;
+
+}
+
 .fade-out {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
