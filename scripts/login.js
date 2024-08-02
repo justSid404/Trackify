@@ -12,6 +12,7 @@ const validLowerCaseCharacters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', '
 const validUpperCaseCharacters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 const validNumberCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 const validSpecialCharacters = ['_'];
+const validSpecialCharactersForPassword = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/'];
 
 //Login page default transition
 document.body.classList.add('fade-in');
@@ -19,6 +20,8 @@ document.body.classList.add('fade-in');
 usernameInputElement.value = '';
 passwordInputElement.value = '';
 rememberMeInputElement.checked = false;
+
+console.log(users);
 
 function login() {
 
@@ -62,9 +65,9 @@ function login() {
 
 function verifyUsername(value) {
 
-  let isValueLengthValid = false; //done
-  let isDuplicateValid = true; //done
-  let isfirstCharValid = false; //done
+  let isValueLengthValid = false;
+  let isDuplicateValid = true;
+  let isfirstCharValid = false;
   let isValueLowerCaseValid = false;
   let isValueUpperCaseValid = false;
   let isValueNumberValid = false;
@@ -202,17 +205,98 @@ function verifyUsername(value) {
 
 function verifyPassword(value) {
 
-//   Your password must:
-// - Be at least 12 characters long.
-// - Include at least one uppercase letter (A-Z).
-// - Include at least one lowercase letter (a-z).
-// - Include at least one number (0-9).
-// - Include at least one special character (e.g., !, @, #, $, %).
-// - Avoid using common words, personal information, or easily guessable patterns.
-// - Be unique to this account and not used elsewhere.
+let isValueLengthValid = false;
+let isValueLowerCaseValid = false;
+let isValueUpperCaseValid = false;
+let isValueNumberValid = false;
+let isSpecialCharacterValid = false;
+const valueLength = value.length;
 
+//Verifying password length
+if(valueLength >= 12) {
+  isValueLengthValid = true;
+}
+
+//Verifying username has a-z
+for(let i=0; i<validLowerCaseCharacters.length; i++) {
+  for(let j=0; j<value.length; j++) {
+    if(validLowerCaseCharacters[i] === value.charAt(j)) {
+      isValueLowerCaseValid = true;
+    }
+  }
+}
+
+//Verifying username has A-Z
+for(let i=0; i<validUpperCaseCharacters.length; i++) {
+  for(let j=0; j<value.length; j++) {
+    if(validUpperCaseCharacters[i] === value.charAt(j)) {
+      isValueUpperCaseValid = true;
+    }
+  }
+}
+
+//Verifying username has 0-9
+for(let i=0; i<validNumberCharacters.length; i++) {
+  for(let j=0; j<value.length; j++) {
+    if(validNumberCharacters[i] === value.charAt(j)) {
+      isValueNumberValid = true;
+    }
+  }
+}
+
+//Verifying username has '_'
+for(let i=0; i<validSpecialCharactersForPassword.length; i++) {
+  for(let j=0; j<value.length; j++) {
+    if(validSpecialCharactersForPassword[i] === value.charAt(j)) {
+      isSpecialCharacterValid = true;
+    }
+  }
+}
+
+if(isValueLengthValid === false) {
+  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+  <p>Please enter a password that meets the following criteria:</p>
+  <p>- Atleast 12 characters long.</p>`;
   errorMsgElement.classList.add('fade-in');
   return false;
+}
+
+if(isValueLowerCaseValid === false) {
+  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+  <p>Please enter a password that meets the following criteria:</p>
+  <p>- May include letters (a-z).</p>`;
+  errorMsgElement.classList.add('fade-in');
+  return false;
+}
+
+if(isValueUpperCaseValid === false) {
+  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+  <p>Please enter a password that meets the following criteria:</p>
+  <p>- May include letters (A-Z).</p>`;
+  errorMsgElement.classList.add('fade-in');
+  return false;
+}
+
+if(isValueNumberValid === false) {
+  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+  <p>Please enter a password that meets the following criteria:</p>
+  <p>- May include numbers (0-9).</p>`;
+  errorMsgElement.classList.add('fade-in');
+  return false;
+}
+
+if(isSpecialCharacterValid === false) {
+  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+  <p>Please enter a password that meets the following criteria:</p>
+  <p>- Include at least one special character (e.g., !, @, #, $, %).</p>`;
+  errorMsgElement.classList.add('fade-in');
+  return false;
+}
+
+if(isValueLengthValid && isValueLowerCaseValid && isValueUpperCaseValid && isValueNumberValid && isSpecialCharacterValid) {
+  console.log('Password is correct.');
+  return true;
+}
 
 }
 
@@ -247,23 +331,14 @@ signupBtnElement.addEventListener('click', () => {
   //Code to Create user if entered username and password are valid
   if(verifyUsername(usernameInputElement.value) && verifyPassword(passwordInputElement.value)) {
 
+    users.push({
+      username: usernameInputElement.value,
+      password: passwordInputElement.value,
+      trackers: []
+    });
     alert('Account created. Please try logging in.');
     window.location.reload();
 
   }
-  // else {
-
-  //   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span> or <span class="error-focus">Password</span>.
-  //   <p>Please create a username that meets the following criteria:</p>
-  //   <p>- 5 to 20 characters long</p>
-  //   <p>- May include letters (A-Z, a-z), numbers (0-9), and underscores (_)</p>
-  //   <p>- No special characters or spaces allowed</p>
-  //   <p>- Must start with a letter</p>
-  //   <p>- No duplicate Username.</p>`;
-  //   errorMsgElement.classList.add('fade-in');
-
-  // }
-
-  
 
 });
