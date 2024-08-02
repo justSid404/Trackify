@@ -65,6 +65,20 @@ function takeInputThroughPrompt() {
   
   });
 
+  document.querySelector('.input-prompt-textbox').addEventListener('keydown', (event) => {
+
+    if(event.key === "Enter") {
+      const inputValue = document.querySelector('.input-prompt-textbox').value;
+      document.querySelector('.input-prompt').remove();
+      addTrackerCard(inputValue);
+    }
+
+    if(event.key === "Escape") {
+      document.querySelector('.input-prompt').remove();
+    }
+
+  });
+
 }
 
 function addTrackerCard(inputValue) {
