@@ -9,6 +9,17 @@ if(localStorage.getItem('userLogged') !== null) {
   localStorage.removeItem('userLogged');
 }
 
+//Enter full screen mode
+if (document.body.requestFullscreen) {
+  document.body.requestFullscreen();
+} else if (document.body.mozRequestFullScreen) { // Firefox
+  document.body.mozRequestFullScreen();
+} else if (document.body.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+  document.body.webkitRequestFullscreen();
+} else if (document.body.msRequestFullscreen) { // IE/Edge
+  document.body.msRequestFullscreen();
+}
+
 //Home page default transition
 document.body.classList.add('fade-in');
 
