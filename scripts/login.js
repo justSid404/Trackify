@@ -73,6 +73,17 @@ function login() {
 
     document.body.classList.remove('fade-in');
     document.body.classList.add('fade-out');
+
+    //Enter full screen mode
+    if (document.body.requestFullscreen) {
+      document.body.requestFullscreen();
+    } else if (document.body.mozRequestFullScreen) { // Firefox
+      document.body.mozRequestFullScreen();
+    } else if (document.body.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+      document.body.webkitRequestFullscreen();
+    } else if (document.body.msRequestFullscreen) { // IE/Edge
+      document.body.msRequestFullscreen();
+    }
   
     setTimeout(() => {
   
