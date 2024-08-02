@@ -21,6 +21,11 @@ body {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
+  width: 100vw;
+  height: 100vh;
+
+  overflow-x: hidden;
+
 }
 
 .main-container {
@@ -44,22 +49,22 @@ body {
   display: flex;
   flex-direction: row;
 
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 
-  margin: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 24px;
   padding: 0px 0px 0px 0px;
 
-  overflow-x: auto;
+  overflow-x: scroll;
 
   width: 100vw;
-  height: 100vh;
 
 }
 
 .tracker-card {
 
   background-color: white;
+  white-space: nowrap;
 
   border: solid 4px #00cc99;
   border-radius: 8px;
@@ -73,7 +78,7 @@ body {
 
   transition: opacity 0.5s;
 
-  margin: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 24px;
   padding: 0px 0px 0px 0px;
 
   width: 80vw;
@@ -86,6 +91,7 @@ body {
 .create-tracker-card {
 
   background-color: white;
+  white-space: nowrap;
 
   border: solid 4px #00cc99;
   border-radius: 8px;
@@ -99,7 +105,7 @@ body {
 
   transition: opacity 0.5s;
 
-  margin: 0px 0px 0px 0px;
+  margin: 0px 24px 0px 24px;
   padding: 0px 0px 0px 0px;
 
   width: 80vw;
