@@ -1,4 +1,9 @@
-import { users } from "../data/users.js";
+// import { users } from "../data/users.js";
+import { firebaseConfig } from "../data/db-config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+
+let users = [];
 
 const mainContainerElement = document.querySelector('.main-container');
 const usernameInputElement = document.querySelector('.username-input');
@@ -14,6 +19,13 @@ const validNumberCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 const validSpecialCharacters = ['_'];
 const validSpecialCharactersForPassword = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '-', '=', '{', '}', '[', ']', '|', '\\', ':', ';', '"', "'", '<', '>', ',', '.', '?', '/'];
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Get Reference to database services
+const db = getDatabase(app);
+const userDataRef = ref(db, 'userData');
+
 //Login page default transition
 document.body.classList.add('fade-in');
 
@@ -21,7 +33,19 @@ usernameInputElement.value = '';
 passwordInputElement.value = '';
 rememberMeInputElement.checked = false;
 
-console.log(users);
+get(userDataRef).then((snapshot) => {
+  if (snapshot.exists()) {
+    // console.log("Retrieved array:", snapshot.val());
+    users = snapshot.val();
+    // console.log(users);
+  } else {
+    // console.log("No data available");
+    // console.log(users);
+  }
+}).catch((error) => {
+  console.error("Error retrieving data: ", error);
+});
+
 
 function login() {
 
@@ -300,6 +324,17 @@ if(isValueLengthValid && isValueLowerCaseValid && isValueUpperCaseValid && isVal
 
 }
 
+function updateUserData(userData) {
+
+  set(userDataRef, userData)
+  .then(() => {
+    // console.log('User data stored successfully.');
+  })
+  .catch((error) => {
+    console.log('Error: '+error);
+  });
+}
+
 usernameInputElement.addEventListener('keydown', (event) => {
 
   if(event.key === 'Enter'){
@@ -336,6 +371,8 @@ signupBtnElement.addEventListener('click', () => {
       password: passwordInputElement.value,
       trackers: []
     });
+
+    updateUserData(users);
     alert('Account created. Please try logging in.');
     window.location.reload();
 
