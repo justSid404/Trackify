@@ -106,7 +106,7 @@ function addTrackerCard(inputValue) {
     </div>
     <div class="tracker-controller">
 
-      <input class="tracker-controller-input" type="text">
+      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text">
       <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
       
     </div>
@@ -135,25 +135,61 @@ function addTrackerCard(inputValue) {
 
 function addTask(trackerLength, tempAddTaskToCard) {
 
+  const tempControllerInputElement = document.querySelector(`.controller-input-tracker-card-${trackerLength}`);
+
+  tempControllerInputElement.addEventListener('keydown', (event) => {
+
+    if(event.key === 'Enter') {
+      tempAddTaskToCard.click();
+    }
+
+  })
+
   tempAddTaskToCard.addEventListener('click', () => {
 
-    trackers.forEach((tracker) => {
+    if(tempControllerInputElement.value.length > 0) {
 
-      if(tracker.id === trackerLength) {
-        tracker.task.push(`task-${tracker.task.length}`);
-      }
+      trackers.forEach((tracker) => {
 
-    });
+        if(tracker.id === trackerLength) {
+          tracker.task.push(
+            {
+              name: tempControllerInputElement.value,
+              status: 'To Do'
+            }
+          );
+        }
+  
+      });
 
-    const taskHtml = `
+      const taskHtml = `
+  
+        <div class="task task-tracker-card-${trackerLength} task-todo">
+          <div class="task-info">
+            <p>${trackers[trackerLength].task[trackers[trackerLength].task.length - 1].name}</p>
+          </div>
+          
+          <div class="task-action">
 
-    <div class="task task-tracker-card-${trackerLength}">
-      ${trackers[trackerLength].task[trackers[trackerLength].task.length - 1]}
-    </div>`;
+            <select class="task-${trackers[trackerLength].task.length - 1}-action-tracker-card-${trackerLength}">
+              <option value="todo">ToDo</option>
+              <option value="inpro">In-Process</option>
+              <option value="done">Completed</option>
+            </select>
 
-    document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+          </div>
+          
+        </div>`;
 
-    
+      document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+
+      tempControllerInputElement.value = '';
+
+    } else {
+
+      tempControllerInputElement.placeholder = `Please enter ${trackers[trackerLength].name} to track.`;
+
+    }
 
   });
 

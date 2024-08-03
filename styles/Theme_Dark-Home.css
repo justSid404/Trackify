@@ -145,18 +145,75 @@ body {
 }
 
 .task {
+
+  display: flex;
+  flex-direction: row;
   
   flex-shrink: 0;
 
-  background-color: #597931;
+  background-color: #ff9900;
+  color: white;
+
+  font-weight: bold;
 
   border-radius: 8px;
 
   margin: 8px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
-  width: 95%;
+  width: 92.5%;
   height: 10vh;
+
+}
+
+.task-todo {
+  border: solid 4px rgb(221, 111, 111);
+}
+
+.task-inpro {
+  border: solid 4px rgb(235, 218, 70);
+}
+
+.task-done {
+  border: solid 4px rgb(34, 170, 29);
+}
+
+.task-info {
+
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 4vw;
+
+  width: 58%;
+
+}
+
+.task-action {
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-content: center;
+
+  width: 32%;
+
+}
+
+.task-action select {
+
+  background-color: #00cc99;
+  color: white;
+
+  box-shadow: none;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+
+  font-weight: bold;
 
 }
 
