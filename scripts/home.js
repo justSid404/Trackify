@@ -155,23 +155,25 @@ function addTask(trackerLength, tempAddTaskToCard) {
           tracker.task.push(
             {
               name: tempControllerInputElement.value,
-              status: 'To Do'
+              status: 'todo'
             }
           );
+
+          console.log(trackers);
         }
   
       });
 
       const taskHtml = `
   
-        <div class="task task-tracker-card-${trackerLength} task-todo">
+        <div class="task task-${trackers[trackerLength].task.length - 1}-tracker-card-${trackerLength} task-todo">
           <div class="task-info">
             ${trackers[trackerLength].task[trackers[trackerLength].task.length - 1].name}
           </div>
           
           <div class="task-action">
 
-            <select class="task-${trackers[trackerLength].task.length - 1}-action-tracker-card-${trackerLength}" data-task-number="${trackers[trackerLength].task.length - 1}" data-tracker-card-number="${trackerLength}">
+            <select class="task-action task-${trackers[trackerLength].task.length - 1}-action-tracker-card-${trackerLength}" data-task-number="${trackers[trackerLength].task.length - 1}" data-tracker-card-number="${trackerLength}">
               <option value="todo">ToDo</option>
               <option value="inpro">In-Process</option>
               <option value="done">Completed</option>
@@ -187,11 +189,56 @@ function addTask(trackerLength, tempAddTaskToCard) {
 
       tempControllerInputElement.value = '';
 
+      addEventToAllTaskAction();
+
     } else {
 
       tempControllerInputElement.placeholder = `Please enter ${trackers[trackerLength].name} to track.`;
 
     }
+
+  });
+
+}
+
+//task-action
+function addEventToAllTaskAction() {
+
+  document.querySelectorAll('.task-action').forEach((selectDrpDwn) => {
+
+    const tempTrackerNo = selectDrpDwn.getAttribute('data-tracker-card-number');
+    const tempTaskNo = selectDrpDwn.getAttribute('data-task-number');
+
+    const tempTaskElement = document.querySelector(`.task-${tempTaskNo}-tracker-card-${tempTrackerNo}`);
+
+    selectDrpDwn.addEventListener('change', () => {
+
+      if(selectDrpDwn.value === "todo" || selectDrpDwn.value === "ToDo") {
+
+        trackers[tempTrackerNo].task[tempTaskNo].status = "todo";
+        tempTaskElement.classList.add('task-todo');
+        tempTaskElement.classList.remove('task-inpro');
+        tempTaskElement.classList.remove('task-done');
+
+      } else if(selectDrpDwn.value === "inpro" || selectDrpDwn.value === "In-Process") {
+
+        trackers[tempTrackerNo].task[tempTaskNo].status = "inpro";
+        tempTaskElement.classList.remove('task-todo');
+        tempTaskElement.classList.add('task-inpro');
+        tempTaskElement.classList.remove('task-done');
+
+      } else if(selectDrpDwn.value === "done" || selectDrpDwn.value === "Completed") {
+
+        trackers[tempTrackerNo].task[tempTaskNo].status = "done";
+        tempTaskElement.classList.remove('task-todo');
+        tempTaskElement.classList.remove('task-inpro');
+        tempTaskElement.classList.add('task-done');
+
+      }
+
+      console.log(trackers);
+
+    })
 
   });
 
