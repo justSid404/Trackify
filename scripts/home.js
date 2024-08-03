@@ -1,6 +1,14 @@
 let userLogged;
 let trackers = [];
 
+if(localStorage.getItem('trackers') !== null) {
+
+  trackers = JSON.parse(localStorage.getItem('trackers'));
+
+}
+
+console.log(trackers);
+
 const cardHolderElement = document.querySelector('.card-holder');
 const createTrackerElement = document.querySelector('.create-tracker-card');
 
@@ -11,6 +19,73 @@ if(localStorage.getItem('userLogged') !== null) {
 
 //Home page default transition
 document.body.classList.add('fade-in');
+
+//Add trackers as per the trackers array
+trackers.forEach((tracker, trackerLength) => {
+
+  const newCardhtml = `
+
+  <div class="tracker-card tracker-card-${trackerLength}">
+
+    <div class="tracker-card-title tracker-card-${trackerLength}-title">
+      ${tracker.name}
+    </div>
+
+    <div class="tracker-content content-tracker-card-${trackerLength}">
+
+    </div>
+    <div class="tracker-controller">
+
+      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text">
+      <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
+      
+    </div>
+  </div>`;
+
+  cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
+  cardHolderElement.classList.remove('card-holder-zero');
+  document.querySelector(`.card-holder`).scrollTo({
+    left: 0,
+    behavior: 'smooth'
+  });
+
+  const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
+  addTask(trackerLength, tempAddTaskToCard);
+
+  tracker.task.forEach((taskItem, taskIndex) => {
+
+    console.log(taskItem);
+
+    const taskHtml = `
+  
+    <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
+      <div class="task-info">
+        ${taskItem.name}
+      </div>
+      
+      <div class="task-action">
+
+        <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
+          <option value="todo">ToDo</option>
+          <option value="inpro">In-Process</option>
+          <option value="done">Completed</option>
+          <option value="edit">Edit</option>
+          <option value="remove">Remove</option>
+        </select>
+
+      </div>
+      
+    </div>`;
+
+    document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+
+    document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+
+    addEventToAllTaskAction();
+
+  }); 
+
+});
 
 //Layout handling
 if(trackers.length === 0) {
@@ -112,24 +187,25 @@ function addTrackerCard(inputValue) {
     </div>
   </div>`;
 
-    cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
-    cardHolderElement.classList.remove('card-holder-zero');
-    document.querySelector(`.card-holder`).scrollTo({
-      left: 0,
-      behavior: 'smooth'
-    });
+  cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
+  cardHolderElement.classList.remove('card-holder-zero');
+  document.querySelector(`.card-holder`).scrollTo({
+    left: 0,
+    behavior: 'smooth'
+  });
 
-    const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
-    addTask(trackerLength, tempAddTaskToCard);
+  const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
+  addTask(trackerLength, tempAddTaskToCard);
 
-    trackers.push({
-      id: trackerLength,
-      elementClass: `tracker-card-${trackerLength}`,
-      name: inputValue,
-      task: []
-    });
+  trackers.push({
+    id: trackerLength,
+    elementClass: `tracker-card-${trackerLength}`,
+    name: inputValue,
+    task: []
+  });
 
-    console.log(trackers);
+  console.log(trackers);
+  localStorage.setItem('trackers', JSON.stringify(trackers));
 
 }
 
@@ -160,6 +236,7 @@ function addTask(trackerLength, tempAddTaskToCard) {
           );
 
           console.log(trackers);
+          localStorage.setItem('trackers', JSON.stringify(trackers));
         }
   
       });
@@ -237,6 +314,7 @@ function addEventToAllTaskAction() {
       }
 
       console.log(trackers);
+      localStorage.setItem('trackers', JSON.stringify(trackers));
 
     })
 
