@@ -54,8 +54,16 @@ function takeInputThroughPrompt() {
   document.querySelector('.input-prompt-save').addEventListener('click', () => {
 
     const inputValue = document.querySelector('.input-prompt-textbox').value;
-    document.querySelector('.input-prompt').remove();
-    addTrackerCard(inputValue);
+    if(inputValue.length > 0) {
+
+      document.querySelector('.input-prompt').remove();
+      addTrackerCard(inputValue);
+
+    } else {
+
+      document.querySelector('.input-prompt-textbox').placeholder = "Please enter Tracker name.";
+
+    }
   
   });
   
@@ -83,13 +91,26 @@ function takeInputThroughPrompt() {
 
 function addTrackerCard(inputValue) {
 
+  const trackerLength = trackers.length;
+
   const newCardhtml = `
 
-    <div class="tracker-card tracker-card-${trackers.length}">
-      <div class="tracker">
-        ${inputValue}
-      </div>
-    </div>`;
+  <div class="tracker-card tracker-card-${trackerLength}">
+
+    <div class="tracker-card-title tracker-card-${trackerLength}-title">
+      ${inputValue}
+    </div>
+
+    <div class="tracker-content content-tracker-card-${trackerLength}">
+
+    </div>
+    <div class="tracker-controller">
+
+      <input class="tracker-controller-input" type="text">
+      <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
+      
+    </div>
+  </div>`;
 
     cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
     cardHolderElement.classList.remove('card-holder-zero');
@@ -98,12 +119,42 @@ function addTrackerCard(inputValue) {
       behavior: 'smooth'
     });
 
+    const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
+    addTask(trackerLength, tempAddTaskToCard);
+
     trackers.push({
-      id: trackers.length,
-      elementClass: `tracker-card-${trackers.length}`,
-      name: inputValue
+      id: trackerLength,
+      elementClass: `tracker-card-${trackerLength}`,
+      name: inputValue,
+      task: []
     });
 
     console.log(trackers);
+
+}
+
+function addTask(trackerLength, tempAddTaskToCard) {
+
+  tempAddTaskToCard.addEventListener('click', () => {
+
+    trackers.forEach((tracker) => {
+
+      if(tracker.id === trackerLength) {
+        tracker.task.push(`task-${tracker.task.length}`);
+      }
+
+    });
+
+    const taskHtml = `
+
+    <div class="task task-tracker-card-${trackerLength}">
+      ${trackers[trackerLength].task[trackers[trackerLength].task.length - 1]}
+    </div>`;
+
+    document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+
+    
+
+  });
 
 }

@@ -57,6 +57,7 @@ body {
   padding: 0px 0px 0px 0px;
 
   overflow-x: scroll;
+  scrollbar-width: none;
 
   width: 100vw;
 
@@ -81,17 +82,16 @@ body {
 
 .tracker-card {
 
-  background-color: white;
+  background-color: #00cc99;
   white-space: nowrap;
 
-  border: solid 4px #00cc99;
   border-radius: 8px;
 
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
 
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   transition: opacity 0.5s;
@@ -105,10 +105,111 @@ body {
   cursor: pointer;
 
 }
+.tracker-card-title {
+
+  color: white;
+
+  font-weight: bold;
+  font-size: large;
+
+  text-align: center;
+
+  margin: 0px 0px 0px 0px;
+  padding: 4px 0px 4px 0px;
+
+  width: 100%;
+
+}
+
+.tracker-content {
+
+  background-color: white;
+
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  width: 95%;
+  height: 95%;
+
+}
+
+.task {
+  
+  flex-shrink: 0;
+
+  background-color: #597931;
+
+  border-radius: 8px;
+
+  margin: 8px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  width: 95%;
+  height: 10vh;
+
+}
+
+.tracker-controller {
+
+  display: flex;
+  flex-direction: row;
+
+  margin: 0px 0px 0px 0px;
+  padding: 3% 5% 3% 5%;
+
+  width: 90%;
+  height: 5%;
+
+}
+
+.tracker-controller-input {
+
+  flex: 1;
+
+  border: none;
+  border-radius: 1000px;
+
+  font-size: 16px;
+
+  margin: 0px 8px 0px 0px;
+  padding: 0px 0px 0px 14px;
+
+}
+
+.tracker-controller-input:focus {
+
+  outline: none;
+
+}
+
+.add-task {
+
+  background-color: #ff9900;
+  color: white;
+
+  border: none;
+  border-radius: 1000px;
+
+  padding: 0px 0px 0px 0px;
+
+  width: 10%;
+
+}
 
 .create-tracker-card {
 
-  background-color: white;
+  background-color: #00cc99;
   white-space: nowrap;
 
   border: solid 4px #00cc99;
@@ -180,6 +281,8 @@ body {
   right: 0px;
   bottom: 0px;
   left: 0px;
+
+  z-index: 100;
 
   background-color: rgba(0, 0, 0, 0.5);
 
