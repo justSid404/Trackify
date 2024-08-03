@@ -166,15 +166,17 @@ function addTask(trackerLength, tempAddTaskToCard) {
   
         <div class="task task-tracker-card-${trackerLength} task-todo">
           <div class="task-info">
-            <p>${trackers[trackerLength].task[trackers[trackerLength].task.length - 1].name}</p>
+            ${trackers[trackerLength].task[trackers[trackerLength].task.length - 1].name}
           </div>
           
           <div class="task-action">
 
-            <select class="task-${trackers[trackerLength].task.length - 1}-action-tracker-card-${trackerLength}">
+            <select class="task-${trackers[trackerLength].task.length - 1}-action-tracker-card-${trackerLength}" data-task-number="${trackers[trackerLength].task.length - 1}" data-tracker-card-number="${trackerLength}">
               <option value="todo">ToDo</option>
               <option value="inpro">In-Process</option>
               <option value="done">Completed</option>
+              <option value="edit">Edit</option>
+              <option value="remove">Remove</option>
             </select>
 
           </div>

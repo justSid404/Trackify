@@ -114,10 +114,14 @@ body {
 
   text-align: center;
 
-  margin: 0px 0px 0px 0px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  margin: 0px 5% 0px 5%;
   padding: 4px 0px 4px 0px;
 
-  width: 100%;
+  width: 90%;
 
 }
 
@@ -180,14 +184,14 @@ body {
 
 .task-info {
 
-  display: flex;
-  flex-direction: row;
-  align-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
-  margin: 0px 0px 0px 0px;
-  padding: 0px 0px 0px 4vw;
+  margin: 0px 8px 0px 0px;
+  padding: 2vh 0px 0px 3vw;
 
-  width: 58%;
+  width: 56%;
 
 }
 
