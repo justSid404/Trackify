@@ -145,7 +145,7 @@ function takeInputThroughPrompt() {
   <div class="input-prompt">
 
     <div class="input-prompt-box">
-      What will the Tracker name?
+      What will be the Tracker name?
       <label class="input-prompt-label">
 
         <input class="input-prompt-checkbox" type="checkbox">Recurring Tasks?
