@@ -1,21 +1,34 @@
 let userLogged;
+
+if(localStorage.getItem('userLogged') === null) {
+
+  window.location.href = 'error.html';
+
+}
+
+userLogged = JSON.parse(localStorage.getItem('userLogged'));
+document.querySelector('.user-name').innerHTML = userLogged.username;
+
+let userData = JSON.parse(localStorage.getItem(userLogged.username));
 let trackers = [];
 
-if(localStorage.getItem('trackers') !== null) {
+const cardHolderElement = document.querySelector('.card-holder');
+const createTrackerElement = document.querySelector('.create-tracker-card');
+const userOptionsBtnElement = document.querySelector('.user-options');
+const logoutBtnElement = document.querySelector('.log-out');
 
-  trackers = JSON.parse(localStorage.getItem('trackers'));
+// if(localStorage.getItem('userLogged') !== null) {
+//   userLogged = JSON.parse(localStorage.getItem('userLogged'));
+//   localStorage.removeItem('userLogged');
+// }
+
+if(localStorage.getItem(userLogged.username) !== null) {
+
+  trackers = userData.trackers;
 
 }
 
 console.log(trackers);
-
-const cardHolderElement = document.querySelector('.card-holder');
-const createTrackerElement = document.querySelector('.create-tracker-card');
-
-if(localStorage.getItem('userLogged') !== null) {
-  userLogged = JSON.parse(localStorage.getItem('userLogged'));
-  localStorage.removeItem('userLogged');
-}
 
 //Home page default transition
 document.body.classList.add('fade-in');
@@ -93,6 +106,30 @@ if(trackers.length === 0) {
 } else {
   cardHolderElement.classList.remove('card-holder-zero');
 }
+
+//User options button functionality
+userOptionsBtnElement.addEventListener('click', () => {
+
+  if(logoutBtnElement.classList.contains('log-out-transition')) {
+    logoutBtnElement.classList.remove('log-out-transition');
+  } else {
+    logoutBtnElement.classList.add('log-out-transition');
+  }
+
+});
+
+//Logout button functionality
+logoutBtnElement.addEventListener('click', () => {
+
+  localStorage.setItem(userLogged.username, JSON.stringify({
+
+    trackers
+
+  }));
+
+  localStorage.removeItem('userLogged');
+  window.location.href = 'login.html';
+});
 
 //Code to add new Tracker
 createTrackerElement.addEventListener('click', () => {
@@ -205,7 +242,8 @@ function addTrackerCard(inputValue) {
   });
 
   console.log(trackers);
-  localStorage.setItem('trackers', JSON.stringify(trackers));
+  userData.trackers = trackers;
+  localStorage.setItem(userLogged.username, JSON.stringify(userData));
 
 }
 
@@ -236,7 +274,9 @@ function addTask(trackerLength, tempAddTaskToCard) {
           );
 
           console.log(trackers);
-          localStorage.setItem('trackers', JSON.stringify(trackers));
+          userData.trackers = trackers;
+          localStorage.setItem(userLogged.username, JSON.stringify(userData));
+          // localStorage.setItem('trackers', JSON.stringify(trackers));
         }
   
       });
@@ -314,7 +354,9 @@ function addEventToAllTaskAction() {
       }
 
       console.log(trackers);
-      localStorage.setItem('trackers', JSON.stringify(trackers));
+      userData.trackers = trackers;
+      localStorage.setItem(userLogged.username, JSON.stringify(userData));
+      // localStorage.setItem('trackers', JSON.stringify(trackers));
 
     })
 

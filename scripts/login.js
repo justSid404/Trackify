@@ -6,6 +6,12 @@ import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/fireb
 let users = [];
 let userLogged;
 
+if(localStorage.getItem('userLogged') !== null) {
+
+  window.location.href = 'home.html';
+
+}
+
 const mainContainerElement = document.querySelector('.main-container');
 const usernameInputElement = document.querySelector('.username-input');
 const passwordInputElement = document.querySelector('.password-input');
@@ -46,7 +52,7 @@ get(userDataRef).then((snapshot) => {
 }).catch((error) => {
   console.error("Error retrieving data: ", error);
 });
-
+console.log(users);
 
 function login() {
 
@@ -74,16 +80,16 @@ function login() {
     document.body.classList.remove('fade-in');
     document.body.classList.add('fade-out');
 
-    //Enter full screen mode
-    if (document.body.requestFullscreen) {
-      document.body.requestFullscreen();
-    } else if (document.body.mozRequestFullScreen) { // Firefox
-      document.body.mozRequestFullScreen();
-    } else if (document.body.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-      document.body.webkitRequestFullscreen();
-    } else if (document.body.msRequestFullscreen) { // IE/Edge
-      document.body.msRequestFullscreen();
-    }
+    // //Enter full screen mode
+    // if (document.body.requestFullscreen) {
+    //   document.body.requestFullscreen();
+    // } else if (document.body.mozRequestFullScreen) { // Firefox
+    //   document.body.mozRequestFullScreen();
+    // } else if (document.body.webkitRequestFullscreen) { // Chrome, Safari, and Opera
+    //   document.body.webkitRequestFullscreen();
+    // } else if (document.body.msRequestFullscreen) { // IE/Edge
+    //   document.body.msRequestFullscreen();
+    // }
   
     setTimeout(() => {
   
