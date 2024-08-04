@@ -8,8 +8,25 @@ if(localStorage.getItem('userLogged') === null) {
 
 userLogged = JSON.parse(localStorage.getItem('userLogged'));
 document.querySelector('.user-name').innerHTML = userLogged.username;
+// localStorage.removeItem(userLogged.username);
 
-let userData = JSON.parse(localStorage.getItem(userLogged.username));
+let userData;
+
+if(localStorage.getItem(userLogged.username) !== null) {
+
+  userData = JSON.parse(localStorage.getItem(userLogged.username));
+  sortTasks();
+
+} else {
+
+  userData = {
+
+    trackers: []
+
+  }
+
+}
+
 let trackers = [];
 
 const cardHolderElement = document.querySelector('.card-holder');
@@ -242,6 +259,7 @@ function addTrackerCard(inputValue) {
     task: []
   });
 
+  sortTasks();
   console.log(trackers);
   userData.trackers = trackers;
   localStorage.setItem(userLogged.username, JSON.stringify(userData));
@@ -275,6 +293,7 @@ function addTask(trackerLength, tempAddTaskToCard) {
             }
           );
 
+          sortTasks();
           console.log(trackers);
           userData.trackers = trackers;
           localStorage.setItem(userLogged.username, JSON.stringify(userData));
@@ -427,9 +446,73 @@ function addEventToTaskAction(taskActionElement) {
 
     }
 
+    sortTasks();
     console.log(trackers);
     userData.trackers = trackers;
+      
+    document.querySelector(`.content-tracker-card-${tempTrackerNo}`).innerHTML = '';
+
+    trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
+
+      const taskHtml = `
+    
+      <div class="task task-${taskIndex}-tracker-card-${tempTrackerNo} task-${taskItem.status}">
+        <div class="task-info">
+          ${taskItem.name}
+        </div>
+        
+        <div class="task-action">
+
+          <select class="task-action task-${taskIndex}-action-tracker-card-${tempTrackerNo}" data-task-number="${taskIndex}" data-tracker-card-number="${tempTrackerNo}">
+            <option value="todo">ToDo</option>
+            <option value="inpro">In-Process</option>
+            <option value="done">Completed</option>
+            <option value="edit">Edit</option>
+            <option value="remove">Remove</option>
+          </select>
+
+        </div>
+        
+      </div>`;
+
+      document.querySelector(`.content-tracker-card-${tempTrackerNo}`).insertAdjacentHTML('beforeend', taskHtml);
+
+      document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`).value = taskItem.status;
+
+      addEventToTaskAction(document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`));
+
+    });
     localStorage.setItem(userLogged.username, JSON.stringify(userData));
+
+  });
+
+}
+
+//Code to sort all tasks according to inpro -> todo -> done
+function sortTasks() {
+
+  userData.trackers.forEach((tracker, trackerIndex) => {
+
+    let sortedTasks = [];
+    const sortSequence = ['inpro', 'todo', 'done'];
+
+    //first adding all inpro tasks, then todo tasks and finally done tasks to sortedTask array which is temp array
+    sortSequence.forEach((sequenceItem) => {
+
+      tracker.task.forEach((taskItem) => {
+
+        if(sequenceItem === taskItem.status) {
+  
+          sortedTasks.push(taskItem);
+  
+        }
+  
+      });
+
+    });
+
+    //Once array is sorted, we replace content of tracker array with sortedTasks array
+    userData.trackers[trackerIndex].task = sortedTasks;
 
   });
 
