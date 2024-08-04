@@ -52,7 +52,7 @@ get(userDataRef).then((snapshot) => {
 }).catch((error) => {
   console.error("Error retrieving data: ", error);
 });
-console.log(users);
+// console.log(users);
 
 function login() {
 
