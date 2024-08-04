@@ -67,8 +67,6 @@ trackers.forEach((tracker, trackerLength) => {
 
   tracker.task.forEach((taskItem, taskIndex) => {
 
-    console.log(taskItem);
-
     const taskHtml = `
   
     <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
@@ -350,6 +348,43 @@ function addEventToAllTaskAction() {
         tempTaskElement.classList.remove('task-todo');
         tempTaskElement.classList.remove('task-inpro');
         tempTaskElement.classList.add('task-done');
+
+      } else if (selectDrpDwn.value === "edit") {
+
+        document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).value = trackers[tempTrackerNo].task[tempTaskNo].name;
+        trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
+        document.querySelector(`.content-tracker-card-${tempTrackerNo}`).innerHTML = '';
+
+        trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
+
+          const taskHtml = `
+        
+          <div class="task task-${taskIndex}-tracker-card-${tempTrackerNo} task-${taskItem.status}">
+            <div class="task-info">
+              ${taskItem.name}
+            </div>
+            
+            <div class="task-action">
+
+              <select class="task-action task-${taskIndex}-action-tracker-card-${tempTrackerNo}" data-task-number="${taskIndex}" data-tracker-card-number="${tempTrackerNo}">
+                <option value="todo">ToDo</option>
+                <option value="inpro">In-Process</option>
+                <option value="done">Completed</option>
+                <option value="edit">Edit</option>
+                <option value="remove">Remove</option>
+              </select>
+
+            </div>
+            
+          </div>`;
+
+          document.querySelector(`.content-tracker-card-${tempTrackerNo}`).insertAdjacentHTML('beforeend', taskHtml);
+
+          document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`).value = taskItem.status;
+
+          addEventToAllTaskAction();
+
+        }); 
 
       }
 
