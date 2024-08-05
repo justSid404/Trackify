@@ -132,58 +132,58 @@ function verifyUsername(value) {
     }
   }
 
-  //Verifying first character
-  for(let i=0; i<validLowerCaseCharacters.length; i++) {
-    if(validLowerCaseCharacters[i] === value.charAt(0)) {  //check 1
-      isfirstCharValid = true;
-      break;
-    }
-  }
+  // //Verifying first character
+  // for(let i=0; i<validLowerCaseCharacters.length; i++) {
+  //   if(validLowerCaseCharacters[i] === value.charAt(0)) {  //check 1
+  //     isfirstCharValid = true;
+  //     break;
+  //   }
+  // }
 
-  if(!isfirstCharValid) { //Only check if first charcter is not valid after check 1
-    for(let i=0; i<validUpperCaseCharacters.length; i++) {
-      if(validUpperCaseCharacters[i] === value.charAt(0)) { //check 2
-        isfirstCharValid = true;
-        break;
-      }
-    }
-  }
+  // if(!isfirstCharValid) { //Only check if first charcter is not valid after check 1
+  //   for(let i=0; i<validUpperCaseCharacters.length; i++) {
+  //     if(validUpperCaseCharacters[i] === value.charAt(0)) { //check 2
+  //       isfirstCharValid = true;
+  //       break;
+  //     }
+  //   }
+  // }
 
-  //Verifying username has a-z
-  for(let i=0; i<validLowerCaseCharacters.length; i++) {
-    for(let j=0; j<value.length; j++) {
-      if(validLowerCaseCharacters[i] === value.charAt(j)) {
-        isValueLowerCaseValid = true;
-      }
-    }
-  }
+  // //Verifying username has a-z
+  // for(let i=0; i<validLowerCaseCharacters.length; i++) {
+  //   for(let j=0; j<value.length; j++) {
+  //     if(validLowerCaseCharacters[i] === value.charAt(j)) {
+  //       isValueLowerCaseValid = true;
+  //     }
+  //   }
+  // }
 
-  //Verifying username has A-Z
-  for(let i=0; i<validUpperCaseCharacters.length; i++) {
-    for(let j=0; j<value.length; j++) {
-      if(validUpperCaseCharacters[i] === value.charAt(j)) {
-        isValueUpperCaseValid = true;
-      }
-    }
-  }
+  // //Verifying username has A-Z
+  // for(let i=0; i<validUpperCaseCharacters.length; i++) {
+  //   for(let j=0; j<value.length; j++) {
+  //     if(validUpperCaseCharacters[i] === value.charAt(j)) {
+  //       isValueUpperCaseValid = true;
+  //     }
+  //   }
+  // }
 
-  //Verifying username has 0-9
-  for(let i=0; i<validNumberCharacters.length; i++) {
-    for(let j=0; j<value.length; j++) {
-      if(validNumberCharacters[i] === value.charAt(j)) {
-        isValueNumberValid = true;
-      }
-    }
-  }
+  // //Verifying username has 0-9
+  // for(let i=0; i<validNumberCharacters.length; i++) {
+  //   for(let j=0; j<value.length; j++) {
+  //     if(validNumberCharacters[i] === value.charAt(j)) {
+  //       isValueNumberValid = true;
+  //     }
+  //   }
+  // }
 
-  //Verifying username has '_'
-  for(let i=0; i<validSpecialCharacters.length; i++) {
-    for(let j=0; j<value.length; j++) {
-      if(validSpecialCharacters[i] === value.charAt(j)) {
-        isSpecialCharacterValid = true;
-      }
-    }
-  }
+  // //Verifying username has '_'
+  // for(let i=0; i<validSpecialCharacters.length; i++) {
+  //   for(let j=0; j<value.length; j++) {
+  //     if(validSpecialCharacters[i] === value.charAt(j)) {
+  //       isSpecialCharacterValid = true;
+  //     }
+  //   }
+  // }
 
   if(isValueLengthValid === false) {
     errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
@@ -201,47 +201,52 @@ function verifyUsername(value) {
     return false;
   }
 
-  if(isfirstCharValid === false) {
-    errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
-    <p>Please enter a username that meets the following criteria:</p>
-    <p>- Must start with a letter.</p>`;
-    errorMsgElement.classList.add('fade-in');
-    return false;
-  }
+  // if(isfirstCharValid === false) {
+  //   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
+  //   <p>Please enter a username that meets the following criteria:</p>
+  //   <p>- Must start with a letter.</p>`;
+  //   errorMsgElement.classList.add('fade-in');
+  //   return false;
+  // }
 
-  if(isValueLowerCaseValid === false) {
-    errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
-    <p>Please enter a username that meets the following criteria:</p>
-    <p>- Must include letters (a-z).</p>`;
-    errorMsgElement.classList.add('fade-in');
-    return false;
-  }
+  // if(isValueLowerCaseValid === false) {
+  //   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
+  //   <p>Please enter a username that meets the following criteria:</p>
+  //   <p>- Must include letters (a-z).</p>`;
+  //   errorMsgElement.classList.add('fade-in');
+  //   return false;
+  // }
 
-  if(isValueUpperCaseValid === false) {
-    errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
-    <p>Please enter a username that meets the following criteria:</p>
-    <p>- Must include letters (A-Z).</p>`;
-    errorMsgElement.classList.add('fade-in');
-    return false;
-  }
+  // if(isValueUpperCaseValid === false) {
+  //   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
+  //   <p>Please enter a username that meets the following criteria:</p>
+  //   <p>- Must include letters (A-Z).</p>`;
+  //   errorMsgElement.classList.add('fade-in');
+  //   return false;
+  // }
 
-  if(isValueNumberValid === false) {
-    errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
-    <p>Please enter a username that meets the following criteria:</p>
-    <p>- Must include numbers (0-9).</p>`;
-    errorMsgElement.classList.add('fade-in');
-    return false;
-  }
+  // if(isValueNumberValid === false) {
+  //   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
+  //   <p>Please enter a username that meets the following criteria:</p>
+  //   <p>- Must include numbers (0-9).</p>`;
+  //   errorMsgElement.classList.add('fade-in');
+  //   return false;
+  // }
 
-  if(isSpecialCharacterValid === false) {
-    errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
-    <p>Please enter a username that meets the following criteria:</p>
-    <p>- Must include underscores (_).</p>`;
-    errorMsgElement.classList.add('fade-in');
-    return false;
-  }
+  // if(isSpecialCharacterValid === false) {
+  //   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
+  //   <p>Please enter a username that meets the following criteria:</p>
+  //   <p>- Must include underscores (_).</p>`;
+  //   errorMsgElement.classList.add('fade-in');
+  //   return false;
+  // }
 
-  if(isValueLengthValid && isDuplicateValid && isfirstCharValid && isValueLowerCaseValid && isValueUpperCaseValid && isValueNumberValid && isSpecialCharacterValid) {
+  // if(isValueLengthValid && isDuplicateValid && isfirstCharValid && isValueLowerCaseValid && isValueUpperCaseValid && isValueNumberValid && isSpecialCharacterValid) {
+  //   console.log('Username is correct.');
+  //   return true;
+  // }
+
+  if(isValueLengthValid && isDuplicateValid) {
     console.log('Username is correct.');
     return true;
   }
@@ -258,90 +263,96 @@ let isSpecialCharacterValid = false;
 const valueLength = value.length;
 
 //Verifying password length
-if(valueLength >= 12) {
+if(valueLength >= 8) {
   isValueLengthValid = true;
 }
 
-//Verifying username has a-z
-for(let i=0; i<validLowerCaseCharacters.length; i++) {
-  for(let j=0; j<value.length; j++) {
-    if(validLowerCaseCharacters[i] === value.charAt(j)) {
-      isValueLowerCaseValid = true;
-    }
-  }
-}
+// //Verifying username has a-z
+// for(let i=0; i<validLowerCaseCharacters.length; i++) {
+//   for(let j=0; j<value.length; j++) {
+//     if(validLowerCaseCharacters[i] === value.charAt(j)) {
+//       isValueLowerCaseValid = true;
+//     }
+//   }
+// }
 
-//Verifying username has A-Z
-for(let i=0; i<validUpperCaseCharacters.length; i++) {
-  for(let j=0; j<value.length; j++) {
-    if(validUpperCaseCharacters[i] === value.charAt(j)) {
-      isValueUpperCaseValid = true;
-    }
-  }
-}
+// //Verifying username has A-Z
+// for(let i=0; i<validUpperCaseCharacters.length; i++) {
+//   for(let j=0; j<value.length; j++) {
+//     if(validUpperCaseCharacters[i] === value.charAt(j)) {
+//       isValueUpperCaseValid = true;
+//     }
+//   }
+// }
 
-//Verifying username has 0-9
-for(let i=0; i<validNumberCharacters.length; i++) {
-  for(let j=0; j<value.length; j++) {
-    if(validNumberCharacters[i] === value.charAt(j)) {
-      isValueNumberValid = true;
-    }
-  }
-}
+// //Verifying username has 0-9
+// for(let i=0; i<validNumberCharacters.length; i++) {
+//   for(let j=0; j<value.length; j++) {
+//     if(validNumberCharacters[i] === value.charAt(j)) {
+//       isValueNumberValid = true;
+//     }
+//   }
+// }
 
-//Verifying username has '_'
-for(let i=0; i<validSpecialCharactersForPassword.length; i++) {
-  for(let j=0; j<value.length; j++) {
-    if(validSpecialCharactersForPassword[i] === value.charAt(j)) {
-      isSpecialCharacterValid = true;
-    }
-  }
-}
+// //Verifying username has '_'
+// for(let i=0; i<validSpecialCharactersForPassword.length; i++) {
+//   for(let j=0; j<value.length; j++) {
+//     if(validSpecialCharactersForPassword[i] === value.charAt(j)) {
+//       isSpecialCharacterValid = true;
+//     }
+//   }
+// }
 
 if(isValueLengthValid === false) {
   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
   <p>Please enter a password that meets the following criteria:</p>
-  <p>- Atleast 12 characters long.</p>`;
+  <p>- Atleast 8 characters long.</p>`;
   errorMsgElement.classList.add('fade-in');
   return false;
 }
 
-if(isValueLowerCaseValid === false) {
-  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
-  <p>Please enter a password that meets the following criteria:</p>
-  <p>- Must include letters (a-z).</p>`;
-  errorMsgElement.classList.add('fade-in');
-  return false;
-}
+// if(isValueLowerCaseValid === false) {
+//   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+//   <p>Please enter a password that meets the following criteria:</p>
+//   <p>- Must include letters (a-z).</p>`;
+//   errorMsgElement.classList.add('fade-in');
+//   return false;
+// }
 
-if(isValueUpperCaseValid === false) {
-  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
-  <p>Please enter a password that meets the following criteria:</p>
-  <p>- Must include letters (A-Z).</p>`;
-  errorMsgElement.classList.add('fade-in');
-  return false;
-}
+// if(isValueUpperCaseValid === false) {
+//   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+//   <p>Please enter a password that meets the following criteria:</p>
+//   <p>- Must include letters (A-Z).</p>`;
+//   errorMsgElement.classList.add('fade-in');
+//   return false;
+// }
 
-if(isValueNumberValid === false) {
-  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
-  <p>Please enter a password that meets the following criteria:</p>
-  <p>- Must include numbers (0-9).</p>`;
-  errorMsgElement.classList.add('fade-in');
-  return false;
-}
+// if(isValueNumberValid === false) {
+//   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+//   <p>Please enter a password that meets the following criteria:</p>
+//   <p>- Must include numbers (0-9).</p>`;
+//   errorMsgElement.classList.add('fade-in');
+//   return false;
+// }
 
-if(isSpecialCharacterValid === false) {
-  errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
-  <p>Please enter a password that meets the following criteria:</p>
-  <p>- Include at least one special character (e.g., !, @, #, $, %).</p>`;
-  errorMsgElement.classList.add('fade-in');
-  return false;
-}
+// if(isSpecialCharacterValid === false) {
+//   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
+//   <p>Please enter a password that meets the following criteria:</p>
+//   <p>- Include at least one special character (e.g., !, @, #, $, %).</p>`;
+//   errorMsgElement.classList.add('fade-in');
+//   return false;
+// }
 
-if(isValueLengthValid && isValueLowerCaseValid && isValueUpperCaseValid && isValueNumberValid && isSpecialCharacterValid) {
+// if(isValueLengthValid && isValueLowerCaseValid && isValueUpperCaseValid && isValueNumberValid && isSpecialCharacterValid) {
+//   console.log('Password is correct.');
+//   return true;
+// }
+
+if(isValueLengthValid) {
   console.log('Password is correct.');
   return true;
 }
+
 
 }
 
@@ -377,9 +388,11 @@ usernameInputElement.addEventListener('click', () => {
   if(!infoMsgElement.classList.contains('fade-in')) {
     infoMsgElement.innerHTML = `
     <p>Please enter a username that meets the following criteria:</p>
-    <p>- 5 to 20 characters long</p>
-    <p>- Must start with a letter.</p>
-    <p>- Must include letters (a-z), (A-Z), (0-9) and underscores (_).</p>`;
+    <p>- 5 to 20 characters long</p>`;
+
+    // <p>- Must start with a letter.</p>
+    // <p>- Must include letters (a-z), (A-Z), (0-9) and underscores (_).</p>
+
     infoMsgElement.classList.remove('fade-out');
     infoMsgElement.classList.add('fade-in');
   }
@@ -414,9 +427,11 @@ passwordInputElement.addEventListener('click', () => {
   if(!infoMsgElement.classList.contains('fade-in')) {
     infoMsgElement.innerHTML = `
     <p>Please enter a password that meets the following criteria:</p>
-    <p>- Atleast 12 characters long.</p>
-    <p>- Must include letters (a-z), (A-Z) and (0-9).</p>
-    <p>- Include at least one special character (e.g., !, @, #, $, %).</p>`;
+    <p>- Atleast 8 characters long.</p>`;
+    
+    // <p>- Must include letters (a-z), (A-Z) and (0-9).</p>
+    // <p>- Include at least one special character (e.g., !, @, #, $, %).</p>
+
     infoMsgElement.classList.remove('fade-out');
     infoMsgElement.classList.add('fade-in');
   }
