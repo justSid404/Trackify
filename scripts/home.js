@@ -66,7 +66,7 @@ trackers.forEach((tracker, trackerLength) => {
     </div>
     <div class="tracker-controller">
 
-      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text">
+      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
       <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
       
     </div>
@@ -240,7 +240,7 @@ function addTrackerCard(inputValue) {
     </div>
     <div class="tracker-controller">
 
-      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text">
+      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
       <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
       
     </div>
@@ -285,17 +285,37 @@ function addTask(trackerLength, tempAddTaskToCard) {
 
   tempAddTaskToCard.addEventListener('click', () => {
 
+    let tempEditStatusValue = '';
+    if(document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus) {
+      tempEditStatusValue = document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus;
+    }
+
     if(tempControllerInputElement.value.length > 0) {
 
       trackers.forEach((tracker) => {
 
         if(tracker.id === trackerLength) {
-          tracker.task.push(
-            {
-              name: tempControllerInputElement.value,
-              status: 'todo'
-            }
-          );
+
+          if(tempEditStatusValue.length > 0) {
+
+            tracker.task.push(
+              {
+                name: tempControllerInputElement.value,
+                status: tempEditStatusValue
+              }
+            );
+            document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus = '';
+
+          } else {
+
+            tracker.task.push(
+              {
+                name: tempControllerInputElement.value,
+                status: 'todo'
+              }
+            );
+
+          }
 
           console.log(trackers);
           userData.trackers = trackers;
@@ -387,6 +407,7 @@ function addEventToTaskAction(taskActionElement) {
 
       trackers = userData.trackers;
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).value = trackers[tempTrackerNo].task[tempTaskNo].name;
+      document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).tempStatus = trackers[tempTrackerNo].task[tempTaskNo].status;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
     } else if(taskActionElement.value === "remove") {
