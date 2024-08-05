@@ -130,6 +130,10 @@ userOptionsBtnElement.addEventListener('click', () => {
     logoutBtnElement.classList.remove('log-out-transition');
   } else {
     logoutBtnElement.classList.add('log-out-transition');
+
+    setTimeout(() => {
+      logoutBtnElement.classList.remove('log-out-transition');
+    }, 5000);
   }
 
 });
