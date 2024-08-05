@@ -158,6 +158,31 @@ body {
 
 }
 
+.info-message {
+
+  opacity: 0;
+
+  background-color: white;
+
+  font-size: 12px;
+
+  border: solid 2px #ff9900;
+  border-radius: 10px;
+
+  margin: 0px 0px 0px 0px;
+  padding: 12px 12px 12px 12px;
+
+  width: 250px;
+
+}
+
+.info-message p {
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+}
+
 .error-message {
 
   opacity: 0;

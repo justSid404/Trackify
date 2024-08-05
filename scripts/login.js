@@ -19,6 +19,7 @@ const rememberMeInputElement = document.querySelector('.remember-me');
 const loginBtnElement = document.querySelector('.login');
 const signupBtnElement = document.querySelector('.sign-up');
 const errorMsgElement = document.querySelector('.error-message');
+const infoMsgElement = document.querySelector('.info-message');
 
 const validLowerCaseCharacters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 const validUpperCaseCharacters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -195,7 +196,7 @@ function verifyUsername(value) {
   if(isDuplicateValid === false) {
     errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
     <p>Please enter a username that meets the following criteria:</p>
-    <p>- No duplicate Username.</p>`;
+    <p>- Username already taken.</p>`;
     errorMsgElement.classList.add('fade-in');
     return false;
   }
@@ -364,6 +365,34 @@ usernameInputElement.addEventListener('keydown', (event) => {
 
 });
 
+usernameInputElement.addEventListener('click', () => {
+
+  if(infoMsgElement.classList.contains('fade-in')) {
+
+    infoMsgElement.classList.remove('fade-in');
+    infoMsgElement.classList.add('fade-out');
+
+  }
+
+  if(!infoMsgElement.classList.contains('fade-in')) {
+    infoMsgElement.innerHTML = `
+    <p>Please enter a username that meets the following criteria:</p>
+    <p>- 5 to 20 characters long</p>
+    <p>- Must start with a letter.</p>
+    <p>- Must include letters (a-z), (A-Z), (0-9) and underscores (_).</p>`;
+    infoMsgElement.classList.remove('fade-out');
+    infoMsgElement.classList.add('fade-in');
+  }
+
+});
+
+usernameInputElement.addEventListener('blur', () => {
+
+  infoMsgElement.classList.remove('fade-in');
+  infoMsgElement.classList.add('fade-out');
+
+});
+
 passwordInputElement.addEventListener('keydown', (event) => {
 
   if(event.key === 'Enter'){
@@ -373,6 +402,33 @@ passwordInputElement.addEventListener('keydown', (event) => {
 
 });
 
+passwordInputElement.addEventListener('click', () => {
+
+  if(infoMsgElement.classList.contains('fade-in')) {
+
+    infoMsgElement.classList.remove('fade-in');
+    infoMsgElement.classList.add('fade-out');
+
+  }
+
+  if(!infoMsgElement.classList.contains('fade-in')) {
+    infoMsgElement.innerHTML = `
+    <p>Please enter a password that meets the following criteria:</p>
+    <p>- Atleast 12 characters long.</p>
+    <p>- Must include letters (a-z), (A-Z) and (0-9).</p>
+    <p>- Include at least one special character (e.g., !, @, #, $, %).</p>`;
+    infoMsgElement.classList.remove('fade-out');
+    infoMsgElement.classList.add('fade-in');
+  }
+
+});
+
+passwordInputElement.addEventListener('blur', () => {
+
+  infoMsgElement.classList.remove('fade-in');
+  infoMsgElement.classList.add('fade-out');
+
+});
 
 loginBtnElement.addEventListener('click', () => {
 
