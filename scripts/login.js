@@ -211,7 +211,7 @@ function verifyUsername(value) {
   if(isValueLowerCaseValid === false) {
     errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
     <p>Please enter a username that meets the following criteria:</p>
-    <p>- May include letters (a-z).</p>`;
+    <p>- Must include letters (a-z).</p>`;
     errorMsgElement.classList.add('fade-in');
     return false;
   }
@@ -219,7 +219,7 @@ function verifyUsername(value) {
   if(isValueUpperCaseValid === false) {
     errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
     <p>Please enter a username that meets the following criteria:</p>
-    <p>- May include letters (A-Z).</p>`;
+    <p>- Must include letters (A-Z).</p>`;
     errorMsgElement.classList.add('fade-in');
     return false;
   }
@@ -227,7 +227,7 @@ function verifyUsername(value) {
   if(isValueNumberValid === false) {
     errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
     <p>Please enter a username that meets the following criteria:</p>
-    <p>- May include numbers (0-9).</p>`;
+    <p>- Must include numbers (0-9).</p>`;
     errorMsgElement.classList.add('fade-in');
     return false;
   }
@@ -235,7 +235,7 @@ function verifyUsername(value) {
   if(isSpecialCharacterValid === false) {
     errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Username</span>.
     <p>Please enter a username that meets the following criteria:</p>
-    <p>- May include underscores (_).</p>`;
+    <p>- Must include underscores (_).</p>`;
     errorMsgElement.classList.add('fade-in');
     return false;
   }
@@ -308,7 +308,7 @@ if(isValueLengthValid === false) {
 if(isValueLowerCaseValid === false) {
   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
   <p>Please enter a password that meets the following criteria:</p>
-  <p>- May include letters (a-z).</p>`;
+  <p>- Must include letters (a-z).</p>`;
   errorMsgElement.classList.add('fade-in');
   return false;
 }
@@ -316,7 +316,7 @@ if(isValueLowerCaseValid === false) {
 if(isValueUpperCaseValid === false) {
   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
   <p>Please enter a password that meets the following criteria:</p>
-  <p>- May include letters (A-Z).</p>`;
+  <p>- Must include letters (A-Z).</p>`;
   errorMsgElement.classList.add('fade-in');
   return false;
 }
@@ -324,7 +324,7 @@ if(isValueUpperCaseValid === false) {
 if(isValueNumberValid === false) {
   errorMsgElement.innerHTML = `Incorrect <span class="error-focus">Password</span>.
   <p>Please enter a password that meets the following criteria:</p>
-  <p>- May include numbers (0-9).</p>`;
+  <p>- Must include numbers (0-9).</p>`;
   errorMsgElement.classList.add('fade-in');
   return false;
 }
