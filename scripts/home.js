@@ -64,6 +64,8 @@ async function initializeApp_phase1() {
       const tempLSData = JSON.parse(localStorage.getItem(userLogged.username));
       updateUserData(tempLSData.trackers);
       localStorage.removeItem(userLogged.username);
+
+      window.location.reload();
       
     }
     
