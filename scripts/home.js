@@ -1,165 +1,234 @@
-let userLogged;
-
-if(localStorage.getItem('userLogged') === null) {
-
-  window.location.href = 'error.html';
-
-}
-
-userLogged = JSON.parse(localStorage.getItem('userLogged'));
-document.querySelector('.user-name').innerHTML = userLogged.username;
-// localStorage.removeItem(userLogged.username);
-
-let userData;
-
-if(localStorage.getItem(userLogged.username) !== null) {
-
-  userData = JSON.parse(localStorage.getItem(userLogged.username));
-  sortTasks();
-
-} else {
-
-  userData = {
-
-    trackers: []
-
-  }
-
-}
-
-let trackers = [];
+import { firebaseConfig } from "../data/db-config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getDatabase, ref, set, update, query, orderByChild, equalTo, get } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
 const cardHolderElement = document.querySelector('.card-holder');
 const createTrackerElement = document.querySelector('.create-tracker-card');
 const userOptionsBtnElement = document.querySelector('.user-options');
 const logoutBtnElement = document.querySelector('.log-out');
 
-// if(localStorage.getItem('userLogged') !== null) {
-//   userLogged = JSON.parse(localStorage.getItem('userLogged'));
-//   localStorage.removeItem('userLogged');
-// }
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-if(localStorage.getItem(userLogged.username) !== null) {
+// Get Reference to database services
+const db = getDatabase(app);
 
-  trackers = userData.trackers;
+let userLogged;
+let trackers = [];
+let userData = {
 
-}
+  trackers: []
 
-console.log(trackers);
+};
 
-//Home page default transition
-document.body.classList.add('fade-in');
+pageSetup();
 
-//Add trackers as per the trackers array
-trackers.forEach((tracker, trackerLength) => {
+async function pageSetup() {
 
-  const newCardhtml = `
+  try{
 
-  <div class="tracker-card tracker-card-${trackerLength}">
+    // console.log("Initializing app...");
+    await initializeApp_phase1();
+    await initializeData();
+    // await initializeApp_phase2();
+    // await addEventListeners();
+    // console.log("App initialization complete!");
 
-    <div class="tracker-card-title tracker-card-${trackerLength}-title">
-      ${tracker.name}
-    </div>
+  } catch(error) {
 
-    <div class="tracker-content content-tracker-card-${trackerLength}">
+    console.error("Error during app initialization:", error);
 
-    </div>
-    <div class="tracker-controller">
-
-      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
-      <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
-      
-    </div>
-  </div>`;
-
-  cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
-  cardHolderElement.classList.remove('card-holder-zero');
-  document.querySelector(`.card-holder`).scrollTo({
-    left: 0,
-    behavior: 'smooth'
-  });
-
-  const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
-  addTask(trackerLength, tempAddTaskToCard);
-
-  tracker.task.forEach((taskItem, taskIndex) => {
-
-    const taskHtml = `
-  
-    <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
-      <div class="task-info">
-        ${taskItem.name}
-      </div>
-      
-      <div class="task-action">
-
-        <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
-          <option value="todo">ToDo</option>
-          <option value="inpro">In-Process</option>
-          <option value="done">Completed</option>
-          <option value="edit">Edit</option>
-          <option value="remove">Remove</option>
-        </select>
-
-      </div>
-      
-    </div>`;
-
-    document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
-
-    document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
-      
-    const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
-    addEventToTaskAction(tempTaskActionElement);
-
-  }); 
-
-});
-
-//Layout handling
-if(trackers.length === 0) {
-  cardHolderElement.classList.add('card-holder-zero');
-} else {
-  cardHolderElement.classList.remove('card-holder-zero');
-}
-
-//User options button functionality
-userOptionsBtnElement.addEventListener('click', () => {
-
-  if(logoutBtnElement.classList.contains('log-out-transition')) {
-    logoutBtnElement.classList.remove('log-out-transition');
-  } else {
-    logoutBtnElement.classList.add('log-out-transition');
-
-    setTimeout(() => {
-      logoutBtnElement.classList.remove('log-out-transition');
-    }, 5000);
   }
 
-});
+}
 
-//Logout button functionality
-logoutBtnElement.addEventListener('click', () => {
+//Code to initialize the app - phase 1
+async function initializeApp_phase1() {
+  return new Promise((resolve, reject) => {
+    
+    //Code to redirect to error.html if user not logged in
+    if(localStorage.getItem('userLogged') === null) {
+    
+      window.location.href = 'error.html';
+    
+    }
 
-  localStorage.setItem(userLogged.username, JSON.stringify({
+    //Code to get username of logged user and displaying it in appropriate location
+    userLogged = JSON.parse(localStorage.getItem('userLogged'));
+    document.querySelector('.user-name').innerHTML = userLogged.username;
+    // localStorage.removeItem(userLogged.username);
 
-    trackers
+    //Code to update userData to firebase if userdata exists in LocalStorage
+    if(localStorage.getItem(userLogged.username) !== null) {
 
-  }));
+      const tempLSData = JSON.parse(localStorage.getItem(userLogged.username));
+      updateUserData(tempLSData.trackers);
+      localStorage.removeItem(userLogged.username);
+      
+    }
+    
+    resolve();
+    
+  });
 
-  localStorage.removeItem('userLogged');
-  window.location.href = 'login.html';
-});
+}
 
-//Code to add new Tracker
-createTrackerElement.addEventListener('click', () => {
+//Code to initialize all the required data
+async function initializeData() {
 
-  takeInputThroughPrompt();
+  return new Promise((resolve, reject) => {
 
-});
+    //Code to save trackers data if available on Firebase for respective user 
+    getUserData();
+    
+    resolve();
+    
+  });
+
+}
+
+//Code to further initialize the app - phase 2
+async function initializeApp_phase2() {
+
+  return new Promise((resolve, reject) => {
+    
+    // //Code to save trackers data to a local variable if data is more than nothing
+    // if(userData.trackers.length > 0) {
+
+    //   // userData = JSON.parse(localStorage.getItem(userLogged.username));
+    //   // sortTasks();
+    //   // updateUserData(userData.trackers);
+    //   trackers = userData.trackers;
+
+    // }
+
+    // //Layout handling
+    // if(trackers.length === 0) {
+    //   cardHolderElement.classList.add('card-holder-zero');
+    // } else {
+    //   cardHolderElement.classList.remove('card-holder-zero');
+    // }
+
+    // //Add trackers as per the trackers array
+    // trackers.forEach((tracker, trackerLength) => {
+    
+    //   const newCardhtml = `
+    
+    //   <div class="tracker-card tracker-card-${trackerLength}">
+    
+    //     <div class="tracker-card-title tracker-card-${trackerLength}-title">
+    //       ${tracker.name}
+    //     </div>
+    
+    //     <div class="tracker-content content-tracker-card-${trackerLength}">
+    
+    //     </div>
+    //     <div class="tracker-controller">
+    
+    //       <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
+    //       <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
+          
+    //     </div>
+    //   </div>`;
+    
+    //   cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
+    //   cardHolderElement.classList.remove('card-holder-zero');
+    //   document.querySelector(`.card-holder`).scrollTo({
+    //     left: 0,
+    //     behavior: 'smooth'
+    //   });
+    
+    //   const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
+    //   addTask(trackerLength, tempAddTaskToCard);
+    
+    //   tracker.task.forEach((taskItem, taskIndex) => {
+    
+    //     const taskHtml = `
+      
+    //     <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
+    //       <div class="task-info">
+    //         ${taskItem.name}
+    //       </div>
+          
+    //       <div class="task-action">
+    
+    //         <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
+    //           <option value="todo">ToDo</option>
+    //           <option value="inpro">In-Process</option>
+    //           <option value="done">Completed</option>
+    //           <option value="edit">Edit</option>
+    //           <option value="remove">Remove</option>
+    //         </select>
+    
+    //       </div>
+          
+    //     </div>`;
+    
+    //     document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+    
+    //     document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+          
+    //     const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
+    //     addEventToTaskAction(tempTaskActionElement);
+    
+    //   }); 
+    
+    // });
+    
+    resolve();
+    
+  });
+
+}
+
+//Code to add Event Listeners to independent elements
+async function addEventListeners() {
+
+  return new Promise((resolve, reject) => {
+
+    // //User options button functionality
+    // userOptionsBtnElement.addEventListener('click', () => {
+
+    //   if(logoutBtnElement.classList.contains('log-out-transition')) {
+    //     logoutBtnElement.classList.remove('log-out-transition');
+    //   } else {
+    //     logoutBtnElement.classList.add('log-out-transition');
+
+    //     setTimeout(() => {
+    //       logoutBtnElement.classList.remove('log-out-transition');
+    //     }, 5000);
+    //   }
+
+    // });
+
+    // //Logout button functionality
+    // logoutBtnElement.addEventListener('click', () => {
+
+    //   localStorage.setItem(userLogged.username, JSON.stringify({
+
+    //     trackers
+
+    //   }));
+
+    //   localStorage.removeItem('userLogged');
+    //   window.location.href = 'login.html';
+    // });
+
+    // //Code to add new Tracker
+    // createTrackerElement.addEventListener('click', () => {
+    
+    //   takeInputThroughPrompt();
+    
+    // });
+    
+    resolve();
+
+  });
+
+}
 
 //Code to take input from user when creating a new Tracker card
-function takeInputThroughPrompt() {
+async function takeInputThroughPrompt() {
 
   const promptHtml = `
 
@@ -223,7 +292,7 @@ function takeInputThroughPrompt() {
 }
 
 //Code to add Tracker card to the card holder
-function addTrackerCard(inputValue) {
+async function addTrackerCard(inputValue) {
 
   const trackerLength = trackers.length;
 
@@ -258,20 +327,20 @@ function addTrackerCard(inputValue) {
 
   trackers.push({
     id: trackerLength,
-    elementClass: `tracker-card-${trackerLength}`,
     name: inputValue,
     task: []
   });
 
-  sortTasks();
   console.log(trackers);
   userData.trackers = trackers;
+  sortTasks();
+  updateUserData(userData.trackers);
   localStorage.setItem(userLogged.username, JSON.stringify(userData));
 
 }
 
 //Code to add Task to a Tracker card
-function addTask(trackerLength, tempAddTaskToCard) {
+async function addTask(trackerLength, tempAddTaskToCard) {
 
   const tempControllerInputElement = document.querySelector(`.controller-input-tracker-card-${trackerLength}`);
 
@@ -300,6 +369,7 @@ function addTask(trackerLength, tempAddTaskToCard) {
 
             tracker.task.push(
               {
+                id: tracker.task.length,
                 name: tempControllerInputElement.value,
                 status: tempEditStatusValue
               }
@@ -320,6 +390,7 @@ function addTask(trackerLength, tempAddTaskToCard) {
           console.log(trackers);
           userData.trackers = trackers;
           sortTasks();
+          updateUserData(userData.trackers);
           trackers = userData.trackers;
           localStorage.setItem(userLogged.username, JSON.stringify(userData));
           // localStorage.setItem('trackers', JSON.stringify(trackers));
@@ -373,7 +444,7 @@ function addTask(trackerLength, tempAddTaskToCard) {
 }
 
 //Code to add event listener to a task-action
-function addEventToTaskAction(taskActionElement) {
+async function addEventToTaskAction(taskActionElement) {
 
   const tempTrackerNo = taskActionElement.getAttribute('data-tracker-card-number');
   const tempTaskNo = taskActionElement.getAttribute('data-task-number');
@@ -420,6 +491,7 @@ function addEventToTaskAction(taskActionElement) {
     console.log(trackers);
     userData.trackers = trackers;
     sortTasks();
+    updateUserData(userData.trackers);
       
     document.querySelector(`.content-tracker-card-${tempTrackerNo}`).innerHTML = '';
 
@@ -460,7 +532,7 @@ function addEventToTaskAction(taskActionElement) {
 }
 
 //Code to sort all tasks according to inpro -> todo -> done
-function sortTasks() {
+async function sortTasks() {
 
   userData.trackers.forEach((tracker, trackerIndex) => {
 
@@ -486,5 +558,230 @@ function sortTasks() {
     userData.trackers[trackerIndex].task = sortedTasks;
 
   });
+
+}
+
+//Code to get userData to Firebase
+async function getUserData() {
+
+  // try {
+
+    const userDataRef = ref(db, 'userData');
+
+    // Create a query to find the user with the specific username
+    const userQuery = query(userDataRef, orderByChild("username"), equalTo(userLogged.username));
+    
+    // Get the results of the query
+    const snapshot = await get(userQuery);
+
+    if (snapshot.exists()) {
+
+      // Iterate through the results (should be a single result if usernames are unique)
+      snapshot.forEach((childSnapshot) => {
+
+        if(childSnapshot.val().trackers) {
+
+          userData = {
+
+            trackers: childSnapshot.val().trackers
+
+          };
+
+        } else {
+
+          userData = {
+
+            trackers: []
+        
+          }
+
+        }
+        
+      });
+
+    } else {
+
+      userData = {
+
+        trackers: []
+    
+      }
+
+      // console.log("No matching user found");
+
+    }
+
+    // console.log(userData.trackers);
+
+    //Code to save trackers data to a local variable if data is more than nothing
+    if(userData.trackers.length > 0) {
+
+      // userData = JSON.parse(localStorage.getItem(userLogged.username));
+      // sortTasks();
+      // updateUserData(userData.trackers);
+      trackers = userData.trackers;
+
+    }
+    
+    //Layout handling
+    if(trackers.length === 0) {
+      cardHolderElement.classList.add('card-holder-zero');
+    } else {
+      cardHolderElement.classList.remove('card-holder-zero');
+    }
+
+    //Add trackers as per the trackers array
+    trackers.forEach((tracker, trackerLength) => {
+    
+      const newCardhtml = `
+    
+      <div class="tracker-card tracker-card-${trackerLength}">
+    
+        <div class="tracker-card-title tracker-card-${trackerLength}-title">
+          ${tracker.name}
+        </div>
+    
+        <div class="tracker-content content-tracker-card-${trackerLength}">
+    
+        </div>
+        <div class="tracker-controller">
+    
+          <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
+          <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
+          
+        </div>
+      </div>`;
+    
+      cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
+      cardHolderElement.classList.remove('card-holder-zero');
+      document.querySelector(`.card-holder`).scrollTo({
+        left: 0,
+        behavior: 'smooth'
+      });
+    
+      const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
+      addTask(trackerLength, tempAddTaskToCard);
+    
+      tracker.task.forEach((taskItem, taskIndex) => {
+    
+        const taskHtml = `
+      
+        <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
+          <div class="task-info">
+            ${taskItem.name}
+          </div>
+          
+          <div class="task-action">
+    
+            <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
+              <option value="todo">ToDo</option>
+              <option value="inpro">In-Process</option>
+              <option value="done">Completed</option>
+              <option value="edit">Edit</option>
+              <option value="remove">Remove</option>
+            </select>
+    
+          </div>
+          
+        </div>`;
+    
+        document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+    
+        document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+          
+        const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
+        addEventToTaskAction(tempTaskActionElement);
+    
+      }); 
+    
+    });
+
+    //User options button functionality
+    userOptionsBtnElement.addEventListener('click', () => {
+
+      if(logoutBtnElement.classList.contains('log-out-transition')) {
+        logoutBtnElement.classList.remove('log-out-transition');
+      } else {
+        logoutBtnElement.classList.add('log-out-transition');
+
+        setTimeout(() => {
+          logoutBtnElement.classList.remove('log-out-transition');
+        }, 5000);
+      }
+
+    });
+
+    //Logout button functionality
+    logoutBtnElement.addEventListener('click', () => {
+
+      localStorage.setItem(userLogged.username, JSON.stringify({
+
+        trackers
+
+      }));
+
+      localStorage.removeItem('userLogged');
+      window.location.href = 'login.html';
+    });
+
+    //Code to add new Tracker
+    createTrackerElement.addEventListener('click', () => {
+    
+      takeInputThroughPrompt();
+    
+    });
+
+    //Home page default transition
+    document.body.classList.add('fade-in');
+
+  // } catch (error) {
+  //   console.error("Error getting user data:", error);
+  // }
+
+}
+
+//Code to update userData to Firebase
+async function updateUserData(userData) {
+
+  try{
+
+    const userDataRef = ref(db, 'userData');
+
+    // Create a query to find the user with the specific username
+    const userQuery = query(userDataRef, orderByChild("username"), equalTo(userLogged.username));
+    
+    // Get the results of the query
+    const snapshot = await get(userQuery);
+
+    if (snapshot.exists()) {
+
+      // Iterate through the results (should be a single result if usernames are unique)
+      snapshot.forEach((childSnapshot) => {
+
+        const userKey = childSnapshot.key; // Get the key of the user
+        const userRef = ref(db, `userData/${userKey}/`); // Reference to the user's data
+
+        // Update the user's data with the new array
+        update(userRef, {
+
+          trackers: userData // Add or update the field with the new array
+
+        });
+
+        // console.log("Array added to the user.");
+
+      });
+
+    } else {
+
+      // console.log("User not found.");
+
+    }
+
+  } catch (e) {
+
+    console.error("Error updating data: ", e);
+
+  }
 
 }
