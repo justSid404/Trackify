@@ -335,7 +335,6 @@ async function addTrackerCard(inputValue) {
   userData.trackers = trackers;
   sortTasks();
   updateUserData(userData.trackers);
-  localStorage.setItem(userLogged.username, JSON.stringify(userData));
 
 }
 
@@ -392,8 +391,6 @@ async function addTask(trackerLength, tempAddTaskToCard) {
           sortTasks();
           updateUserData(userData.trackers);
           trackers = userData.trackers;
-          localStorage.setItem(userLogged.username, JSON.stringify(userData));
-          // localStorage.setItem('trackers', JSON.stringify(trackers));
         }
   
       });
@@ -525,7 +522,6 @@ async function addEventToTaskAction(taskActionElement) {
       addEventToTaskAction(document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`));
 
     });
-    localStorage.setItem(userLogged.username, JSON.stringify(userData));
 
   });
 
@@ -713,12 +709,6 @@ async function getUserData() {
 
     //Logout button functionality
     logoutBtnElement.addEventListener('click', () => {
-
-      localStorage.setItem(userLogged.username, JSON.stringify({
-
-        trackers
-
-      }));
 
       localStorage.removeItem('userLogged');
       window.location.href = 'login.html';
