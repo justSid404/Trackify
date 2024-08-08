@@ -722,9 +722,6 @@ async function getUserData() {
   //Home page default transition
   document.body.classList.add('fade-in');
 
-  //Delete localStorage data
-  localStorage.removeItem(userLogged.username);
-
 }
 
 //Code to update userData to Firebase
@@ -742,22 +739,24 @@ async function updateUserData(userData) {
 
     if (snapshot.exists()) {
 
-      // Iterate through the results (should be a single result if usernames are unique)
+      // Convert snapshot to an array of child snapshots
+      const children = [];
       snapshot.forEach((childSnapshot) => {
+        children.push(childSnapshot);
+      });
 
+      // Use a for...of loop to iterate over the children
+      for (const childSnapshot of children) {
         const userKey = childSnapshot.key; // Get the key of the user
         const userRef = ref(db, `userData/${userKey}/`); // Reference to the user's data
 
         // Update the user's data with the new array
-        update(userRef, {
-
+        await update(userRef, {
           trackers: userData // Add or update the field with the new array
-
         });
 
         // console.log("Array added to the user.");
-
-      });
+      }
 
     } else {
 
@@ -770,5 +769,8 @@ async function updateUserData(userData) {
     console.error("Error updating data: ", e);
 
   }
+
+  //Delete localStorage data
+  localStorage.removeItem(userLogged.username);
 
 }
