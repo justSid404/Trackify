@@ -20,6 +20,7 @@ let userData = {
   trackers: []
 
 };
+let backupUsed = true;
 
 pageSetup();
 
@@ -63,7 +64,7 @@ async function initializeApp_phase1() {
 
       const tempLSData = JSON.parse(localStorage.getItem(userLogged.username));
       updateUserData(tempLSData.trackers);
-      localStorage.setItem(userLogged.username+'_backup', tempLSData);
+      localStorage.setItem(userLogged.username+'_backup', JSON.stringify(tempLSData));
       
     }
     
@@ -616,6 +617,76 @@ async function getUserData() {
     trackers = userData.trackers;
 
   }
+
+  //Code to save trackers data from backup to firebase
+  if(localStorage.getItem(userLogged.username+'_backup') !== null) {
+
+    const tempLSData = JSON.parse(localStorage.getItem(userLogged.username+'_backup'));
+
+    //if there are already some trackers, verify and add
+    if(userData.trackers.length > 0) {
+
+      //
+      tempLSData.trackers.forEach((tracker, trackerIndex) => {
+
+        let matchFound = false;
+
+        userData.trackers.forEach((tracker0, tracker0Index) => {
+
+          //if match found then set matchFound to true
+          if(tracker.name === tracker0.name) {
+
+            matchFound = true;
+
+            //if tracker is same then check if there is any unique task, add it if any
+            tracker.task.forEach((taskValue, taskIndex) => {
+
+              let taskMatchFound = false;
+              tracker0.task.forEach((task0Value, task0Index) => {
+
+                if(taskValue.name === task0Value.name) {
+
+                  taskMatchFound = true;
+
+                }
+
+              });
+
+              //if match not found then add task to userData.trackers.task
+              if(!taskMatchFound) {
+
+                tracker0.task.push(taskValue);
+
+              }
+
+            });
+    
+          }
+
+        });
+
+        //if match not found then add tracker to userData.trackers
+        if(!matchFound) {
+
+          userData.trackers.push(tracker);
+
+        }
+
+      });
+
+    } else {
+
+      //Since there are no trackers add all trackers from backup
+      userData.trackers = tempLSData.trackers;
+
+    }
+
+    updateUserData(userData.trackers);
+    trackers = userData.trackers;
+    localStorage.setItem(userLogged.username+'_backup_final', JSON.stringify(tempLSData));
+    localStorage.removeItem(userLogged.username+'_backup');
+
+  }
   
   //Layout handling
   if(trackers.length === 0) {
@@ -756,6 +827,10 @@ async function updateUserData(userData) {
         });
 
         // console.log("Array added to the user.");
+
+        //Delete localStorage data
+        localStorage.removeItem(userLogged.username);
+
       }
 
     } else {
@@ -769,8 +844,5 @@ async function updateUserData(userData) {
     console.error("Error updating data: ", e);
 
   }
-
-  //Delete localStorage data
-  localStorage.removeItem(userLogged.username);
 
 }
