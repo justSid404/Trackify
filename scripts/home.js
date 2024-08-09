@@ -882,6 +882,26 @@ async function addTrackerOptions(trackerNumber) {
       userData.trackers[tempTrackerNum].task = [];
 
     }
+      
+    let completeCount = 0;
+    let inproCount = 0;
+    let todoCount = 0;
+
+    userData.trackers[tempTrackerNum].task.forEach((taskItem) => {
+
+      if(taskItem.status === 'done') {
+        completeCount++;
+      }
+
+      if(taskItem.status === 'inpro') {
+        inproCount++;
+      }
+
+      if(taskItem.status === 'todo') {
+        todoCount++;
+      }
+
+    });
 
     const optionHtml = `
     
@@ -893,6 +913,9 @@ async function addTrackerOptions(trackerNumber) {
 
             <p class="tracker-option-name">Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
             <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+            <p class="tracker-option-count-completed">Number of <span class="highlight-done">Completed</span> tasks: ${completeCount}</p>
+            <p class="tracker-option-count-inpro">Number of <span class="highlight-inpro">In-Process</span> tasks: ${inproCount}</p>
+            <p class="tracker-option-count-todo">Number of <span class="highlight-todo">To-Do</span> tasks: ${todoCount}</p>
           
           </div>
           
@@ -916,10 +939,33 @@ async function addTrackerOptions(trackerNumber) {
     document.body.insertAdjacentHTML('afterbegin', optionHtml);
 
     document.querySelector(`.edit-tracker-card-${trackerNumber}`).addEventListener('click', () => {
+      
+      let completeCount = 0;
+      let inproCount = 0;
+      let todoCount = 0;
+
+      userData.trackers[tempTrackerNum].task.forEach((taskItem) => {
+
+        if(taskItem.status === 'done') {
+          completeCount++;
+        }
+  
+        if(taskItem.status === 'inpro') {
+          inproCount++;
+        }
+  
+        if(taskItem.status === 'todo') {
+          todoCount++;
+        }
+  
+      });
 
       document.querySelector('.tracker-option-info').innerHTML = `
       <p>Tracker name: <input class="tracker-option-info-input" type="text"></p>
       <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+      <p class="tracker-option-count-completed">Number of <span class="highlight-done">Completed</span> tasks: ${completeCount}</p>
+      <p class="tracker-option-count-inpro">Number of <span class="highlight-inpro">In-Process</span> tasks: ${inproCount}</p>
+      <p class="tracker-option-count-todo">Number of <span class="highlight-todo">To-Do</span> tasks: ${todoCount}</p>
       `;
 
       document.querySelector('.tracker-option-info-input').value = userData.trackers[tempTrackerNum].name;
@@ -927,6 +973,26 @@ async function addTrackerOptions(trackerNumber) {
     });
 
     document.querySelector(`.save-tracker-card-${trackerNumber}`).addEventListener('click', () => {
+      
+      let completeCount = 0;
+      let inproCount = 0;
+      let todoCount = 0;
+
+      userData.trackers[tempTrackerNum].task.forEach((taskItem) => {
+
+        if(taskItem.status === 'done') {
+          completeCount++;
+        }
+  
+        if(taskItem.status === 'inpro') {
+          inproCount++;
+        }
+  
+        if(taskItem.status === 'todo') {
+          todoCount++;
+        }
+  
+      });
 
       const newTrackerName = document.querySelector('.tracker-option-info-input').value;
       userData.trackers[tempTrackerNum].name = newTrackerName;
@@ -937,6 +1003,9 @@ async function addTrackerOptions(trackerNumber) {
       document.querySelector('.tracker-option-info').innerHTML = `
       <p class="tracker-option-name">Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
       <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+      <p class="tracker-option-count-completed">Number of <span class="highlight-done">Completed</span> tasks: ${completeCount}</p>
+      <p class="tracker-option-count-inpro">Number of <span class="highlight-inpro">In-Process</span> tasks: ${inproCount}</p>
+      <p class="tracker-option-count-todo">Number of <span class="highlight-todo">To-Do</span> tasks: ${todoCount}</p>
       `;
 
     });
