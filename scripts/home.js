@@ -308,7 +308,7 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
   <div class="tracker-card tracker-card-${trackerNumber}">
 
     <div class="tracker-card-title tracker-card-${trackerNumber}-title">
-      <p>${trackerName}</p>
+      <p class="tracker-card-title-p tracker-card-${trackerNumber}-title-p">${trackerName}</p>
       <div class="option-tracker-card option-tracker-card-${trackerNumber}" data-tracker-number="${trackerNumber}">
         &#10247;
       </div>
@@ -775,6 +775,12 @@ async function getUserData() {
   
     });
 
+    //Scroll to extreme left
+    document.querySelector(`.card-holder`).scrollTo({
+      left: -10,
+      behavior: 'smooth'
+    });
+
   }
 
   //User options button functionality
@@ -883,8 +889,13 @@ async function addTrackerOptions(trackerNumber) {
 
         <div class="tracker-option-box">
         
-          <p>Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
-          <p>Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+          <div class="tracker-option-info">
+
+            <p class="tracker-option-name">Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
+            <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+          
+          </div>
+          
 
           <div class="tracker-option-action">
 
@@ -906,15 +917,27 @@ async function addTrackerOptions(trackerNumber) {
 
     document.querySelector(`.edit-tracker-card-${trackerNumber}`).addEventListener('click', () => {
 
-      //todo
-      document.querySelector(`.tracker-option-container`).remove();
+      document.querySelector('.tracker-option-info').innerHTML = `
+      <p>Tracker name: <input class="tracker-option-info-input" type="text"></p>
+      <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+      `;
+
+      document.querySelector('.tracker-option-info-input').value = userData.trackers[tempTrackerNum].name;
 
     });
 
     document.querySelector(`.save-tracker-card-${trackerNumber}`).addEventListener('click', () => {
 
-      //todo
-      document.querySelector(`.tracker-option-container`).remove();
+      const newTrackerName = document.querySelector('.tracker-option-info-input').value;
+      userData.trackers[tempTrackerNum].name = newTrackerName;
+      document.querySelector(`.tracker-card-${trackerNumber}-title-p`).innerHTML = newTrackerName;
+      trackers = userData.trackers;
+      updateUserData(userData.trackers);
+
+      document.querySelector('.tracker-option-info').innerHTML = `
+      <p class="tracker-option-name">Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
+      <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+      `;
 
     });
 
