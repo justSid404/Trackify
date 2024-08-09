@@ -208,7 +208,11 @@ body {
   cursor: pointer;
 
 }
+
 .tracker-card-title {
+
+  display: flex;
+  flex-direction: row;
 
   color: white;
 
@@ -225,6 +229,90 @@ body {
   padding: 4px 0px 4px 0px;
 
   width: 90%;
+
+}
+
+.tracker-card-title p {
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  width: 95%;
+
+}
+
+.option-tracker-card {
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  width: 5%;
+
+}
+
+.tracker-option-container {
+
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+
+  z-index: 100;
+
+  background-color: rgba(0, 0, 0, 0.5);
+
+  font-weight: bold;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+}
+
+.tracker-option-box {
+
+  background-color: #00cc99;
+  color: white;
+
+  overflow-wrap: break-word;
+
+  border-radius: 16px;
+
+  margin: 0px 0px 0px 0px;
+  padding: 5vh 10vw 5vh 10vw;
+
+  width: 70%;
+
+}
+
+.tracker-option-action {
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-around;
+
+  margin: 10% 0px 0px 0px;
+
+}
+
+.edit-tracker, .delete-tracker, .save-tracker, .close-tracker {
+
+  background-color: #ff9900;
+  color: white;
+
+  border: none;
+  border-radius: 16px;
+
+  margin: 0px 5% 0px 0px;
+  padding: 3% 5% 3% 5%;
+
+  width: auto;
+
+  cursor: pointer;
 
 }
 
@@ -462,7 +550,7 @@ body {
 
 .input-prompt-box {
 
-  background-color: #597931;
+  background-color: #00cc99;
   color: white;
 
   border-radius: 8px;

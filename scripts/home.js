@@ -20,7 +20,6 @@ let userData = {
   trackers: []
 
 };
-let backupUsed = true;
 
 pageSetup();
 
@@ -254,13 +253,19 @@ async function takeInputThroughPrompt() {
 
   document.body.insertAdjacentHTML('afterbegin', promptHtml);
 
+  document.querySelector(`.input-prompt-textbox`).focus();
+
   document.querySelector('.input-prompt-save').addEventListener('click', () => {
 
     const inputValue = document.querySelector('.input-prompt-textbox').value;
     if(inputValue.length > 0) {
 
       document.querySelector('.input-prompt').remove();
-      addTrackerCard(inputValue);
+      // addTrackerCard(inputValue);
+      addTrackerCardWithOption(inputValue, trackers.length, true);
+
+      //Code to open Option menu for a Tracker
+      addTrackerOptions(trackers.length - 1);
 
     } else {
 
@@ -281,7 +286,11 @@ async function takeInputThroughPrompt() {
     if(event.key === "Enter") {
       const inputValue = document.querySelector('.input-prompt-textbox').value;
       document.querySelector('.input-prompt').remove();
-      addTrackerCard(inputValue);
+      // addTrackerCard(inputValue);
+      addTrackerCardWithOption(inputValue, trackers.length, true);
+
+      //Code to open Option menu for a Tracker
+      addTrackerOptions(trackers.length-1);
     }
 
     if(event.key === "Escape") {
@@ -293,49 +302,57 @@ async function takeInputThroughPrompt() {
 }
 
 //Code to add Tracker card to the card holder
-async function addTrackerCard(inputValue) {
-
-  const trackerLength = trackers.length;
-
+async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequired) {
   const newCardhtml = `
 
-  <div class="tracker-card tracker-card-${trackerLength}">
+  <div class="tracker-card tracker-card-${trackerNumber}">
 
-    <div class="tracker-card-title tracker-card-${trackerLength}-title">
-      ${inputValue}
+    <div class="tracker-card-title tracker-card-${trackerNumber}-title">
+      <p>${trackerName}</p>
+      <div class="option-tracker-card option-tracker-card-${trackerNumber}" data-tracker-number="${trackerNumber}">
+        &#10247;
+      </div>
     </div>
 
-    <div class="tracker-content content-tracker-card-${trackerLength}">
+    <div class="tracker-content content-tracker-card-${trackerNumber}">
 
     </div>
     <div class="tracker-controller">
 
-      <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
-      <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
+      <input class="tracker-controller-input controller-input-tracker-card-${trackerNumber}" type="text" data-temp-status="">
+      <button class="add-task add-task-tracker-card-${trackerNumber}">&#10148;</button>
       
     </div>
   </div>`;
 
   cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
   cardHolderElement.classList.remove('card-holder-zero');
+
+  document.querySelector(`.controller-input-tracker-card-${trackerNumber}`).focus();
+
   document.querySelector(`.card-holder`).scrollTo({
     left: 0,
     behavior: 'smooth'
   });
 
-  const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
-  addTask(trackerLength, tempAddTaskToCard);
+  const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerNumber}`);
+  addTask(trackerNumber, tempAddTaskToCard);
 
-  trackers.push({
-    id: trackerLength,
-    name: inputValue,
-    task: []
-  });
+  if(isSaveRequired) {
 
-  // console.log(trackers);
-  userData.trackers = trackers;
-  sortTasks();
-  updateUserData(userData.trackers);
+    trackers.push({
+      id: trackerNumber,
+      name: trackerName,
+      task: []
+    });
+
+    // console.log(trackers);
+    userData.trackers = trackers;
+    sortTasks();
+    updateUserData(userData.trackers);
+
+  }
+  
 
 }
 
@@ -365,6 +382,12 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
         if(tracker.id === trackerLength) {
 
+          if(tracker.task === undefined) {
+
+            tracker.task = [];
+
+          }
+
           if(tempEditStatusValue.length > 0) {
 
             tracker.task.push(
@@ -386,15 +409,15 @@ async function addTask(trackerLength, tempAddTaskToCard) {
             );
 
           }
-
-          // console.log(trackers);
-          userData.trackers = trackers;
-          sortTasks();
-          updateUserData(userData.trackers);
-          trackers = userData.trackers;
         }
   
       });
+
+      // console.log(trackers);
+      userData.trackers = trackers;
+      sortTasks();
+      updateUserData(userData.trackers);
+      trackers = userData.trackers;
 
       document.querySelector(`.content-tracker-card-${trackerLength}`).innerHTML = '';
 
@@ -538,6 +561,12 @@ async function sortTasks() {
 
     //first adding all inpro tasks, then todo tasks and finally done tasks to sortedTask array which is temp array
     sortSequence.forEach((sequenceItem) => {
+
+      if(tracker.task === undefined) {
+
+        tracker.task = [];
+
+      }
 
       tracker.task.forEach((taskItem) => {
 
@@ -696,70 +725,57 @@ async function getUserData() {
   }
 
   //Add trackers as per the trackers array
-  trackers.forEach((tracker, trackerLength) => {
+  if(trackers.length > 0) {
+
+    trackers.forEach((tracker, trackerLength) => {
+      
+      addTrackerCardWithOption(tracker.name, trackerLength, false);
+
+      //Code to open Option menu for a Tracker
+      addTrackerOptions(trackerLength);
   
-    const newCardhtml = `
-  
-    <div class="tracker-card tracker-card-${trackerLength}">
-  
-      <div class="tracker-card-title tracker-card-${trackerLength}-title">
-        ${tracker.name}
-      </div>
-  
-      <div class="tracker-content content-tracker-card-${trackerLength}">
-  
-      </div>
-      <div class="tracker-controller">
-  
-        <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
-        <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
-        
-      </div>
-    </div>`;
-  
-    cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
-    cardHolderElement.classList.remove('card-holder-zero');
-    document.querySelector(`.card-holder`).scrollTo({
-      left: 0,
-      behavior: 'smooth'
-    });
-  
-    const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
-    addTask(trackerLength, tempAddTaskToCard);
-  
-    tracker.task.forEach((taskItem, taskIndex) => {
-  
-      const taskHtml = `
+      const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
+      addTask(trackerLength, tempAddTaskToCard);
+
+      if(tracker.task) {
     
-      <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
-        <div class="task-info">
-          ${taskItem.name}
-        </div>
+        tracker.task.forEach((taskItem, taskIndex) => {
+      
+          const taskHtml = `
         
-        <div class="task-action">
+          <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
+            <div class="task-info">
+              ${taskItem.name}
+            </div>
+            
+            <div class="task-action">
+      
+              <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
+                <option value="todo">ToDo</option>
+                <option value="inpro">In-Process</option>
+                <option value="done">Completed</option>
+                <option value="edit">Edit</option>
+                <option value="remove">Remove</option>
+              </select>
+      
+            </div>
+            
+          </div>`;
+      
+          document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+      
+          document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+            
+          const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
+          addEventToTaskAction(tempTaskActionElement);
+      
+        }); 
+
+      }
   
-          <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
-            <option value="todo">ToDo</option>
-            <option value="inpro">In-Process</option>
-            <option value="done">Completed</option>
-            <option value="edit">Edit</option>
-            <option value="remove">Remove</option>
-          </select>
-  
-        </div>
-        
-      </div>`;
-  
-      document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
-  
-      document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
-        
-      const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
-      addEventToTaskAction(tempTaskActionElement);
-  
-    }); 
-  
-  });
+    });
+
+  }
 
   //User options button functionality
   userOptionsBtnElement.addEventListener('click', () => {
@@ -845,4 +861,139 @@ async function updateUserData(userData) {
 
   }
 
+}
+
+//Code to open Option menu for a Tracker
+async function addTrackerOptions(trackerNumber) {
+
+  const tempTrackerOptions = document.querySelector(`.option-tracker-card-${trackerNumber}`);
+  tempTrackerOptions.addEventListener('click', () => {
+
+    const tempTrackerNum = tempTrackerOptions.getAttribute('data-tracker-number');
+
+    if(userData.trackers[tempTrackerNum].task === undefined) {
+
+      userData.trackers[tempTrackerNum].task = [];
+
+    }
+
+    const optionHtml = `
+    
+      <div class="tracker-option-container">
+
+        <div class="tracker-option-box">
+        
+          <p>Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
+          <p>Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
+
+          <div class="tracker-option-action">
+
+            <div class="edit-tracker edit-tracker-card-${trackerNumber}">Edit</div>
+            <div class="save-tracker save-tracker-card-${trackerNumber}">Save</div>
+          
+            <div class="delete-tracker delete-tracker-card-${trackerNumber}">Delete</div>
+            <div class="close-tracker close-tracker-card-${trackerNumber}">Close</div>
+          
+          </div>
+
+        </div>
+
+      </div>
+    
+    `;
+
+    document.body.insertAdjacentHTML('afterbegin', optionHtml);
+
+    document.querySelector(`.edit-tracker-card-${trackerNumber}`).addEventListener('click', () => {
+
+      //todo
+      document.querySelector(`.tracker-option-container`).remove();
+
+    });
+
+    document.querySelector(`.save-tracker-card-${trackerNumber}`).addEventListener('click', () => {
+
+      //todo
+      document.querySelector(`.tracker-option-container`).remove();
+
+    });
+
+    document.querySelector(`.delete-tracker-card-${trackerNumber}`).addEventListener('click', () => {
+
+      userData.trackers.splice(trackerNumber, 1);
+      trackers = userData.trackers;
+      updateUserData(userData.trackers);
+      document.querySelector(`.tracker-option-container`).remove();
+
+      cardHolderElement.innerHTML = `
+
+      <div class="create-tracker-card">
+        <div class="create-tracker">
+          +
+        </div>
+      </div>`;
+
+      // cardHolderElement.insertAdjacentHTML('afterbegin', createTrackerHtml);
+
+      //Code to add new Tracker
+      document.querySelector('.create-tracker-card').addEventListener('click', () => {
+      
+        takeInputThroughPrompt();
+      
+      });
+
+      trackers.forEach((tracker, trackerNumber) => {
+
+        addTrackerCardWithOption(tracker.name, trackerNumber, false);
+
+        //Code to open Option menu for a Tracker
+        addTrackerOptions(trackerNumber);
+
+        if(tracker.task) {
+      
+          tracker.task.forEach((taskItem, taskIndex) => {
+        
+            const taskHtml = `
+          
+            <div class="task task-${taskIndex}-tracker-card-${trackerNumber} task-${taskItem.status}">
+              <div class="task-info">
+                ${taskItem.name}
+              </div>
+              
+              <div class="task-action">
+        
+                <select class="task-action task-${taskIndex}-action-tracker-card-${trackerNumber}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerNumber}">
+                  <option value="todo">ToDo</option>
+                  <option value="inpro">In-Process</option>
+                  <option value="done">Completed</option>
+                  <option value="edit">Edit</option>
+                  <option value="remove">Remove</option>
+                </select>
+        
+              </div>
+              
+            </div>`;
+        
+            document.querySelector(`.content-tracker-card-${trackerNumber}`).insertAdjacentHTML('beforeend', taskHtml);
+        
+            document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerNumber}`).value = taskItem.status;
+              
+            const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerNumber}`);
+            addEventToTaskAction(tempTaskActionElement);
+        
+          }); 
+  
+        }
+
+      });
+
+    });
+
+    document.querySelector(`.close-tracker-card-${trackerNumber}`).addEventListener('click', () => {
+
+      document.querySelector(`.tracker-option-container`).remove();
+
+    });
+
+  });
 }
