@@ -6,6 +6,14 @@ const cardHolderElement = document.querySelector('.card-holder');
 const createTrackerElement = document.querySelector('.create-tracker-card');
 const userOptionsBtnElement = document.querySelector('.user-options');
 const logoutBtnElement = document.querySelector('.log-out');
+const searchBtnElement = document.querySelector('.search-tracker');
+const searchBoxElement = document.querySelector('.search-tracker-input');
+const searchBtnSvgElement = document.querySelector('.search-tracker-search-button');
+const searchCancelBtnElement = document.querySelector('.search-tracker-search-cancel');
+const rightArrowBtnElement = document.querySelector('.traverse-right-button');
+const leftArrowBtnElement = document.querySelector('.traverse-left-button');
+
+let userAtCard = 0;
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -351,6 +359,8 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
     sortTasks();
     updateUserData(userData.trackers);
 
+    userAtCard = userData.trackers.length - 1;
+
   }
   
 
@@ -418,6 +428,8 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       sortTasks();
       updateUserData(userData.trackers);
       trackers = userData.trackers;
+
+      userAtCard = userData.trackers.length - 1;
 
       document.querySelector(`.content-tracker-card-${trackerLength}`).innerHTML = '';
 
@@ -513,6 +525,8 @@ async function addEventToTaskAction(taskActionElement) {
     userData.trackers = trackers;
     sortTasks();
     updateUserData(userData.trackers);
+
+    userAtCard = userData.trackers.length - 1;
       
     document.querySelector(`.content-tracker-card-${tempTrackerNo}`).innerHTML = '';
 
@@ -647,6 +661,8 @@ async function getUserData() {
 
   }
 
+  userAtCard = userData.trackers.length - 1;
+
   //Code to save trackers data from backup to firebase
   if(localStorage.getItem(userLogged.username+'_backup') !== null) {
 
@@ -711,6 +727,8 @@ async function getUserData() {
     }
 
     updateUserData(userData.trackers);
+
+    userAtCard = userData.trackers.length - 1;
     trackers = userData.trackers;
     localStorage.setItem(userLogged.username+'_backup_final', JSON.stringify(tempLSData));
     localStorage.removeItem(userLogged.username+'_backup');
@@ -1000,6 +1018,8 @@ async function addTrackerOptions(trackerNumber) {
       trackers = userData.trackers;
       updateUserData(userData.trackers);
 
+      userAtCard = userData.trackers.length - 1;
+
       document.querySelector('.tracker-option-info').innerHTML = `
       <p class="tracker-option-name">Tracker name: ${userData.trackers[tempTrackerNum].name}</p>
       <p class="tracker-option-count">Number of tasks: ${userData.trackers[tempTrackerNum].task.length}</p>
@@ -1015,6 +1035,8 @@ async function addTrackerOptions(trackerNumber) {
       userData.trackers.splice(trackerNumber, 1);
       trackers = userData.trackers;
       updateUserData(userData.trackers);
+
+      userAtCard = userData.trackers.length - 1;
       document.querySelector(`.tracker-option-container`).remove();
 
       cardHolderElement.innerHTML = `
@@ -1089,3 +1111,144 @@ async function addTrackerOptions(trackerNumber) {
 
   });
 }
+
+async function scrollToAnElementInCardPicker(targetElement) {
+
+  // Calculate the position of the target element relative to the container
+  const containerLeft = cardHolderElement.getBoundingClientRect().left;
+  const targetLeft = targetElement.getBoundingClientRect().left;
+
+  // Calculate the scroll position (target position minus container's current scroll position)
+  const scrollPosition = targetLeft - containerLeft + cardHolderElement.scrollLeft;
+
+  // Scroll the container to the target element smoothly
+  cardHolderElement.scrollTo({
+      left: scrollPosition - 40,
+      behavior: 'smooth'
+  });
+
+}
+
+//Code to add eventlistener to search button
+searchBtnElement.addEventListener('click', () => {
+
+  searchBtnElement.classList.add('search-tracker-clicked');
+  searchBoxElement.classList.add('search-tracker-input-transition');
+  searchBtnSvgElement.classList.add('search-tracker-search-button-clicked');
+  searchBtnSvgElement.classList.remove('disable');
+  searchCancelBtnElement.classList.add('search-tracker-search-cancel-clicked');
+  searchCancelBtnElement.classList.remove('disable');
+
+  searchBoxElement.focus();
+
+}, { once: true });
+
+//Code to add eventlistener to cancel-search button
+searchCancelBtnElement.addEventListener('click', () => {
+
+  searchBtnElement.classList.remove('search-tracker-clicked');
+  searchBoxElement.classList.remove('search-tracker-input-transition');
+  searchBtnSvgElement.classList.remove('search-tracker-search-button-clicked');
+  searchBtnSvgElement.classList.add('disable');
+  searchCancelBtnElement.classList.remove('search-tracker-search-cancel-clicked');
+  searchCancelBtnElement.classList.add('disable');
+
+  searchBoxElement.value = '';
+
+  setTimeout(() => {
+
+    //Code to add eventlistener to search button
+    searchBtnElement.addEventListener('click', () => {
+
+      searchBtnElement.classList.add('search-tracker-clicked');
+      searchBoxElement.classList.add('search-tracker-input-transition');
+      searchBtnSvgElement.classList.add('search-tracker-search-button-clicked');
+      searchBtnSvgElement.classList.remove('disable');
+      searchCancelBtnElement.classList.add('search-tracker-search-cancel-clicked');
+      searchCancelBtnElement.classList.remove('disable');
+
+      searchBoxElement.focus();
+
+    }, { once: true });
+
+  }, 500);
+
+});
+
+//Code to add eventlistener to search-svg button
+searchBtnSvgElement.addEventListener('click', () => {
+
+  const searchResults = [];
+
+  const tempSearchBoxValue = searchBoxElement.value;
+
+  if(tempSearchBoxValue.length > 0) {
+
+    userData.trackers.forEach((tracker) => {
+
+      if(tracker.name.includes(tempSearchBoxValue)) {
+
+        searchResults.push(tracker);
+
+      }
+
+    });
+
+    console.log('Here are the search results:');
+    console.log(searchResults);
+
+  } else {
+
+    searchBoxElement.placeholder = 'Please add keyword to search.';
+
+  }
+
+});
+
+//Code to traverse using right arrow
+rightArrowBtnElement.addEventListener('click', () => {
+
+  const tempTrackerLength = userData.trackers.length;
+
+  if(userAtCard > 0 && userAtCard <= tempTrackerLength ) {
+
+    userAtCard--;
+    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+
+  } else if (userAtCard === 0) {
+
+    scrollToAnElementInCardPicker(createTrackerElement);
+    userAtCard = "create";
+
+  } else if (userAtCard === "create") {
+
+    userAtCard = tempTrackerLength - 1;
+    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+
+  }
+
+});
+
+//Code to traverse using left arrow
+leftArrowBtnElement.addEventListener('click', () => {
+
+  const tempTrackerLength = userData.trackers.length;
+
+  if(userAtCard >= 0 && userAtCard < (tempTrackerLength - 1) ) {
+
+    userAtCard++;
+    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+
+  } else if (userAtCard === (tempTrackerLength - 1)) {
+
+    scrollToAnElementInCardPicker(createTrackerElement);
+    userAtCard = "create";
+
+  } else if (userAtCard === "create") {
+
+    userAtCard = 0;
+    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+
+  }
+
+});

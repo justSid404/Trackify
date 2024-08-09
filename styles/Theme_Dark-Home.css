@@ -109,7 +109,7 @@ body {
   margin: 0px 0px 0px 0px;
   padding: 1vh 3vw 1vh 3vw;
 
-  transition: top 0.5s;
+  transition: top 0.25s;
 
   width: 6vw;
   height: 3vh;
@@ -662,6 +662,188 @@ body {
 .input-prompt-save:hover, .input-prompt-cancel:hover {
 
   background-color: #00cc99;
+
+}
+
+.traverse-buttons {
+
+  position: fixed;
+  right: 0px;
+  bottom: 50%;
+  left: 0px;
+
+  z-index: -1;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.traverse-left-button {
+
+  position: fixed;
+  bottom: 50%;
+  left: 1%;
+
+  background-color: #ff9900;
+
+  border-radius: 10px;
+
+  z-index: 10;
+
+  transition: bottom 0.25s, left 0.25s, width 0.25s;
+
+  width: 8%;
+
+}
+
+.traverse-left-button:active {
+  
+  bottom: 48%;
+  left: 2%;
+
+  width: 6%;
+
+}
+
+.traverse-right-button {
+
+  position: fixed;
+  right: 1%;
+  bottom: 50%;
+
+  background-color: #ff9900;
+
+  border-radius: 10px;
+
+  z-index: 10;
+
+  transition: bottom 0.25s, right 0.25s, width 0.25s;
+
+  width: 8%;
+
+}
+
+.traverse-right-button:active {
+  
+  bottom: 48%;
+  right: 2%;
+
+  width: 6%;
+
+}
+
+.search-tracker {
+
+  z-index: 24;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  bottom: 1.25%;
+
+  background-color: #ff9900;
+  color: white;
+
+  border: none;
+  border-radius: 1000px;
+
+  width: 50px;
+  height: 50px;
+
+  transition: bottom 0.25s, width 0.25s, height 0.25s;
+
+  cursor: pointer;
+
+}
+
+.search-tracker-clicked {
+
+  bottom: 1.25%;
+
+  width: 82.5%;
+  height: 50px;
+
+}
+
+.search-tracker-search-button {
+
+  z-index: 25;
+
+  margin: 0px 2.5% 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  min-width: 25px;
+  min-height: 25px;
+
+  max-width: 10%;
+  max-height: 60%;
+
+}
+
+.search-tracker-input {
+
+  z-index: 25;
+
+  opacity: 1;
+
+  outline: none;
+  border: none;
+  border-radius: 1000px;
+
+  margin: 0px 2.5% 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  transition: display 0.25s, width 0.25s, opacity 0.25s;
+
+  width: 0%;
+  height: 60%;
+
+}
+
+.search-tracker-input-transition {
+
+  opacity: 1;
+
+  padding: 0px 0px 0px 3%;
+  
+  width: 69%;
+
+}
+
+.search-tracker-search-cancel {
+
+  z-index: 25;
+
+  opacity: 0;
+
+  margin: 0px 2.5% 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  transition: display 0.25s, opacity 0.25s, font-size 0.25s;
+
+  font-size: 0px;
+
+}
+
+.search-tracker-search-cancel-clicked {
+
+  opacity: 1;
+
+  font-size: 24px;
+
+}
+
+.disable {
+
+  pointer-events: none;
 
 }
 
