@@ -3,19 +3,19 @@ self.addEventListener('install', (event) => {
     caches.open('my-app-cache').then((cache) => {
       return cache.addAll([
         '/',
-        '/service-worker.js',
-        '/manifest.json',
-        '/index.html',
-        '/login.html',
-        '/home.html',
-        '/error.html',
-        '/styles/Theme_Light.css',
-        '/styles/Theme_Dark.css',
-        '/styles/Theme_Dark-Home.css',
-        '/scripts/default-page-transition.js',
-        '/scripts/home.js',
-        '/scripts/login.js',
-        '/images/icon.png'
+        'service-worker.js',
+        'manifest.json',
+        'index.html',
+        'login.html',
+        'home.html',
+        'error.html',
+        'styles/Theme_Light.css',
+        'styles/Theme_Dark.css',
+        'styles/Theme_Dark-Home.css',
+        'scripts/default-page-transition.js',
+        'scripts/home.js',
+        'scripts/login.js',
+        'images/icon.png'
       ]);
     })
   );
