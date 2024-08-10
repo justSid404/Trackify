@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Error</title>
+  <link rel="manifest" href="/manifest.json">
 </head>
 <body>
 
@@ -13,6 +14,19 @@
   <p>- You supplied the wrong credentials (e.g., bad password).</p>
   <p>- You tried to access the application without logging in.</p>
   <p>- Your browser doesn't understand how to supply the credentials required.</p>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          }, (error) => {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
   
 </body>
 </html>
