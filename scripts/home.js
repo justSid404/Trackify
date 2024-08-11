@@ -35,14 +35,12 @@ async function pageSetup() {
 
   try{
 
-    // console.log("Initializing app...");
     await initializeApp_phase1();
     await initializeData();
-    // console.log("App initialization complete!");
 
   } catch(error) {
 
-    console.error("Error during app initialization:", error);
+    //Error during app initialization
 
   }
 
@@ -140,17 +138,20 @@ async function takeInputThroughPrompt() {
   document.querySelector('.input-prompt-textbox').addEventListener('keydown', (event) => {
 
     if(event.key === "Enter") {
+
       const inputValue = document.querySelector('.input-prompt-textbox').value;
       document.querySelector('.input-prompt').remove();
-      // addTrackerCard(inputValue);
       addTrackerCardWithOption(inputValue, trackers.length, true);
 
       //Code to open Option menu for a Tracker
       addTrackerOptions(trackers.length-1);
+
     }
 
     if(event.key === "Escape") {
+
       document.querySelector('.input-prompt').remove();
+      
     }
 
   });
@@ -201,8 +202,7 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
       name: trackerName,
       task: []
     });
-
-    // console.log(trackers);
+    
     userData.trackers = trackers;
     sortTasks();
     updateUserData(userData.trackers);
@@ -270,8 +270,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
         }
   
       });
-
-      // console.log(trackers);
+      
       userData.trackers = trackers;
       sortTasks();
       updateUserData(userData.trackers);
@@ -368,8 +367,7 @@ async function addEventToTaskAction(taskActionElement) {
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
     }
-
-    // console.log(trackers);
+    
     userData.trackers = trackers;
     sortTasks();
     updateUserData(userData.trackers);
@@ -493,18 +491,11 @@ async function getUserData() {
   
     }
 
-    // console.log("No matching user found");
-
   }
-
-  // console.log(userData.trackers);
 
   //Code to save trackers data to a local variable if data is more than nothing
   if(userData.trackers.length > 0) {
 
-    // userData = JSON.parse(localStorage.getItem(userLogged.username));
-    // sortTasks();
-    // updateUserData(userData.trackers);
     trackers = userData.trackers;
 
   }
@@ -639,25 +630,19 @@ async function updateUserData(userData) {
 
         // Update the user's data with the new array
         await update(userRef, {
-          trackers: userData // Add or update the field with the new array
+          trackers: userData
         });
-
-        // console.log("Array added to the user.");
 
         //Delete localStorage data
         localStorage.removeItem(userLogged.username);
 
       }
 
-    } else {
-
-      // console.log("User not found.");
-
-    }
+    } 
 
   } catch (e) {
 
-    console.error("Error updating data: ", e);
+    //Error updating data
 
   }
 
@@ -822,8 +807,6 @@ async function addTrackerOptions(trackerNumber) {
           +
         </div>
       </div>`;
-
-      // cardHolderElement.insertAdjacentHTML('afterbegin', createTrackerHtml);
 
       //Code to add new Tracker
       document.querySelector('.create-tracker-card').addEventListener('click', () => {
