@@ -14,7 +14,9 @@ self.addEventListener('install', (event) => {
         'scripts/default-page-transition.js',
         'scripts/home.js',
         'scripts/login.js',
-        'images/icon.png'
+        'images/icon.png',
+        'images/icon192.png',
+        'images/icon512.png'
       ];
 
       // Skip caching the service worker itself

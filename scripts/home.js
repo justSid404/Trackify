@@ -38,8 +38,6 @@ async function pageSetup() {
     // console.log("Initializing app...");
     await initializeApp_phase1();
     await initializeData();
-    // await initializeApp_phase2();
-    // await addEventListeners();
     // console.log("App initialization complete!");
 
   } catch(error) {
@@ -64,16 +62,6 @@ async function initializeApp_phase1() {
     //Code to get username of logged user and displaying it in appropriate location
     userLogged = JSON.parse(localStorage.getItem('userLogged'));
     document.querySelector('.user-name').innerHTML = userLogged.username;
-    // localStorage.removeItem(userLogged.username);
-
-    //Code to update userData to firebase if userdata exists in LocalStorage
-    if(localStorage.getItem(userLogged.username) !== null) {
-
-      const tempLSData = JSON.parse(localStorage.getItem(userLogged.username));
-      updateUserData(tempLSData.trackers);
-      localStorage.setItem(userLogged.username+'_backup', JSON.stringify(tempLSData));
-      
-    }
     
     resolve();
     
@@ -91,146 +79,6 @@ async function initializeData() {
     
     resolve();
     
-  });
-
-}
-
-//Code to further initialize the app - phase 2
-async function initializeApp_phase2() {
-
-  return new Promise((resolve, reject) => {
-    
-    // //Code to save trackers data to a local variable if data is more than nothing
-    // if(userData.trackers.length > 0) {
-
-    //   // userData = JSON.parse(localStorage.getItem(userLogged.username));
-    //   // sortTasks();
-    //   // updateUserData(userData.trackers);
-    //   trackers = userData.trackers;
-
-    // }
-
-    // //Layout handling
-    // if(trackers.length === 0) {
-    //   cardHolderElement.classList.add('card-holder-zero');
-    // } else {
-    //   cardHolderElement.classList.remove('card-holder-zero');
-    // }
-
-    // //Add trackers as per the trackers array
-    // trackers.forEach((tracker, trackerLength) => {
-    
-    //   const newCardhtml = `
-    
-    //   <div class="tracker-card tracker-card-${trackerLength}">
-    
-    //     <div class="tracker-card-title tracker-card-${trackerLength}-title">
-    //       ${tracker.name}
-    //     </div>
-    
-    //     <div class="tracker-content content-tracker-card-${trackerLength}">
-    
-    //     </div>
-    //     <div class="tracker-controller">
-    
-    //       <input class="tracker-controller-input controller-input-tracker-card-${trackerLength}" type="text" data-temp-status="">
-    //       <button class="add-task add-task-tracker-card-${trackerLength}">&#10148;</button>
-          
-    //     </div>
-    //   </div>`;
-    
-    //   cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
-    //   cardHolderElement.classList.remove('card-holder-zero');
-    //   document.querySelector(`.card-holder`).scrollTo({
-    //     left: 0,
-    //     behavior: 'smooth'
-    //   });
-    
-    //   const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
-    //   addTask(trackerLength, tempAddTaskToCard);
-    
-    //   tracker.task.forEach((taskItem, taskIndex) => {
-    
-    //     const taskHtml = `
-      
-    //     <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
-    //       <div class="task-info">
-    //         ${taskItem.name}
-    //       </div>
-          
-    //       <div class="task-action">
-    
-    //         <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
-    //           <option value="todo">ToDo</option>
-    //           <option value="inpro">In-Process</option>
-    //           <option value="done">Completed</option>
-    //           <option value="edit">Edit</option>
-    //           <option value="remove">Remove</option>
-    //         </select>
-    
-    //       </div>
-          
-    //     </div>`;
-    
-    //     document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
-    
-    //     document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
-          
-    //     const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
-    //     addEventToTaskAction(tempTaskActionElement);
-    
-    //   }); 
-    
-    // });
-    
-    resolve();
-    
-  });
-
-}
-
-//Code to add Event Listeners to independent elements
-async function addEventListeners() {
-
-  return new Promise((resolve, reject) => {
-
-    // //User options button functionality
-    // userOptionsBtnElement.addEventListener('click', () => {
-
-    //   if(logoutBtnElement.classList.contains('log-out-transition')) {
-    //     logoutBtnElement.classList.remove('log-out-transition');
-    //   } else {
-    //     logoutBtnElement.classList.add('log-out-transition');
-
-    //     setTimeout(() => {
-    //       logoutBtnElement.classList.remove('log-out-transition');
-    //     }, 5000);
-    //   }
-
-    // });
-
-    // //Logout button functionality
-    // logoutBtnElement.addEventListener('click', () => {
-
-    //   localStorage.setItem(userLogged.username, JSON.stringify({
-
-    //     trackers
-
-    //   }));
-
-    //   localStorage.removeItem('userLogged');
-    //   window.location.href = 'login.html';
-    // });
-
-    // //Code to add new Tracker
-    // createTrackerElement.addEventListener('click', () => {
-    
-    //   takeInputThroughPrompt();
-    
-    // });
-    
-    resolve();
-
   });
 
 }
@@ -662,78 +510,6 @@ async function getUserData() {
   }
 
   userAtCard = userData.trackers.length - 1;
-
-  //Code to save trackers data from backup to firebase
-  if(localStorage.getItem(userLogged.username+'_backup') !== null) {
-
-    const tempLSData = JSON.parse(localStorage.getItem(userLogged.username+'_backup'));
-
-    //if there are already some trackers, verify and add
-    if(userData.trackers.length > 0) {
-
-      //
-      tempLSData.trackers.forEach((tracker, trackerIndex) => {
-
-        let matchFound = false;
-
-        userData.trackers.forEach((tracker0, tracker0Index) => {
-
-          //if match found then set matchFound to true
-          if(tracker.name === tracker0.name) {
-
-            matchFound = true;
-
-            //if tracker is same then check if there is any unique task, add it if any
-            tracker.task.forEach((taskValue, taskIndex) => {
-
-              let taskMatchFound = false;
-              tracker0.task.forEach((task0Value, task0Index) => {
-
-                if(taskValue.name === task0Value.name) {
-
-                  taskMatchFound = true;
-
-                }
-
-              });
-
-              //if match not found then add task to userData.trackers.task
-              if(!taskMatchFound) {
-
-                tracker0.task.push(taskValue);
-
-              }
-
-            });
-    
-          }
-
-        });
-
-        //if match not found then add tracker to userData.trackers
-        if(!matchFound) {
-
-          userData.trackers.push(tracker);
-
-        }
-
-      });
-
-    } else {
-
-      //Since there are no trackers add all trackers from backup
-      userData.trackers = tempLSData.trackers;
-
-    }
-
-    updateUserData(userData.trackers);
-
-    userAtCard = userData.trackers.length - 1;
-    trackers = userData.trackers;
-    localStorage.setItem(userLogged.username+'_backup_final', JSON.stringify(tempLSData));
-    localStorage.removeItem(userLogged.username+'_backup');
-
-  }
   
   //Layout handling
   if(trackers.length === 0) {
