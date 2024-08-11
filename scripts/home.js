@@ -151,7 +151,7 @@ async function takeInputThroughPrompt() {
     if(event.key === "Escape") {
 
       document.querySelector('.input-prompt').remove();
-      
+
     }
 
   });
@@ -943,11 +943,11 @@ searchBtnSvgElement.addEventListener('click', () => {
 
   if(tempSearchBoxValue.length > 0) {
 
-    userData.trackers.forEach((tracker) => {
+    userData.trackers.forEach((tracker, trackerIndex) => {
 
       if(tracker.name.includes(tempSearchBoxValue)) {
 
-        searchResults.push(tracker);
+        searchResults.push(trackerIndex);
 
       }
 
@@ -958,7 +958,7 @@ searchBtnSvgElement.addEventListener('click', () => {
 
   } else {
 
-    searchBoxElement.placeholder = 'Please add keyword to search.';
+    searchBoxElement.placeholder = 'Please type Tracker to search.';
 
   }
 

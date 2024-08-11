@@ -21,8 +21,8 @@ body {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
 
   overflow-x: hidden;
 
@@ -142,8 +142,8 @@ body {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
 }
 
@@ -162,7 +162,8 @@ body {
   overflow-x: scroll;
   scrollbar-width: none;
 
-  width: 100vw;
+  width: 100%;
+  height: 80%;
 
 }
 
@@ -179,7 +180,8 @@ body {
 
   overflow-x: scroll;
 
-  width: 100vw;
+  width: 100%;
+  height: 80%;
 
 }
 
@@ -202,8 +204,8 @@ body {
   margin: 0px 0px 0px 24px;
   padding: 0px 0px 0px 0px;
 
-  width: 80vw;
-  height: 80vh;
+  width: 80%;
+  height: 100%;
 
   cursor: pointer;
 
@@ -287,24 +289,6 @@ body {
   width: 70%;
 
 }
-
-/* .highlight-done {
-
-  color: rgb(34, 170, 29);
-
-}
-
-.highlight-inpro {
-
-  color: rgb(235, 218, 70);
-
-}
-
-.highlight-todo {
-
-  color: rgb(221, 111, 111);
-
-} */
 
 .tracker-option-action {
 
@@ -484,7 +468,7 @@ body {
   background-color: #00cc99;
   white-space: nowrap;
 
-  border: solid 4px #00cc99;
+  border: none;
   border-radius: 8px;
 
   display: flex;
@@ -497,8 +481,8 @@ body {
   margin: 0px 24px 0px 24px;
   padding: 0px 0px 0px 0px;
 
-  width: 80vw;
-  height: 80vh;
+  width: 80%;
+  height: 100%;
 
   cursor: pointer;
 
