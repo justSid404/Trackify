@@ -947,7 +947,10 @@ searchBtnSvgElement.addEventListener('click', () => {
 
       if(tracker.name.includes(tempSearchBoxValue)) {
 
-        searchResults.push(trackerIndex);
+        searchResults.push({
+          index: trackerIndex,
+          name: tracker.name
+        });
 
       }
 
@@ -955,6 +958,56 @@ searchBtnSvgElement.addEventListener('click', () => {
 
     console.log('Here are the search results:');
     console.log(searchResults);
+
+    const searchResultHtml = `
+    
+      <div class="search-result-container fade-out">
+      
+        <div class="search-result-box">
+      
+          <div class="search-result-title">
+        
+            <p class="search-result-title-text">Search Result (${searchResults.length} items)</p>
+
+            <div class="close-search-result-box">X</div>
+
+          </div>
+      
+          <div class="search-result-box-content">
+        
+            
+
+          </div>
+      
+        </div>
+
+      </div>
+
+    `;
+
+    document.body.insertAdjacentHTML("afterbegin", searchResultHtml);
+
+    setTimeout(() => {
+
+      document.querySelector('.search-result-container').classList.add('fade-in');
+      document.querySelector('.search-result-box').classList.add('search-result-box-transition-in');
+
+    }, 0);
+
+    document.querySelector('.close-search-result-box').addEventListener('click', () => {
+
+      document.querySelector('.search-result-box').classList.remove('search-result-box-transition-in');
+      document.querySelector('.search-result-container').classList.remove('fade-in');
+
+      document.querySelector('.search-result-box').classList.add('search-result-box-transition-out');
+      document.querySelector('.search-result-container').classList.add('fade-out');
+      setTimeout(() => {
+
+        document.querySelector('.search-result-container').remove();
+
+      }, 250);
+
+    });
 
   } else {
 
