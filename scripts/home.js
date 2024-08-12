@@ -138,7 +138,7 @@ async function takeInputThroughPrompt() {
 
   document.querySelector('.input-prompt-textbox').addEventListener('keydown', (event) => {
 
-    if(event.key === "Enter") {
+    if(event.key === 'Enter') {
 
       const inputValue = document.querySelector('.input-prompt-textbox').value;
       document.querySelector('.input-prompt').remove();
@@ -149,7 +149,7 @@ async function takeInputThroughPrompt() {
 
     }
 
-    if(event.key === "Escape") {
+    if(event.key === 'Escape') {
 
       document.querySelector('.input-prompt').remove();
 
@@ -1058,13 +1058,13 @@ async function initializeApp_phase2() {
   //Code to add eventlistener to search-input
   searchBoxElement.addEventListener('keydown', (event) => {
 
-    if(event.key === "Enter") {
+    if(event.key === 'Enter') {
 
       searchBtnSvgElement.click();
 
     }
 
-    if(event.key === "Escape") {
+    if(event.key === 'Escape') {
 
       searchCancelBtnElement.click();
 
