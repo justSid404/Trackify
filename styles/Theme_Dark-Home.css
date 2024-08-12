@@ -359,7 +359,7 @@ body {
   padding: 0px 0px 0px 0px;
 
   width: 92.5%;
-  height: 10vh;
+  height: 13vh;
 
 }
 
@@ -377,12 +377,18 @@ body {
 
 .task-info {
 
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-content: center;
+
+  white-space: normal;
+  word-wrap: break-word;
 
   margin: 0px 8px 0px 0px;
-  padding: 2vh 0px 0px 3vw;
+  padding: 0px 0px 0px 3vw;
+  /* padding: 2vh 0px 0px 3vw; */
 
   width: 56%;
 
@@ -970,6 +976,8 @@ body {
 }
 
 .search-result-item-container {
+
+  flex-shrink: 0;
 
   position: relative;
 
