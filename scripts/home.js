@@ -113,7 +113,7 @@ async function takeInputThroughPrompt() {
   document.querySelector('.input-prompt-save').addEventListener('click', () => {
 
     const inputValue = document.querySelector('.input-prompt-textbox').value;
-    if(inputValue.length > 0) {
+    if(inputValue.length > 0 && inputValue.length<31) {
 
       document.querySelector('.input-prompt').remove();
       // addTrackerCard(inputValue);
@@ -121,6 +121,11 @@ async function takeInputThroughPrompt() {
 
       //Code to open Option menu for a Tracker
       addTrackerOptions(trackers.length - 1);
+
+    } else if(inputValue.length>30) {
+
+      document.querySelector('.input-prompt-textbox').value = "";
+      document.querySelector('.input-prompt-textbox').placeholder = "Please enter up to 30 characters.";
 
     } else {
 
@@ -231,7 +236,9 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       tempEditStatusValue = document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus;
     }
 
-    if(tempControllerInputElement.value.length > 0) {
+    console.log('Input length: '+tempControllerInputElement.value.length);
+
+    if(tempControllerInputElement.value.length > 0 && tempControllerInputElement.value.length < 51) {
 
       trackers.forEach((tracker) => {
 
@@ -310,9 +317,14 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
       tempControllerInputElement.value = '';
 
+    } else if(tempControllerInputElement.value.length > 50) {
+
+      tempControllerInputElement.value = "";
+      tempControllerInputElement.placeholder = `Please enter up to 50 characters.`;
+
     } else {
 
-      tempControllerInputElement.placeholder = `Please enter ${trackers[trackerLength].name} to track.`;
+      tempControllerInputElement.placeholder = `Please enter task to track.`;
 
     }
 
@@ -939,8 +951,26 @@ async function initializeApp_phase2() {
     if(tempSearchBoxValue.length > 0) {
   
       userData.trackers.forEach((tracker, trackerIndex) => {
+
+        if(tracker.task) {
+
+          tracker.task.forEach((taskItem, taskIndex) => {
+
+            if(taskItem.name.toLowerCase().includes(tempSearchBoxValue.toLowerCase())) {
+    
+              searchResults.push({
+                index: trackerIndex,
+                name: tracker.name,
+                taskName: taskItem.name
+              });
+      
+            }
+            
+          });
+
+        }
   
-        if(tracker.name.includes(tempSearchBoxValue)) {
+        if(tracker.name.toLowerCase().includes(tempSearchBoxValue.toLowerCase())) {
   
           searchResults.push({
             index: trackerIndex,
@@ -974,17 +1004,48 @@ async function initializeApp_phase2() {
 
       searchResults.forEach((resultItem, resultIndex) => {
 
-        searchResultHtml += `
-        <div class="search-result-item-container search-result-item-${resultIndex}-container">
-        
-          <div class="search-result-item-tracker-name">
+        if(resultItem.taskName) {
+
+          searchResultHtml += `
+          <div class="search-result-item-container search-result-item-${resultIndex}-container">
           
-            ${resultItem.name}
-            <svg class="click-to-redirect" fill="#FFFFFF" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="315.1,48.6 196.9,48.6 354.5,206.1 0,206.1 0,284.9 354.5,284.9 196.9,442.4 315.1,442.4 512,245.5 "></polygon> </g></svg>
+            <div class="search-result-item-tracker-name">
+            
+              <div class="search-result-item-info">
+              
+                <p>Tracker: ${resultItem.name}</p>
+                <p>Task: ${resultItem.taskName}</p>
 
-          </div>
+              </div>
+              
+              <svg class="click-to-redirect" fill="#FFFFFF" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="315.1,48.6 196.9,48.6 354.5,206.1 0,206.1 0,284.9 354.5,284.9 196.9,442.4 315.1,442.4 512,245.5 "></polygon> </g></svg>
 
-        </div>`;
+            </div>
+
+          </div>`;
+
+        } else {
+
+          searchResultHtml += `
+          <div class="search-result-item-container search-result-item-${resultIndex}-container">
+          
+            <div class="search-result-item-tracker-name">
+            
+              <div class="search-result-item-info">
+              
+                <p>Tracker: ${resultItem.name}</p>
+
+              </div>
+              
+              <svg class="click-to-redirect" fill="#FFFFFF" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="315.1,48.6 196.9,48.6 354.5,206.1 0,206.1 0,284.9 354.5,284.9 196.9,442.4 315.1,442.4 512,245.5 "></polygon> </g></svg>
+
+            </div>
+
+          </div>`;
+
+        }
+
+        
 
       });
               
@@ -1049,7 +1110,7 @@ async function initializeApp_phase2() {
   
     } else {
   
-      searchBoxElement.placeholder = 'Please type Tracker to search.';
+      searchBoxElement.placeholder = 'Please search by Tracker or Task.';
   
     }
   

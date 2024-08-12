@@ -227,7 +227,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
 
-  margin: 0px 5% 0px 5%;
+  margin: 0px 2.5% 0px 2.5%;
   padding: 4px 0px 4px 0px;
 
   width: 90%;
@@ -236,10 +236,10 @@ body {
 
 .tracker-card-title p {
 
-  margin: 0px 0px 0px 0px;
+  margin: 0px 1% 0px 0px;
   padding: 0px 0px 0px 0px;
 
-  width: 95%;
+  width: 97%;
 
 }
 
@@ -976,7 +976,7 @@ body {
   display: flex;
   flex-direction: row;
 
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 
   background-color: #ff9900;
@@ -989,7 +989,7 @@ body {
   transition: filter 0.25s;
 
   width: 95%;
-  height: 10%;
+  height: 15%;
 
 }
 
@@ -1004,8 +1004,23 @@ body {
   display: flex;
   flex-direction: row;
 
-  justify-content: center;
+  justify-content: left;
   align-items: center;
+
+  margin: 0px 0px 0px 5%;
+  padding: 0px 0px 0px 0px;
+
+  width: 82%;
+  height: 100%;
+
+}
+
+.search-result-item-info p {
+
+  word-break: break-all;
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 
 }
 
