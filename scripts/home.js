@@ -527,9 +527,6 @@ async function getUserData() {
 
       //Code to open Option menu for a Tracker
       addTrackerOptions(trackerLength);
-  
-      const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerLength}`);
-      addTask(trackerLength, tempAddTaskToCard);
 
       if(tracker.task) {
     
