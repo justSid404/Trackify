@@ -236,8 +236,6 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       tempEditStatusValue = document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus;
     }
 
-    console.log('Input length: '+tempControllerInputElement.value.length);
-
     if(tempControllerInputElement.value.length > 0 && tempControllerInputElement.value.length < 51) {
 
       trackers.forEach((tracker) => {
@@ -977,9 +975,6 @@ async function initializeApp_phase2() {
         }
   
       });
-  
-      console.log('Here are the search results:');
-      console.log(searchResults);
   
       let searchResultHtml = `
       
