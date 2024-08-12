@@ -772,6 +772,21 @@ body {
 
 }
 
+.search-tracker-search-button svg {
+
+  z-index: 25;
+
+  margin: 0px 2.5% 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  min-width: 25px;
+  min-height: 25px;
+
+  max-width: 25px;
+  max-height: 25px;
+
+}
+
 .search-tracker-input {
 
   z-index: 25;

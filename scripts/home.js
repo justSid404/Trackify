@@ -1054,6 +1054,23 @@ async function initializeApp_phase2() {
     }
   
   });
+
+  //Code to add eventlistener to search-input
+  searchBoxElement.addEventListener('keydown', (event) => {
+
+    if(event.key === "Enter") {
+
+      searchBtnSvgElement.click();
+
+    }
+
+    if(event.key === "Escape") {
+
+      searchCancelBtnElement.click();
+
+    }
+
+  });
   
   //Code to traverse using right arrow
   rightArrowBtnElement.addEventListener('click', () => {
