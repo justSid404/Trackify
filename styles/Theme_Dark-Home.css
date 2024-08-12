@@ -864,6 +864,7 @@ body {
 
   background-color: #ff9900;
 
+  border: solid 2px #ff9900;
   border-radius: 8px;
 
   transition: top 0.25s;
@@ -893,7 +894,6 @@ body {
   justify-content: space-around;
   align-items: center;
 
-  background-color: #ff9900;
   color: white;
 
   border-radius: 8px 8px 0px 0px;
@@ -923,6 +923,8 @@ body {
 
   background-color: rgb(221, 111, 111);
 
+  border-radius: 4px;
+
   margin: 0px 2.5% 0px 0px;
 
   width: 5%;
@@ -931,13 +933,74 @@ body {
 
 .search-result-box-content {
 
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+
   background-color: white;
 
   border: none;
   border-radius: 8px;
 
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  padding: 2.75% 0px 0px 0px;
+
   width: 98.25%;
-  height: 95%;
+  height: 93.5%;
+
+}
+
+.search-result-item-container {
+
+  position: relative;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: #ff9900;
+  color: white;
+
+  border-radius: 8px;
+
+  margin: 0px 0px 2% 0px;
+
+  transition: filter 0.25s;
+
+  width: 95%;
+  height: 10%;
+
+}
+
+.search-result-item-container:hover {
+
+  filter: brightness(1.2);
+
+}
+
+.search-result-item-tracker-name {
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+
+}
+
+.click-to-redirect {
+
+  position: absolute;
+  right: 5%;
+
+  max-width: 7%;
+  max-height: 50%;
 
 }
 

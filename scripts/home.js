@@ -36,7 +36,8 @@ async function pageSetup() {
   try{
 
     await initializeApp_phase1();
-    await initializeData();
+    await initializeDataAndRender();
+    await initializeApp_phase2();
 
   } catch(error) {
 
@@ -68,7 +69,7 @@ async function initializeApp_phase1() {
 }
 
 //Code to initialize all the required data
-async function initializeData() {
+async function initializeDataAndRender() {
 
   return new Promise((resolve, reject) => {
 
@@ -185,12 +186,8 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
   cardHolderElement.insertAdjacentHTML('afterbegin', newCardhtml);
   cardHolderElement.classList.remove('card-holder-zero');
 
-  document.querySelector(`.controller-input-tracker-card-${trackerNumber}`).focus();
-
-  document.querySelector(`.card-holder`).scrollTo({
-    left: 0,
-    behavior: 'smooth'
-  });
+  //Scroll to newly created card
+  scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${trackerNumber}`));
 
   const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerNumber}`);
   addTask(trackerNumber, tempAddTaskToCard);
@@ -560,12 +557,6 @@ async function getUserData() {
   
     });
 
-    //Scroll to extreme left
-    document.querySelector(`.card-holder`).scrollTo({
-      left: -10,
-      behavior: 'smooth'
-    });
-
   }
 
   //User options button functionality
@@ -871,6 +862,7 @@ async function addTrackerOptions(trackerNumber) {
   });
 }
 
+//Code to scroll to an element in card picker
 async function scrollToAnElementInCardPicker(targetElement) {
 
   // Calculate the position of the target element relative to the container
@@ -888,179 +880,227 @@ async function scrollToAnElementInCardPicker(targetElement) {
 
 }
 
-//Code to add eventlistener to search button
-searchBtnElement.addEventListener('click', () => {
+//Code to initialize the app - phase 2
+async function initializeApp_phase2() {
 
-  searchBtnElement.classList.add('search-tracker-clicked');
-  searchBoxElement.classList.add('search-tracker-input-transition');
-  searchBtnSvgElement.classList.add('search-tracker-search-button-clicked');
-  searchBtnSvgElement.classList.remove('disable');
-  searchCancelBtnElement.classList.add('search-tracker-search-cancel-clicked');
-  searchCancelBtnElement.classList.remove('disable');
+  //Code to add eventlistener to search button
+  searchBtnElement.addEventListener('click', () => {
+  
+    searchBtnElement.classList.add('search-tracker-clicked');
+    searchBoxElement.classList.add('search-tracker-input-transition');
+    searchBtnSvgElement.classList.add('search-tracker-search-button-clicked');
+    searchBtnSvgElement.classList.remove('disable');
+    searchCancelBtnElement.classList.add('search-tracker-search-cancel-clicked');
+    searchCancelBtnElement.classList.remove('disable');
+  
+    searchBoxElement.focus();
+  
+  }, { once: true });
+  
+  //Code to add eventlistener to cancel-search button
+  searchCancelBtnElement.addEventListener('click', () => {
+  
+    searchBtnElement.classList.remove('search-tracker-clicked');
+    searchBoxElement.classList.remove('search-tracker-input-transition');
+    searchBtnSvgElement.classList.remove('search-tracker-search-button-clicked');
+    searchBtnSvgElement.classList.add('disable');
+    searchCancelBtnElement.classList.remove('search-tracker-search-cancel-clicked');
+    searchCancelBtnElement.classList.add('disable');
+  
+    searchBoxElement.value = '';
+  
+    setTimeout(() => {
+  
+      //Code to add eventlistener to search button
+      searchBtnElement.addEventListener('click', () => {
+  
+        searchBtnElement.classList.add('search-tracker-clicked');
+        searchBoxElement.classList.add('search-tracker-input-transition');
+        searchBtnSvgElement.classList.add('search-tracker-search-button-clicked');
+        searchBtnSvgElement.classList.remove('disable');
+        searchCancelBtnElement.classList.add('search-tracker-search-cancel-clicked');
+        searchCancelBtnElement.classList.remove('disable');
+  
+        searchBoxElement.focus();
+  
+      }, { once: true });
+  
+    }, 500);
+  
+  });
+  
+  //Code to add eventlistener to search-svg button
+  searchBtnSvgElement.addEventListener('click', () => {
+  
+    const searchResults = [];
+  
+    const tempSearchBoxValue = searchBoxElement.value;
+  
+    if(tempSearchBoxValue.length > 0) {
+  
+      userData.trackers.forEach((tracker, trackerIndex) => {
+  
+        if(tracker.name.includes(tempSearchBoxValue)) {
+  
+          searchResults.push({
+            index: trackerIndex,
+            name: tracker.name
+          });
+  
+        }
+  
+      });
+  
+      console.log('Here are the search results:');
+      console.log(searchResults);
+  
+      let searchResultHtml = `
+      
+        <div class="search-result-container fade-out">
+        
+          <div class="search-result-box">
+        
+            <div class="search-result-title">
+          
+              <p class="search-result-title-text">Search Result (${searchResults.length} items)</p>
+  
+              <div class="close-search-result-box">X</div>
+  
+            </div>
+        
+            <div class="search-result-box-content">
+          
+              `;
 
-  searchBoxElement.focus();
+      searchResults.forEach((resultItem, resultIndex) => {
 
-}, { once: true });
+        searchResultHtml += `
+        <div class="search-result-item-container search-result-item-${resultIndex}-container">
+        
+          <div class="search-result-item-tracker-name">
+          
+            ${resultItem.name}
+            <svg class="click-to-redirect" fill="#FFFFFF" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon points="315.1,48.6 196.9,48.6 354.5,206.1 0,206.1 0,284.9 354.5,284.9 196.9,442.4 315.1,442.4 512,245.5 "></polygon> </g></svg>
 
-//Code to add eventlistener to cancel-search button
-searchCancelBtnElement.addEventListener('click', () => {
+          </div>
 
-  searchBtnElement.classList.remove('search-tracker-clicked');
-  searchBoxElement.classList.remove('search-tracker-input-transition');
-  searchBtnSvgElement.classList.remove('search-tracker-search-button-clicked');
-  searchBtnSvgElement.classList.add('disable');
-  searchCancelBtnElement.classList.remove('search-tracker-search-cancel-clicked');
-  searchCancelBtnElement.classList.add('disable');
+        </div>`;
 
-  searchBoxElement.value = '';
+      });
+              
+      searchResultHtml += `
+  
+            </div>
+        
+          </div>
+  
+        </div>
+  
+      `;
+  
+      document.body.insertAdjacentHTML("afterbegin", searchResultHtml);
+  
+      setTimeout(() => {
+  
+        document.querySelector('.search-result-container').classList.add('fade-in');
+        document.querySelector('.search-result-box').classList.add('search-result-box-transition-in');
+  
+      }, 0);
+  
+      document.querySelector('.close-search-result-box').addEventListener('click', () => {
+  
+        document.querySelector('.search-result-box').classList.remove('search-result-box-transition-in');
+        document.querySelector('.search-result-container').classList.remove('fade-in');
+  
+        document.querySelector('.search-result-box').classList.add('search-result-box-transition-out');
+        document.querySelector('.search-result-container').classList.add('fade-out');
+        setTimeout(() => {
+  
+          document.querySelector('.search-result-container').remove();
+  
+        }, 250);
+  
+      });
 
-  setTimeout(() => {
+      if(searchResults.length > 0) {
 
-    //Code to add eventlistener to search button
-    searchBtnElement.addEventListener('click', () => {
+        searchResults.forEach((resultItem, resultIndex) => {
 
-      searchBtnElement.classList.add('search-tracker-clicked');
-      searchBoxElement.classList.add('search-tracker-input-transition');
-      searchBtnSvgElement.classList.add('search-tracker-search-button-clicked');
-      searchBtnSvgElement.classList.remove('disable');
-      searchCancelBtnElement.classList.add('search-tracker-search-cancel-clicked');
-      searchCancelBtnElement.classList.remove('disable');
+          document.querySelector(`.search-result-item-${resultIndex}-container`).addEventListener('click', () => {
 
-      searchBoxElement.focus();
+            document.querySelector('.search-result-box').classList.remove('search-result-box-transition-in');
+            document.querySelector('.search-result-container').classList.remove('fade-in');
+      
+            document.querySelector('.search-result-box').classList.add('search-result-box-transition-out');
+            document.querySelector('.search-result-container').classList.add('fade-out');
+            setTimeout(() => {
+      
+              document.querySelector('.search-result-container').remove();
+              scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${resultItem.index}`));
+              userAtCard = resultItem.index;
+      
+            }, 250);
 
-    }, { once: true });
-
-  }, 500);
-
-});
-
-//Code to add eventlistener to search-svg button
-searchBtnSvgElement.addEventListener('click', () => {
-
-  const searchResults = [];
-
-  const tempSearchBoxValue = searchBoxElement.value;
-
-  if(tempSearchBoxValue.length > 0) {
-
-    userData.trackers.forEach((tracker, trackerIndex) => {
-
-      if(tracker.name.includes(tempSearchBoxValue)) {
-
-        searchResults.push({
-          index: trackerIndex,
-          name: tracker.name
+          });
+  
         });
 
       }
-
-    });
-
-    console.log('Here are the search results:');
-    console.log(searchResults);
-
-    const searchResultHtml = `
-    
-      <div class="search-result-container fade-out">
-      
-        <div class="search-result-box">
-      
-          <div class="search-result-title">
-        
-            <p class="search-result-title-text">Search Result (${searchResults.length} items)</p>
-
-            <div class="close-search-result-box">X</div>
-
-          </div>
-      
-          <div class="search-result-box-content">
-        
-            
-
-          </div>
-      
-        </div>
-
-      </div>
-
-    `;
-
-    document.body.insertAdjacentHTML("afterbegin", searchResultHtml);
-
-    setTimeout(() => {
-
-      document.querySelector('.search-result-container').classList.add('fade-in');
-      document.querySelector('.search-result-box').classList.add('search-result-box-transition-in');
-
-    }, 0);
-
-    document.querySelector('.close-search-result-box').addEventListener('click', () => {
-
-      document.querySelector('.search-result-box').classList.remove('search-result-box-transition-in');
-      document.querySelector('.search-result-container').classList.remove('fade-in');
-
-      document.querySelector('.search-result-box').classList.add('search-result-box-transition-out');
-      document.querySelector('.search-result-container').classList.add('fade-out');
-      setTimeout(() => {
-
-        document.querySelector('.search-result-container').remove();
-
-      }, 250);
-
-    });
-
-  } else {
-
-    searchBoxElement.placeholder = 'Please type Tracker to search.';
-
-  }
-
-});
-
-//Code to traverse using right arrow
-rightArrowBtnElement.addEventListener('click', () => {
-
-  const tempTrackerLength = userData.trackers.length;
-
-  if(userAtCard > 0 && userAtCard <= tempTrackerLength ) {
-
-    userAtCard--;
-    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
-
-  } else if (userAtCard === 0) {
-
-    scrollToAnElementInCardPicker(createTrackerElement);
-    userAtCard = "create";
-
-  } else if (userAtCard === "create") {
-
-    userAtCard = tempTrackerLength - 1;
-    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
-
-  }
-
-});
-
-//Code to traverse using left arrow
-leftArrowBtnElement.addEventListener('click', () => {
-
-  const tempTrackerLength = userData.trackers.length;
-
-  if(userAtCard >= 0 && userAtCard < (tempTrackerLength - 1) ) {
-
-    userAtCard++;
-    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
-
-  } else if (userAtCard === (tempTrackerLength - 1)) {
-
-    scrollToAnElementInCardPicker(createTrackerElement);
-    userAtCard = "create";
-
-  } else if (userAtCard === "create") {
-
-    userAtCard = 0;
-    scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
-
-  }
-
-});
+  
+    } else {
+  
+      searchBoxElement.placeholder = 'Please type Tracker to search.';
+  
+    }
+  
+  });
+  
+  //Code to traverse using right arrow
+  rightArrowBtnElement.addEventListener('click', () => {
+  
+    const tempTrackerLength = userData.trackers.length;
+  
+    if(userAtCard > 0 && userAtCard <= tempTrackerLength ) {
+  
+      userAtCard--;
+      scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+  
+    } else if (userAtCard === 0) {
+  
+      scrollToAnElementInCardPicker(createTrackerElement);
+      userAtCard = "create";
+  
+    } else if (userAtCard === "create") {
+  
+      userAtCard = tempTrackerLength - 1;
+      scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+  
+    }
+  
+  });
+  
+  //Code to traverse using left arrow
+  leftArrowBtnElement.addEventListener('click', () => {
+  
+    const tempTrackerLength = userData.trackers.length;
+  
+    if(userAtCard >= 0 && userAtCard < (tempTrackerLength - 1) ) {
+  
+      userAtCard++;
+      scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+  
+    } else if (userAtCard === (tempTrackerLength - 1)) {
+  
+      scrollToAnElementInCardPicker(createTrackerElement);
+      userAtCard = "create";
+  
+    } else if (userAtCard === "create") {
+  
+      userAtCard = 0;
+      scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
+  
+    }
+  
+  });
+  
+}
