@@ -1,15 +1,17 @@
-/* 
-Vitamin C           #ff9900
-Caribbean Green     #00cc99
+/* #282828 
+Vitamin C           #ff9900 -> #7a5af5 and #282828
+Caribbean Green     #00cc99 -> 
 Luscious Lemongrass #597931
-Serpentine Shadow   #003300
+Serpentine Shadow   #003300 -> #121212
+Option                      -> #3f3f3f
+White text                  -> #D7DADC
 */
 
 body {
 
   opacity: 0;
 
-  background-color: #003300;
+  background-color: #121212;
   font-family: Arial;
 
   display: flex;
@@ -36,7 +38,7 @@ body {
   /* justify-content: center; */
   align-items: center;
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
   color: white;
 
   font-weight: bold;
@@ -55,7 +57,7 @@ body {
   width: auto;
   height: auto;
 
-  transition: filter 0.5s;
+  transition: background-color 0.25s;
 
   cursor: pointer;
 
@@ -63,7 +65,7 @@ body {
 
 .user-options:hover {
 
-  filter: brightness(1.1);
+  background-color: #F55A7A;
 
 }
 
@@ -78,7 +80,7 @@ body {
 
   background-color: white;
 
-  border: solid 2px #00cc99;
+  border: solid 2px #7a5af5;
   border-radius: 1000px;
 
   width: 8vw;
@@ -187,7 +189,7 @@ body {
 
 .tracker-card {
 
-  background-color: #00cc99;
+  background-color: #7a5af5;
   white-space: nowrap;
 
   border-radius: 8px;
@@ -276,7 +278,7 @@ body {
 
 .tracker-option-box {
 
-  background-color: #00cc99;
+  background-color: #3f3f3f;
   color: white;
 
   overflow-wrap: break-word;
@@ -287,6 +289,14 @@ body {
   padding: 5vh 10vw 5vh 10vw;
 
   width: 70%;
+
+}
+
+.tracker-option-info-input {
+
+  outline: none;
+  border: none;
+  border-radius: 4px;
 
 }
 
@@ -303,7 +313,7 @@ body {
 
 .edit-tracker, .delete-tracker, .save-tracker, .close-tracker {
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
   color: white;
 
   border: none;
@@ -312,15 +322,23 @@ body {
   margin: 0px 5% 0px 0px;
   padding: 3% 5% 3% 5%;
 
+  transition: background-color 0.25s;
+
   width: auto;
 
   cursor: pointer;
 
 }
 
+.edit-tracker:hover, .delete-tracker:hover, .save-tracker:hover, .close-tracker:hover {
+
+  background-color: #F55A7A;
+
+}
+
 .tracker-content {
 
-  background-color: white;
+  background-color: #282828;
 
   border-radius: 8px;
 
@@ -348,7 +366,7 @@ body {
   
   flex-shrink: 0;
 
-  background-color: #ff9900;
+  background-color: #3f3f3f;
   color: white;
 
   font-weight: bold;
@@ -364,15 +382,15 @@ body {
 }
 
 .task-todo {
-  border: solid 4px rgb(221, 111, 111);
+  border: solid 4px #FF6B6B;
 }
 
 .task-inpro {
-  border: solid 4px rgb(235, 218, 70);
+  border: solid 4px #FFCC00;
 }
 
 .task-done {
-  border: solid 4px rgb(34, 170, 29);
+  border: solid 4px #2ECC71;
 }
 
 .task-info {
@@ -408,7 +426,7 @@ body {
 
 .task-action select {
 
-  background-color: #00cc99;
+  background-color: #2C2C2C;
   color: white;
 
   box-shadow: none;
@@ -439,6 +457,9 @@ body {
 
   flex: 1;
 
+  background-color: #2C2C2C;
+  color: white;
+
   border: none;
   border-radius: 1000px;
 
@@ -457,7 +478,7 @@ body {
 
 .add-task {
 
-  background-color: #ff9900;
+  background-color: #F55A7A;
   color: white;
 
   border: none;
@@ -471,7 +492,7 @@ body {
 
 .create-tracker-card {
 
-  background-color: #00cc99;
+  background-color: #3f3f3f;
   white-space: nowrap;
 
   border: none;
@@ -496,7 +517,7 @@ body {
 
 .create-tracker {
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
   color: white;
 
   font-size: 80px;
@@ -513,26 +534,16 @@ body {
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
+  transition: background-color 0.25s;
+
   width: 80px;
   height: 80px;
 
 }
 
-.tracker-container {
+.create-tracker-card:hover .create-tracker {
 
-  background-color: white;
-
-  border: solid 4px #00cc99;
-  border-radius: 8px;
-
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  align-items: center;
-
-  width: 80vw;
-  height: 80vh;
+  background-color: #F55A7A;
 
 }
 
@@ -558,7 +569,7 @@ body {
 
 .input-prompt-box {
 
-  background-color: #00cc99;
+  background-color: #3f3f3f;
   color: white;
 
   border-radius: 8px;
@@ -576,7 +587,7 @@ body {
 
 .input-prompt-checkbox {
 
-  accent-color: #00cc99;
+  accent-color: #7a5af5;
 
   width: 12px;
   height: 12px;
@@ -591,14 +602,14 @@ body {
 
 .input-prompt-label:hover, .input-prompt-label:hover .input-prompt-checkbox {
 
-  color: #ff9900;
-  accent-color: #ff9900;
+  color: #7a5af5;
+  accent-color: #7a5af5;
 
 }
 
 .input-prompt-textbox {
 
-  border: solid 2px #00cc99;
+  border: none;
   border-radius: 8px;
 
   margin: 1vh 0px 0px 0px;
@@ -630,7 +641,7 @@ body {
 
 .input-prompt-save, .input-prompt-cancel {
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
   color: white;
 
   font-size: 14px;
@@ -651,24 +662,7 @@ body {
 
 .input-prompt-save:hover, .input-prompt-cancel:hover {
 
-  background-color: #00cc99;
-
-}
-
-.traverse-buttons {
-
-  position: fixed;
-  right: 0px;
-  bottom: 50%;
-  left: 0px;
-
-  z-index: -1;
-
-  display: flex;
-  flex-direction: row;
-
-  justify-content: space-between;
-  align-items: center;
+  background-color: #F55A7A;
 
 }
 
@@ -678,16 +672,21 @@ body {
   bottom: 50%;
   left: 1%;
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
 
   border-radius: 10px;
 
   z-index: 10;
 
-  transition: bottom 0.25s, left 0.25s, width 0.25s;
+  transition: bottom 0.25s, left 0.25s, width 0.25s, background-color 0.25s;
 
   width: 8%;
 
+}
+
+.traverse-left-button:hover {
+
+  background-color: #F55A7A;
 }
 
 .traverse-left-button:active {
@@ -705,16 +704,21 @@ body {
   right: 1%;
   bottom: 50%;
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
 
   border-radius: 10px;
 
   z-index: 10;
 
-  transition: bottom 0.25s, right 0.25s, width 0.25s;
+  transition: bottom 0.25s, right 0.25s, width 0.25s, background-color 0.25s;
 
   width: 8%;
 
+}
+
+.traverse-right-button:hover {
+
+  background-color: #F55A7A;
 }
 
 .traverse-right-button:active {
@@ -739,7 +743,7 @@ body {
   position: fixed;
   bottom: 1.25%;
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
   color: white;
 
   border: none;
@@ -748,9 +752,15 @@ body {
   width: 50px;
   height: 50px;
 
-  transition: bottom 0.25s, width 0.25s, height 0.25s;
+  transition: bottom 0.25s, width 0.25s, height 0.25s, background-color 0.25s;
 
   cursor: pointer;
+
+}
+
+.search-tracker:hover {
+
+  background-color: #F55A7A;
 
 }
 
@@ -798,6 +808,9 @@ body {
   z-index: 25;
 
   opacity: 1;
+
+  background-color: #2C2C2C;
+  color: white;
 
   outline: none;
   border: none;
@@ -883,9 +896,9 @@ body {
   position: relative;
   top: 10%;
 
-  background-color: #ff9900;
+  background-color: #7a5af5;
 
-  border: solid 2px #ff9900;
+  border: solid 2px #7a5af5;
   border-radius: 8px;
 
   transition: top 0.25s;
@@ -942,7 +955,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  background-color: rgb(221, 111, 111);
+  background-color: #FF6B6B;
 
   border-radius: 4px;
 
@@ -960,7 +973,7 @@ body {
   justify-content: flex-start;
   align-items: center;
 
-  background-color: white;
+  background-color: #282828;
 
   border: none;
   border-radius: 8px;
@@ -987,14 +1000,14 @@ body {
   justify-content: left;
   align-items: center;
 
-  background-color: #ff9900;
+  background-color: #3f3f3f;
   color: white;
 
   border-radius: 8px;
 
   margin: 0px 0px 2% 0px;
 
-  transition: filter 0.25s;
+  transition: background-color 0.25s;
 
   width: 95%;
   height: 15%;
@@ -1003,7 +1016,7 @@ body {
 
 .search-result-item-container:hover {
 
-  filter: brightness(1.2);
+  background-color: #F55A7A;
 
 }
 
