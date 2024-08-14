@@ -1746,7 +1746,7 @@ async function rewardNotification(trackerNumber, taskNumber) {
 
       document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container`).classList.add('task-completed-banner-container-unhide');
 
-    }, 250);
+    }, 0);
 
     setTimeout(() => {
 
