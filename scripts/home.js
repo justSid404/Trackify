@@ -12,6 +12,7 @@ const searchBtnSvgElement = document.querySelector('.search-tracker-search-butto
 const searchCancelBtnElement = document.querySelector('.search-tracker-search-cancel');
 const rightArrowBtnElement = document.querySelector('.traverse-right-button');
 const leftArrowBtnElement = document.querySelector('.traverse-left-button');
+const levelCriteria = [];
 
 let userAtCard = 0;
 let userXP = 0;
@@ -375,7 +376,7 @@ async function addEventToTaskAction(taskActionElement) {
       tempTaskElement.classList.remove('task-inpro');
       tempTaskElement.classList.add('task-done');
 
-      confettiAnimation();
+      confettiAnimation(tempTrackerNo, tempTaskNo);
 
     } else if(taskActionElement.value === "edit") {
 
@@ -1574,7 +1575,7 @@ async function levelHandler() {
   
 }
 
-async function confettiAnimation() {
+async function confettiAnimation(trackerNumber, taskNumber) {
 
   // do this for 1 seconds
   var duration = 1 * 1000;
@@ -1594,6 +1595,8 @@ async function confettiAnimation() {
       requestAnimationFrame(frame);
     }
   }());
+
+  rewardNotification(trackerNumber, taskNumber);
   
 }
 
@@ -1649,7 +1652,6 @@ async function calculateLevelAndXP() {
   ];
 
   let cummulativeXP = 0;
-  const levelCriteria = [];
 
   xpPerLevel.forEach((xpItem, xpIndex) => {
 
@@ -1691,5 +1693,110 @@ async function calculateLevelAndXP() {
     }
 
   });
+  
+}
+
+async function rewardNotification(trackerNumber, taskNumber) {
+
+  setTimeout(() => {
+
+    const taskCompletedBanner = `
+    
+    <div class="task-completed-banner-container tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container">
+
+      <div class="task-completed-banner-container-cover tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container-cover"></div>
+    
+      <div class="banner-name tracker-${trackerNumber}-task-${taskNumber}-banner-name">
+
+        <div class="banner-name-cover tracker-${trackerNumber}-task-${taskNumber}-banner-name-cover"></div>
+        <p>Task Completed</p>
+
+      </div>
+      
+
+      <div class="reward5XP tracker-${trackerNumber}-task-${taskNumber}-reward5XP">
+      
+        <div class="reward-cover tracker-${trackerNumber}-task-${taskNumber}-reward-cover"></div>
+        <p>+5XP</p>
+      
+      </div>
+
+      <div class="xpProgress tracker-${trackerNumber}-task-${taskNumber}-xpProgress">
+      
+        <div class="progress-base tracker-${trackerNumber}-task-${taskNumber}-progress-base"></div>
+        <div class="progress-bar tracker-${trackerNumber}-task-${taskNumber}-progress-bar"></div>
+        <div class="progress-count tracker-${trackerNumber}-task-${taskNumber}-progress-count"></div>
+      
+      </div>
+
+    </div>
+
+    `;
+
+    document.querySelector('.notification-section').insertAdjacentHTML("afterbegin", taskCompletedBanner);
+
+    let timerID = [];
+
+    //Timers to trigger unhide transitions
+    setTimeout(() => {
+
+      document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container`).classList.add('task-completed-banner-container-unhide');
+
+    }, 0);
+
+    setTimeout(() => {
+
+      document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container-cover`).classList.add('task-completed-banner-container-cover-unhide');
+
+    }, 500);
+
+    setTimeout(() => {
+
+      document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-banner-name-cover`).classList.add('banner-name-cover-unhide');
+
+    }, 750);
+
+    setTimeout(() => {
+
+      document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-reward-cover`).classList.add('reward-cover-unhide');
+
+    }, 1000);
+
+    //Timers to trigger hide transitions
+    setTimeout(() => {
+
+      setTimeout(() => {
+  
+        document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-reward-cover`).classList.remove('reward-cover-unhide');
+  
+      }, 0);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-banner-name-cover`).classList.remove('banner-name-cover-unhide');
+  
+      }, 250);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container-cover`).classList.remove('task-completed-banner-container-cover-unhide');
+  
+      }, 500);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container`).classList.remove('task-completed-banner-container-unhide');
+
+        setTimeout(() => {
+
+          document.querySelector(`.tracker-${trackerNumber}-task-${taskNumber}-completed-banner-container`).remove();
+
+        }, 500);
+  
+      }, 750);
+
+    }, 5250);
+    
+  }, 4000);
   
 }
