@@ -1575,6 +1575,7 @@ async function levelHandler() {
   
 }
 
+//Code to add Confetti animation
 async function confettiAnimation(trackerNumber, taskNumber) {
 
   // do this for 1 seconds
@@ -1600,6 +1601,7 @@ async function confettiAnimation(trackerNumber, taskNumber) {
   
 }
 
+//Code to add Star firework animation
 async function starExplodeAnimation() {
 
   // do this for 1 seconds
@@ -1626,6 +1628,7 @@ async function starExplodeAnimation() {
   
 }
 
+//Code to Calculate Level and XP required each level
 async function calculateLevelAndXP() {
 
   const xpPerLevel = [
@@ -1696,6 +1699,7 @@ async function calculateLevelAndXP() {
   
 }
 
+//Code to add custom notification when one or more than one tasks are completed
 async function rewardNotification(trackerNumber, taskNumber) {
 
   setTimeout(() => {

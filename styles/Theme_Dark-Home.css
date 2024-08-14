@@ -1096,7 +1096,7 @@ body {
   border-right: none;
   border-radius: 12px 0px 0px 12px;
 
-  transition: right 0.5s;
+  transition: right 0.5s ease-in-out;
 
   margin: 3% 0px 0px 0px;
   padding: 5% 0px 5% 5%;
