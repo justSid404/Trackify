@@ -650,7 +650,8 @@ async function getUserData() {
 
           <div class="xp-username">${userLogged.username}'s Profile</div>
         
-          <div class="badge-icon">`;
+          <div class="badge-icon">
+            <canvas class="confetti-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>`;
 
 
       if(userLevel >= 1 && userLevel <= 10) {
@@ -798,6 +799,8 @@ async function getUserData() {
 
       //Code to add xp progress bar transition
       setTimeout(() => {
+
+        starExplodeAnimation(document.querySelector('.confetti-canvas'));
 
         document.querySelector('.xp-progress-bar-actual').setAttribute('style', `width:${userXP}%`);
 
@@ -1894,20 +1897,24 @@ async function confettiAnimation(trackerNumber, taskNumber) {
 }
 
 //Code to add Star firework animation
-async function starExplodeAnimation() {
+async function starExplodeAnimation(confettiCanvas) {
+
+  const myConfetti = confetti.create(confettiCanvas, {
+    resize: true, // Resize the canvas to fit its container
+  });
 
   // do this for 1 seconds
-  var duration = 1 * 1000;
+  var duration = 0.5 * 1000;
   var end = Date.now() + duration;
 
   (function frame() {
     // launch a few confetti from the bottom center
-    confetti({
+    myConfetti({
       spread: 360,
       gravity: 0,
-      decay: 0.94,
-      startVelocity: 20,
-      particleCount: 3,
+      decay: 0.95,
+      startVelocity: 4,
+      particleCount: 2,
       shapes: ['star'],
       colors: ['FFE400', 'FFBD00', 'E89400', 'FFAC6C', 'FDFFB8']
     });
