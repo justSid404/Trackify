@@ -12,6 +12,7 @@ const searchBtnSvgElement = document.querySelector('.search-tracker-search-butto
 const searchCancelBtnElement = document.querySelector('.search-tracker-search-cancel');
 const rightArrowBtnElement = document.querySelector('.traverse-right-button');
 const leftArrowBtnElement = document.querySelector('.traverse-left-button');
+const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
 let userAtCard = 0;
@@ -1132,8 +1133,17 @@ async function scrollToAnElementInCardPicker(targetElement) {
 //Code to initialize the app - phase 2
 async function initializeApp_phase2() {
 
+  //Code to add eventlistener to leaderboard button
+  leaderboardsBtnElement.addEventListener('click', () => {
+
+    displayLeaderboardScreen();
+
+  });
+
   //Code to add eventlistener to search button
   searchBtnElement.addEventListener('click', () => {
+
+    leaderboardsBtnElement.classList.add('leader-boards-hide');
   
     searchBtnElement.classList.add('search-tracker-clicked');
     searchBoxElement.classList.add('search-tracker-input-transition');
@@ -1148,6 +1158,8 @@ async function initializeApp_phase2() {
   
   //Code to add eventlistener to cancel-search button
   searchCancelBtnElement.addEventListener('click', () => {
+
+    leaderboardsBtnElement.classList.remove('leader-boards-hide');
   
     searchBtnElement.classList.remove('search-tracker-clicked');
     searchBoxElement.classList.remove('search-tracker-input-transition');
@@ -1162,6 +1174,8 @@ async function initializeApp_phase2() {
   
       //Code to add eventlistener to search button
       searchBtnElement.addEventListener('click', () => {
+
+        leaderboardsBtnElement.classList.add('leader-boards-hide');
   
         searchBtnElement.classList.add('search-tracker-clicked');
         searchBoxElement.classList.add('search-tracker-input-transition');
@@ -2433,4 +2447,162 @@ async function levelUpScreen() {
 
   }, 10000);
 
+}
+
+//Code to display leaderboard screen
+async function displayLeaderboardScreen() {
+
+  let tempUsers = [];
+  let extractedValues = [];
+  let sortedUsers = [];
+
+  const userDataRef = ref(db, 'userData');
+  
+  // Get the results of the query
+  const snapshot = await get(userDataRef);
+
+  if (snapshot.exists()) {
+
+    tempUsers = snapshot.val();
+      
+    tempUsers.forEach((tempUserItem, tempUserIndex) => {
+
+      let taskCount = 0;
+
+      if(tempUserItem.trackers) {
+
+        tempUserItem.trackers.forEach((trackerItem) => {
+  
+          if(trackerItem.task) {
+
+            trackerItem.task.forEach((taskItem) => {
+
+              if(taskItem.status === "done") {
+
+                taskCount++;
+
+              }
+
+            });
+
+          }
+  
+        });
+
+      }
+
+      extractedValues.push({
+        'arrayIndex': tempUserIndex,
+        'taskCount': taskCount
+      });
+
+    });
+
+    extractedValues.sort((a, b) => b['taskCount'] - a['taskCount']);
+
+    extractedValues.forEach((valueItem) => {
+
+      sortedUsers.push(tempUsers[valueItem.arrayIndex]);
+      
+    });
+
+  }
+
+  let leaderboardHTML = `
+
+  <div class="leader-boards-container">
+      
+    <div class="leader-boards-box">
+
+      <div class="leader-boards-close">X</div>
+
+      <div class="leader-boards-heading">Leaderboard</div>
+
+      <div class="leader-boards-content">`;
+
+  console.log(levelCriteria);
+
+  sortedUsers.forEach((sortedUserItem, sortedUserIndex) => {
+
+    let tempUserXP = extractedValues[sortedUserIndex].taskCount * 5;
+    let tempUserLevel;
+
+    for(let i = 0; i < levelCriteria.length; i++) {
+      
+      
+      if(tempUserXP >= levelCriteria[i].minimumXP && tempUserXP <= levelCriteria[i].maximumXP) {
+
+        tempUserLevel = levelCriteria[i].levelNumber;
+        break;
+
+      }
+
+    }
+
+    console.log(sortedUserItem.username+' at '+sortedUserIndex + 1+' has '+tempUserXP +'XP');
+      
+    leaderboardHTML += `
+
+    <div class="leader-boards-item">
+
+      <span class="user-rank">${sortedUserIndex + 1}.</span>
+
+      <span class="user-image">
+
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="6" r="4" fill="#000000"></circle> <ellipse cx="12" cy="17" rx="7" ry="4" fill="#000000"></ellipse> </g></svg>
+
+      </span>
+
+      <span class="user-info">
+
+        <span class="user-name">${sortedUserItem.username}</span>
+
+        <span class="user-level">Level ${tempUserLevel}</span>
+      
+      </span>`;
+      
+      
+      if(sortedUserIndex === 0) {
+
+        leaderboardHTML += `
+
+      <span class="leader-boards-top">
+
+        <svg class="leader-boards-top-svg" fill="#FFD700" height="200px" width="200px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 277.366 277.366" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M257.799,55.704c-7.706-3.866-17.016-2.36-23.111,3.734l-39.2,39.201l-38.526-86.757C153.753,4.657,146.589,0,138.683,0 s-15.07,4.657-18.278,11.883L81.878,98.64l-39.2-39.201c-6.094-6.093-15.405-7.6-23.111-3.733 C11.864,59.569,7.502,67.935,8.745,76.463l17.879,122.785c1.431,9.829,9.858,17.118,19.791,17.118h184.536 c9.933,0,18.36-7.289,19.791-17.118l17.88-122.786C269.864,67.934,265.502,59.568,257.799,55.704z"></path> <path d="M230.951,237.366H46.415c-11.046,0-20,8.954-20,20s8.954,20,20,20h184.536c11.046,0,20-8.954,20-20 S241.997,237.366,230.951,237.366z"></path> </g> </g></svg>
+
+      </span>`;
+
+      }
+      
+    leaderboardHTML += `
+
+    </div>`;
+
+  });
+        
+  leaderboardHTML += `
+
+      </div>
+    
+    </div>
+
+  </div>`;
+
+  document.body.insertAdjacentHTML("afterbegin", leaderboardHTML);
+
+  document.querySelector('.leader-boards-container').classList.add('fade-in');
+
+  document.querySelector('.leader-boards-close').addEventListener('click', () => {
+
+    document.querySelector('.leader-boards-container').classList.remove('fade-in');
+    document.querySelector('.leader-boards-container').classList.add('fade-out');
+
+    setTimeout(() => {
+
+      document.querySelector('.leader-boards-container').remove();
+
+    }, 500);
+
+  });
+  
 }
