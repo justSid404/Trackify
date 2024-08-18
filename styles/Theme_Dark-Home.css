@@ -129,7 +129,7 @@ body {
 
 .log-out-transition {
 
-  right: 40vw;
+  right: 35vw;
 
 }
 
@@ -1501,8 +1501,8 @@ body {
   top: 1.5%;
   right: 2.75%;
 
-  background-color: white;
-  color: #7a5af5;
+  background-color: #F55A7A;
+  color: white;
 
   border-radius: 1000px;
 
@@ -1571,7 +1571,8 @@ body {
   justify-content: center;
   align-items: center;
 
-  outline: solid 2px #7a5af5;
+  border: solid 2px #7a5af5;
+  border-radius: 1.5dvh 3dvw 1.5dvh 3dvw;
 
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
@@ -1592,12 +1593,17 @@ body {
 }
 
 .xp-progress-bar-actual {
+  
+  border-radius: 1.5dvh 3dvw 1.5dvh 3dvw;
 
   background-color: #7a5af5;
 
   margin: 0px 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
+  transition: width 1s ease-in-out;
+  
+  width: 0%;
   height: 100%;
 
 }
