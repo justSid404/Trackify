@@ -260,6 +260,13 @@ async function addTask(trackerLength, tempAddTaskToCard) {
                 status: tempEditStatusValue
               }
             );
+
+            if(tempEditStatusValue === "done") {
+
+              xpAddOrSubtract("add", 5);
+
+            }
+
             document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus = '';
 
           } else {
@@ -345,6 +352,12 @@ async function addEventToTaskAction(taskActionElement) {
 
     if(taskActionElement.value === "todo") {
 
+      if(trackers[tempTrackerNo].task[tempTaskNo].status === "done") {
+
+        xpAddOrSubtract("subtract", 5);
+
+      }
+
       trackers[tempTrackerNo].task[tempTaskNo].status = "todo";
       tempTaskElement.classList.add('task-todo');
       tempTaskElement.classList.remove('task-inpro');
@@ -380,12 +393,24 @@ async function addEventToTaskAction(taskActionElement) {
 
     } else if(taskActionElement.value === "edit") {
 
+      if(trackers[tempTrackerNo].task[tempTaskNo].status === "done") {
+
+        xpAddOrSubtract("subtract", 5);
+
+      }
+
       trackers = userData.trackers;
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).value = trackers[tempTrackerNo].task[tempTaskNo].name;
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).tempStatus = trackers[tempTrackerNo].task[tempTaskNo].status;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
     } else if(taskActionElement.value === "remove") {
+
+      if(trackers[tempTrackerNo].task[tempTaskNo].status === "done") {
+
+        xpAddOrSubtract("subtract", 5);
+
+      }
 
       trackers = userData.trackers;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
