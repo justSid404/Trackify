@@ -392,6 +392,12 @@ async function addEventToTaskAction(taskActionElement) {
 
       confettiAnimation(tempTrackerNo, tempTaskNo);
 
+      const notificationOptions = {
+        body: "+5XP rewarded :)"
+      }
+
+      pushNotification("Task Completed!", notificationOptions);
+
     } else if(taskActionElement.value === "edit") {
 
       if(trackers[tempTrackerNo].task[tempTaskNo].status === "done") {
@@ -1560,6 +1566,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1575,6 +1587,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1592,6 +1610,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1607,6 +1631,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1624,6 +1654,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1639,6 +1675,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1656,6 +1698,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1671,6 +1719,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1688,6 +1742,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1703,6 +1763,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1720,6 +1786,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1735,6 +1807,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1752,6 +1830,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1768,6 +1852,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1782,6 +1872,12 @@ async function levelHandler() {
 
       levelUpScreen();
 
+      const notificationOptions = {
+        body: `You have reached Level ${userLevel} >:)`
+      }
+
+      pushNotification(`Level up!`, notificationOptions);
+
     }
     
   } else if(userLevel >= 76 && userLevel <= 80) {
@@ -1795,6 +1891,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1812,6 +1914,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1827,6 +1935,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -1844,6 +1958,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1860,6 +1980,12 @@ async function levelHandler() {
 
         levelUpScreen();
 
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
+
       }, 11000);
 
     }
@@ -1875,6 +2001,12 @@ async function levelHandler() {
       setTimeout(() => {
 
         levelUpScreen();
+
+        const notificationOptions = {
+          body: `You have reached Level ${userLevel} >:)`
+        }
+
+        pushNotification(`Level up!`, notificationOptions);
 
       }, 11000);
 
@@ -2604,5 +2736,18 @@ async function displayLeaderboardScreen() {
     }, 500);
 
   });
+  
+}
+
+//Code to push notification
+async function pushNotification(title, options) {
+
+  Notification.requestPermission().then((permission) => {
+
+    if(permission === "granted") {
+      new Notification(title, options);
+    }
+
+  })
   
 }
