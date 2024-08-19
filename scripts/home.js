@@ -1041,6 +1041,14 @@ async function addTrackerOptions(trackerNumber) {
     document.querySelector(`.delete-tracker-card-${trackerNumber}`).addEventListener('click', () => {
 
       userData.trackers.splice(trackerNumber, 1);
+
+      userData.trackers.forEach((trackerItem, trackerIndex) => {
+
+        console.log("trackerIndex: "+trackerIndex);
+        trackerItem.id = trackerIndex;
+
+      });
+
       trackers = userData.trackers;
       updateUserData(userData.trackers);
 
