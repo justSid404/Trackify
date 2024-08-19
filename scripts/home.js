@@ -1044,7 +1044,6 @@ async function addTrackerOptions(trackerNumber) {
 
       userData.trackers.forEach((trackerItem, trackerIndex) => {
 
-        console.log("trackerIndex: "+trackerIndex);
         trackerItem.id = trackerIndex;
 
       });
@@ -1553,9 +1552,6 @@ async function xpAddOrSubtract(operation, value) {
     }
 
   }
-
-  console.log("User level: "+userLevel);
-  console.log("User XP: "+userXP);
 
 }
 
@@ -2147,11 +2143,6 @@ async function calculateLevelAndXP() {
     }
 
   });
-
-  console.log(levelCriteria);
-
-  console.log("User level: "+userLevel);
-  console.log("User XP: "+userXP);
   
 }
 
@@ -2660,8 +2651,6 @@ async function displayLeaderboardScreen() {
 
       <div class="leader-boards-content">`;
 
-  console.log(levelCriteria);
-
   sortedUsers.forEach((sortedUserItem, sortedUserIndex) => {
 
     let tempUserXP = extractedValues[sortedUserIndex].taskCount * 5;
@@ -2678,8 +2667,6 @@ async function displayLeaderboardScreen() {
       }
 
     }
-
-    console.log(sortedUserItem.username+' at '+sortedUserIndex + 1+' has '+tempUserXP +'XP');
       
     leaderboardHTML += `
 
