@@ -1524,7 +1524,7 @@ body {
 
   color: #7a5af5;
 
-  margin: 1vh 0px 1vh 0px;
+  margin: 1vh 0px 0px 0px;
   padding: 0px 0px 0px 0px;
 
 }
@@ -1861,6 +1861,123 @@ body {
 
   width: 100%;
   height: 50%;
+
+}
+
+.achievements-header {
+
+  font-weight: bold;
+
+  margin: 0px 0px 2.5% 0px;
+  padding: 0px 0px 0px 0px;
+
+}
+
+.achievements-container {
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  border: solid 2px #7a5af5;
+  border-radius: 2dvw 2dvw 2dvw 2dvw;
+
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  margin: 0px 0px 0px 0px;
+  padding: 1.75% 0px 0px 0px;
+
+  width: 90%;
+  height: 22%;
+
+}
+
+.achievement-item {
+
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: left;
+  align-items: center;
+
+  background-color: #3f3f3f;
+  color: white;
+
+  border-radius: 1.5dvw 1.5dvw 1.5dvw 1.5dvw;
+
+  margin: 0px 0px 2.5% 0px;
+  padding: 0px 0px 0px 0px;
+
+  transition: background-color 0.5s ease-in-out;
+
+  width: 95%;
+  height: 8dvh;
+
+  cursor: pointer;
+
+}
+
+.achievement-item:hover {
+
+  background-color:#F55A7A;
+
+}
+
+.achievement-item-image-container {
+
+  border: solid 2px #7a5af5;
+  border-radius: 1dvw 1dvw 1dvw 1dvw;
+
+  margin: 0px 0px 0px 2.5%;
+  padding: 0px 0px 0px 0px;
+
+  width: 15%;
+  height: 75%;
+
+}
+
+.achievement-item-image {
+  
+  border-radius: 1dvw 1dvw 1dvw 1dvw;
+
+  width: 100%;
+  height: 100%;
+
+}
+
+.achievement-item-info {
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: left;
+  align-items: flex-start;
+
+  margin: 0px 0px 0px 2.5%;
+  padding: 0px 0px 0px 0px;
+
+}
+
+.achievement-title {
+
+  font-weight: bold;
+
+  margin: 0px 0px 2.5% 0px;
+  padding: 0px 0px 0px 0px;
+
+}
+
+.achievement-description {
+
+  font-size: 14px;
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 
 }
 

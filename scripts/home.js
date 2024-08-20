@@ -15,6 +15,235 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
+const achievements = [{
+  name: 'New Beginning',
+  description: 'Login for the first time',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'First Level up',
+  description: 'Reach Level 2',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Private',
+  description: 'Reach Level 10',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Private First Class',
+  description: 'Reach Level 20',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Specialist',
+  description: 'Reach Level 30',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Corporal',
+  description: 'Reach Level 40',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Sergeant',
+  description: 'Reach Level 50',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Staff Sergeant',
+  description: 'Reach Level 60',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Sergeant First Class',
+  description: 'Reach Level 70',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Master Sergeant',
+  description: 'Reach Level 80',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'First Sergeant',
+  description: 'Reach Level 90',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Sergeant Major',
+  description: 'Reach Level 100',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Command Sergeant Major',
+  description: 'Reach Level 250',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Sergeant Major of the Army',
+  description: 'Reach Level 500',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'What are you?',
+  description: 'Reach Level 750',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Are you a God?',
+  description: 'Reach Level 1000',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Go beyond... Plus Ultra!',
+  description: 'Reach Level 2000',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'The First step',
+  description: 'Complete the First task',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Taskmaster',
+  description: 'Complete 5 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Decathlon',
+  description: 'Complete 10 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Task Tackler',
+  description: 'Complete 20 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Triple H',
+  description: 'Complete 30 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Forty and Fabulous',
+  description: 'Complete 40 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Half-Centurion',
+  description: 'Complete 50 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Sixty Steps',
+  description: 'Complete 60 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Seventy Strides',
+  description: 'Complete 70 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Eighty Achiever',
+  description: 'Complete 80 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Ninety to Victory',
+  description: 'Complete 90 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Century Crusher',
+  description: 'Complete 100 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Double Century',
+  description: 'Complete 200 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Triple Century',
+  description: 'Complete 300 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Quadruple Force',
+  description: 'Complete 400 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Halfway Hero',
+  description: 'Complete 500 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Six Hundred Successes',
+  description: 'Complete 600 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Seven Hundred Star',
+  description: 'Complete 700 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Elite Eight Hundred',
+  description: 'Complete 800 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Nine Hundred Notches',
+  description: 'Complete 900 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+},
+{
+  name: 'Task Titan',
+  description: 'Complete 1000 tasks',
+  image: 'images/achievements/New_Beginning.jpeg',
+  achieved: false
+}];
+
 let userAtCard = 0;
 let userXP = 0;
 let userLevel = 1;
@@ -795,6 +1024,38 @@ async function getUserData() {
             <p class="xp-target">${nextLevelXP}XP</p>
           
           </div>
+          
+          <p class="achievements-header">Achievements</p>
+          
+          <div class="achievements-container">`;
+
+      achievements.forEach((achievementItem, achievementIndex) => {
+
+        userMoreOptionsHTML += `
+        
+        <div class="achievement-item">
+        
+          <div class="achievement-item-image-container">
+          
+            <img class="achievement-item-image" src="${achievementItem.image}">
+
+          </div>
+        
+          <div class="achievement-item-info">
+          
+            <p class="achievement-title">${achievementItem.name}</p>
+            <p class="achievement-description">${achievementItem.description}</p>
+
+          </div>
+
+        </div>
+        `;
+
+      });
+          
+      userMoreOptionsHTML += `
+
+          </div>
         
         </div>
 
@@ -843,6 +1104,12 @@ async function getUserData() {
     takeInputThroughPrompt();
   
   });
+
+  setInterval(() => {
+
+    checkAchievements();
+
+  }, 5000);
 
   //Home page default transition
   document.body.classList.add('fade-in');
@@ -2242,6 +2509,102 @@ async function rewardNotification(trackerNumber, taskNumber) {
   
 }
 
+//Code to add custom notification when user earns an achievement
+async function rewardNotification_Achievement(achievementsName) {
+
+  setTimeout(() => {
+
+    const taskCompletedBanner = `
+    
+    <div class="task-completed-banner-container">
+
+      <div class="task-completed-banner-container-cover"></div>
+    
+      <div class="banner-name">
+
+        <div class="banner-name-cover"></div>
+        <p>Achievement Unlocked!</p>
+
+      </div>
+      
+
+      <div class="reward5XP">
+      
+        <div class="reward-cover"></div>
+        <p style="font-size: 12px">${achievementsName}</p>
+      
+      </div>
+
+    </div>
+
+    `;
+
+    document.querySelector('.notification-section').insertAdjacentHTML("afterbegin", taskCompletedBanner);
+
+    //Timers to trigger unhide transitions
+    setTimeout(() => {
+
+      document.querySelector(`.task-completed-banner-container`).classList.add('task-completed-banner-container-unhide');
+
+    }, 50);
+
+    setTimeout(() => {
+
+      document.querySelector(`.task-completed-banner-container-cover`).classList.add('task-completed-banner-container-cover-unhide');
+
+    }, 500);
+
+    setTimeout(() => {
+
+      document.querySelector(`.banner-name-cover`).classList.add('banner-name-cover-unhide');
+
+    }, 750);
+
+    setTimeout(() => {
+
+      document.querySelector(`.reward-cover`).classList.add('reward-cover-unhide');
+
+    }, 1000);
+
+    //Timers to trigger hide transitions
+    setTimeout(() => {
+
+      setTimeout(() => {
+  
+        document.querySelector(`.reward-cover`).classList.remove('reward-cover-unhide');
+  
+      }, 0);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.banner-name-cover`).classList.remove('banner-name-cover-unhide');
+  
+      }, 250);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.task-completed-banner-container-cover`).classList.remove('task-completed-banner-container-cover-unhide');
+  
+      }, 500);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.task-completed-banner-container`).classList.remove('task-completed-banner-container-unhide');
+
+        setTimeout(() => {
+
+          document.querySelector(`.task-completed-banner-container`).remove();
+
+        }, 500);
+  
+      }, 750);
+
+    }, 5250);
+    
+  }, 4000);
+  
+}
+
 //Code to display level up screen when user levels up
 async function levelUpScreen() {
 
@@ -2744,5 +3107,20 @@ async function pushNotification(title, options) {
     }
 
   })
+  
+}
+
+//Code to check Achievements
+async function checkAchievements() {
+
+  //Logic to check Achievement: New Beginning is achieved or not
+  if(userLogged.username.length > 0 && achievements[0].achieved === false) {
+
+    achievements[0].achieved = true;
+
+    rewardNotification_Achievement(achievements[0].name);
+    console.log(`Achievement unlocked: ${achievements[0].name}`)
+
+  }
   
 }
