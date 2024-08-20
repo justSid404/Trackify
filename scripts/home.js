@@ -1031,25 +1031,51 @@ async function getUserData() {
 
       achievements.forEach((achievementItem, achievementIndex) => {
 
-        userMoreOptionsHTML += `
-        
-        <div class="achievement-item">
-        
-          <div class="achievement-item-image-container">
+        if(achievementItem.achieved === true) {
+
+          userMoreOptionsHTML += `
           
-            <img class="achievement-item-image" src="${achievementItem.image}">
-
-          </div>
-        
-          <div class="achievement-item-info">
+          <div class="achievement-item">
           
-            <p class="achievement-title">${achievementItem.name}</p>
-            <p class="achievement-description">${achievementItem.description}</p>
-
+            <div class="achievement-item-image-container">
+            
+              <img class="achievement-item-image" src="${achievementItem.image}">
+  
+            </div>
+          
+            <div class="achievement-item-info">
+            
+              <p class="achievement-title">${achievementItem.name}</p>
+              <p class="achievement-description">${achievementItem.description}</p>
+  
+            </div>
+  
           </div>
+          `;          
 
-        </div>
-        `;
+        } else {
+
+          userMoreOptionsHTML += `
+          
+          <div class="achievement-item">
+          
+            <div class="achievement-item-image-container achievement-item-image-container-locked">
+            
+              <img class="achievement-item-image" src="images/achievements/Achievement_Locked.jpeg">
+  
+            </div>
+          
+            <div class="achievement-item-info">
+            
+              <p class="achievement-title">${achievementItem.name}</p>
+              <p class="achievement-description">${achievementItem.description}</p>
+  
+            </div>
+  
+          </div>
+          `;
+
+        }
 
       });
           
@@ -2512,26 +2538,36 @@ async function rewardNotification(trackerNumber, taskNumber) {
 //Code to add custom notification when user earns an achievement
 async function rewardNotification_Achievement(achievementsName) {
 
+  achievementsName = achievementsName.replace(/ /g, '_');
+
   setTimeout(() => {
 
     const taskCompletedBanner = `
     
-    <div class="task-completed-banner-container">
+    <div class="achievement-earned-banner-container achievement-${achievementsName}-earned-banner-container">
 
-      <div class="task-completed-banner-container-cover"></div>
+      <div class="achievement-earned-banner-container-cover achievement-${achievementsName}-earned-banner-container-cover"></div>
     
-      <div class="banner-name">
+      <div class="achievement-banner-name">
 
-        <div class="banner-name-cover"></div>
+        <div class="achievement-banner-name-cover achievement-${achievementsName}-banner-name-cover"></div>
         <p>Achievement Unlocked!</p>
 
       </div>
       
 
-      <div class="reward5XP">
+      <div class="achievement-name achievement-${achievementsName}-name">
       
-        <div class="reward-cover"></div>
+        <div class="achievement-name-cover achievement-${achievementsName}-name-cover"></div>
         <p style="font-size: 12px">${achievementsName}</p>
+      
+      </div>
+      
+
+      <div class="achievement-reward100XP">
+      
+        <div class="achievement-reward-cover achievement-${achievementsName}-reward-cover"></div>
+        <p style="font-size: 12px">+100XP :D</p>
       
       </div>
 
@@ -2544,62 +2580,74 @@ async function rewardNotification_Achievement(achievementsName) {
     //Timers to trigger unhide transitions
     setTimeout(() => {
 
-      document.querySelector(`.task-completed-banner-container`).classList.add('task-completed-banner-container-unhide');
+      document.querySelector(`.achievement-${achievementsName}-earned-banner-container`).classList.add('achievement-earned-banner-container-unhide');
 
     }, 50);
 
     setTimeout(() => {
 
-      document.querySelector(`.task-completed-banner-container-cover`).classList.add('task-completed-banner-container-cover-unhide');
+      document.querySelector(`.achievement-${achievementsName}-earned-banner-container-cover`).classList.add('achievement-earned-banner-container-cover-unhide');
 
     }, 500);
 
     setTimeout(() => {
 
-      document.querySelector(`.banner-name-cover`).classList.add('banner-name-cover-unhide');
+      document.querySelector(`.achievement-${achievementsName}-banner-name-cover`).classList.add('achievement-banner-name-cover-unhide');
 
     }, 750);
 
     setTimeout(() => {
 
-      document.querySelector(`.reward-cover`).classList.add('reward-cover-unhide');
+      document.querySelector(`.achievement-${achievementsName}-name-cover`).classList.add('achievement-name-cover-unhide');
 
     }, 1000);
+
+    setTimeout(() => {
+
+      document.querySelector(`.achievement-${achievementsName}-reward-cover`).classList.add('achievement-reward-cover-unhide');
+
+    }, 1250);
 
     //Timers to trigger hide transitions
     setTimeout(() => {
 
       setTimeout(() => {
   
-        document.querySelector(`.reward-cover`).classList.remove('reward-cover-unhide');
+        document.querySelector(`.achievement-${achievementsName}-reward-cover`).classList.remove('achievement-reward-cover-unhide');
   
       }, 0);
 
       setTimeout(() => {
   
-        document.querySelector(`.banner-name-cover`).classList.remove('banner-name-cover-unhide');
+        document.querySelector(`.achievement-${achievementsName}-name-cover`).classList.remove('achievement-name-cover-unhide');
   
       }, 250);
 
       setTimeout(() => {
   
-        document.querySelector(`.task-completed-banner-container-cover`).classList.remove('task-completed-banner-container-cover-unhide');
+        document.querySelector(`.achievement-${achievementsName}-banner-name-cover`).classList.remove('achievement-banner-name-cover-unhide');
   
       }, 500);
 
       setTimeout(() => {
   
-        document.querySelector(`.task-completed-banner-container`).classList.remove('task-completed-banner-container-unhide');
+        document.querySelector(`.achievement-${achievementsName}-earned-banner-container-cover`).classList.remove('achievement-earned-banner-container-cover-unhide');
+  
+      }, 750);
+
+      setTimeout(() => {
+  
+        document.querySelector(`.achievement-${achievementsName}-earned-banner-container`).classList.remove('achievement-earned-banner-container-unhide');
 
         setTimeout(() => {
 
-          document.querySelector(`.task-completed-banner-container`).remove();
+          document.querySelector(`.achievement-${achievementsName}-earned-banner-container`).remove();
 
         }, 500);
   
       }, 750);
 
-    }, 5250);
+    }, 5500);
     
   }, 4000);
   
@@ -3113,14 +3161,153 @@ async function pushNotification(title, options) {
 //Code to check Achievements
 async function checkAchievements() {
 
+  const notificationToCall = [];
+
   //Logic to check Achievement: New Beginning is achieved or not
   if(userLogged.username.length > 0 && achievements[0].achieved === false) {
 
     achievements[0].achieved = true;
 
-    rewardNotification_Achievement(achievements[0].name);
+    // rewardNotification_Achievement(achievements[0].name);
+    notificationToCall.push(achievements[0].name);
     console.log(`Achievement unlocked: ${achievements[0].name}`)
 
   }
+
+  //Logic to check Achievement: First Level up is achieved or not
+  if(userLevel >= 2 && achievements[1].achieved === false) {
+
+    achievements[1].achieved = true;
+
+    // rewardNotification_Achievement(achievements[1].name);
+    notificationToCall.push(achievements[1].name);
+    console.log(`Achievement unlocked: ${achievements[1].name}`);
+
+  }
+
+  //Logic to check Level 10 to 100 is achieved or not
+  for(let i = 1; i <= 10; i++) {
+    
+    if(userLevel >= (i*10) && achievements[(i+1)].achieved === false) {
+
+      achievements[(i+1)].achieved = true;
+
+      notificationToCall.push(achievements[(i+1)].name);
+      console.log(`Achievement unlocked: ${achievements[(i+1)].name}`);
+
+    }
+
+  }
+
+  //Logic to check Level 10 to 100 is achieved or not
+  for(let i = 1; i <= 10; i++) {
+    
+    if(userLevel >= (i*10) && achievements[(i+1)].achieved === false) {
+
+      achievements[(i+1)].achieved = true;
+
+      notificationToCall.push(achievements[(i+1)].name);
+      console.log(`Achievement unlocked: ${achievements[(i+1)].name}`);
+
+    }
+
+  }
+
+  //Logic to check Level 250, 500, 750, 1000 & 2000 is achieved or not
+  const levelToCheck = [ {
+    achievementNo: 12,
+    levelToReach: 250
+  },
+  {
+    achievementNo: 13,
+    levelToReach: 500
+  },
+  {
+    achievementNo: 14,
+    levelToReach: 750
+  },
+  {
+    achievementNo: 15,
+    levelToReach: 1000
+  },
+  {
+    achievementNo: 16,
+    levelToReach: 2000
+  }];
+
+  levelToCheck.forEach((levelItem) => {
+
+    if(userLevel >= levelItem.levelToReach && achievements[levelItem.achievementNo].achieved === false) {
+
+      achievements[levelItem.achievementNo].achieved = true;
+
+      notificationToCall.push(achievements[levelItem.achievementNo].name);
+      console.log(`Achievement unlocked: ${achievements[levelItem.achievementNo].name}`);
+
+    }
+
+  });
+
+  //Logic to check if user has completed n amount of tasks for achievement
+  const taskCompletedByUser = await getTaskCompletedCount();
   
+  const taskToCheck = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+  
+  taskToCheck.forEach((taskItem, taskIndex) => {
+
+    if(taskCompletedByUser >= taskItem && achievements[(taskIndex + 17)].achieved === false) {
+
+      achievements[(taskIndex + 17)].achieved = true;
+
+      notificationToCall.push(achievements[(taskIndex + 17)].name);
+      console.log(`Achievement unlocked: ${achievements[(taskIndex + 17)].name}`);
+
+    }
+
+  });
+
+  //Create notification for all achievements in interval of 2 secs
+  for(let i = 0; i < notificationToCall.length; i++) {
+
+    await rewardNotification_Achievement(notificationToCall[i]);
+    await delay(10000);
+
+  }
+  
+}
+
+//Code to get count of completed tasks
+async function getTaskCompletedCount() {
+
+  let taskCompletedCount = 0;
+
+  if(userData.trackers) {
+
+    userData.trackers.forEach((trackerItem) => {
+
+      if(trackerItem.task) {
+  
+        trackerItem.task.forEach((taskItem) => {
+
+          if(taskItem.status === "done") {
+
+            taskCompletedCount++
+
+          }          
+
+        });
+        
+      }
+  
+    });
+
+  }
+
+  return taskCompletedCount;
+  
+}
+
+//Code to add delay
+async function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
