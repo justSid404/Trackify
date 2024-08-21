@@ -15,7 +15,7 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
-const achievements = [{
+let achievements = [{
   name: 'New Beginning',
   description: 'Login for the first time',
   image: 'images/achievements/New_Beginning.jpeg',
@@ -24,43 +24,43 @@ const achievements = [{
 {
   name: 'First Level up',
   description: 'Reach Level 2',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/First_Level_up.jpeg',
   achieved: false
 },
 {
   name: 'Private',
   description: 'Reach Level 10',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/Private.jpeg',
   achieved: false
 },
 {
   name: 'Private First Class',
   description: 'Reach Level 20',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/Private_First_Class.jpeg',
   achieved: false
 },
 {
   name: 'Specialist',
   description: 'Reach Level 30',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/Specialist.jpeg',
   achieved: false
 },
 {
   name: 'Corporal',
   description: 'Reach Level 40',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/Corporal.jpeg',
   achieved: false
 },
 {
   name: 'Sergeant',
   description: 'Reach Level 50',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/Sergeant.jpeg',
   achieved: false
 },
 {
   name: 'Staff Sergeant',
   description: 'Reach Level 60',
-  image: 'images/achievements/New_Beginning.jpeg',
+  image: 'images/achievements/Staff_Sergeant.jpeg',
   achieved: false
 },
 {
@@ -440,7 +440,7 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
     
     userData.trackers = trackers;
     sortTasks();
-    updateUserData(userData.trackers);
+    updateUserData(userData.trackers, "trackers");
 
     userAtCard = userData.trackers.length - 1;
 
@@ -515,7 +515,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       
       userData.trackers = trackers;
       sortTasks();
-      updateUserData(userData.trackers);
+      updateUserData(userData.trackers, "trackers");
       trackers = userData.trackers;
 
       userAtCard = userData.trackers.length - 1;
@@ -655,7 +655,7 @@ async function addEventToTaskAction(taskActionElement) {
     
     userData.trackers = trackers;
     sortTasks();
-    updateUserData(userData.trackers);
+    updateUserData(userData.trackers, "trackers");
 
     userAtCard = userData.trackers.length - 1;
       
@@ -752,7 +752,8 @@ async function getUserData() {
 
         userData = {
 
-          trackers: childSnapshot.val().trackers
+          trackers: childSnapshot.val().trackers,
+          achievements: childSnapshot.val().achievements
 
         };
 
@@ -760,7 +761,8 @@ async function getUserData() {
 
         userData = {
 
-          trackers: []
+          trackers: [],
+          achievements: []
       
         }
 
@@ -775,6 +777,19 @@ async function getUserData() {
       trackers: []
   
     }
+
+  }
+
+  //Code to check if achievement data exists in userData
+  if(userData.achievements) {
+
+    achievements = userData.achievements;
+
+  } else {
+
+    userData.achievements = achievements;
+    updateUserData(userData.achievements, "achievements");
+    // console.log(userData);
 
   }
 
@@ -1143,7 +1158,7 @@ async function getUserData() {
 }
 
 //Code to update userData to Firebase
-async function updateUserData(userData) {
+async function updateUserData(userData, dataKey) {
 
   try{
 
@@ -1169,9 +1184,19 @@ async function updateUserData(userData) {
         const userRef = ref(db, `userData/${userKey}/`); // Reference to the user's data
 
         // Update the user's data with the new array
-        await update(userRef, {
-          trackers: userData
-        });
+        if(dataKey === "trackers") {
+
+          await update(userRef, {
+            trackers: userData
+          });
+
+        } else if(dataKey === "achievements") {
+
+          await update(userRef, {
+            achievements
+          });
+
+        }
 
         //Delete localStorage data
         localStorage.removeItem(userLogged.username);
@@ -1317,7 +1342,7 @@ async function addTrackerOptions(trackerNumber) {
       userData.trackers[tempTrackerNum].name = newTrackerName;
       document.querySelector(`.tracker-card-${trackerNumber}-title-p`).innerHTML = newTrackerName;
       trackers = userData.trackers;
-      updateUserData(userData.trackers);
+      updateUserData(userData.trackers, "trackers");
 
       userAtCard = userData.trackers.length - 1;
 
@@ -1342,7 +1367,7 @@ async function addTrackerOptions(trackerNumber) {
       });
 
       trackers = userData.trackers;
-      updateUserData(userData.trackers);
+      updateUserData(userData.trackers, "trackers");
 
       userAtCard = userData.trackers.length - 1;
       document.querySelector(`.tracker-option-container`).remove();
@@ -3168,6 +3193,10 @@ async function checkAchievements() {
 
     achievements[0].achieved = true;
 
+    userData.achievements = achievements;
+    updateUserData(userData.achievements, "achievements");
+    // console.log(userData);
+
     // rewardNotification_Achievement(achievements[0].name);
     notificationToCall.push(achievements[0].name);
     console.log(`Achievement unlocked: ${achievements[0].name}`)
@@ -3178,6 +3207,10 @@ async function checkAchievements() {
   if(userLevel >= 2 && achievements[1].achieved === false) {
 
     achievements[1].achieved = true;
+
+    userData.achievements = achievements;
+    updateUserData(userData.achievements, "achievements");
+    // console.log(userData);
 
     // rewardNotification_Achievement(achievements[1].name);
     notificationToCall.push(achievements[1].name);
@@ -3192,6 +3225,10 @@ async function checkAchievements() {
 
       achievements[(i+1)].achieved = true;
 
+      userData.achievements = achievements;
+      updateUserData(userData.achievements, "achievements");
+      // console.log(userData);
+
       notificationToCall.push(achievements[(i+1)].name);
       console.log(`Achievement unlocked: ${achievements[(i+1)].name}`);
 
@@ -3205,6 +3242,10 @@ async function checkAchievements() {
     if(userLevel >= (i*10) && achievements[(i+1)].achieved === false) {
 
       achievements[(i+1)].achieved = true;
+
+      userData.achievements = achievements;
+      updateUserData(userData.achievements, "achievements");
+      // console.log(userData);
 
       notificationToCall.push(achievements[(i+1)].name);
       console.log(`Achievement unlocked: ${achievements[(i+1)].name}`);
@@ -3241,6 +3282,10 @@ async function checkAchievements() {
 
       achievements[levelItem.achievementNo].achieved = true;
 
+      userData.achievements = achievements;
+      updateUserData(userData.achievements, "achievements");
+      // console.log(userData);
+
       notificationToCall.push(achievements[levelItem.achievementNo].name);
       console.log(`Achievement unlocked: ${achievements[levelItem.achievementNo].name}`);
 
@@ -3258,6 +3303,10 @@ async function checkAchievements() {
     if(taskCompletedByUser >= taskItem && achievements[(taskIndex + 17)].achieved === false) {
 
       achievements[(taskIndex + 17)].achieved = true;
+
+      userData.achievements = achievements;
+      updateUserData(userData.achievements, "achievements");
+      // console.log(userData);
 
       notificationToCall.push(achievements[(taskIndex + 17)].name);
       console.log(`Achievement unlocked: ${achievements[(taskIndex + 17)].name}`);
