@@ -15,233 +15,276 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
+let additionalXP = 0;
+let additionalXPCummulative = 0;
+
+let latestCelebratedLevel = 1;
+
 let achievements = [{
   name: 'New Beginning',
   description: 'Login for the first time',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'First Level up',
   description: 'Reach Level 2',
   image: 'images/achievements/First_Level_up.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Private',
   description: 'Reach Level 10',
   image: 'images/achievements/Private.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Private First Class',
   description: 'Reach Level 20',
   image: 'images/achievements/Private_First_Class.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Specialist',
   description: 'Reach Level 30',
   image: 'images/achievements/Specialist.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Corporal',
   description: 'Reach Level 40',
   image: 'images/achievements/Corporal.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Sergeant',
   description: 'Reach Level 50',
   image: 'images/achievements/Sergeant.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Staff Sergeant',
   description: 'Reach Level 60',
   image: 'images/achievements/Staff_Sergeant.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Sergeant First Class',
   description: 'Reach Level 70',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Master Sergeant',
   description: 'Reach Level 80',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'First Sergeant',
   description: 'Reach Level 90',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Sergeant Major',
   description: 'Reach Level 100',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Command Sergeant Major',
   description: 'Reach Level 250',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Sergeant Major of the Army',
   description: 'Reach Level 500',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'What are you?',
   description: 'Reach Level 750',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Are you a God?',
   description: 'Reach Level 1000',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Go beyond... Plus Ultra!',
   description: 'Reach Level 2000',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'The First step',
   description: 'Complete the First task',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Taskmaster',
   description: 'Complete 5 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Decathlon',
   description: 'Complete 10 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Task Tackler',
   description: 'Complete 20 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Triple H',
   description: 'Complete 30 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Forty and Fabulous',
   description: 'Complete 40 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Half-Centurion',
   description: 'Complete 50 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Sixty Steps',
   description: 'Complete 60 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Seventy Strides',
   description: 'Complete 70 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Eighty Achiever',
   description: 'Complete 80 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Ninety to Victory',
   description: 'Complete 90 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Century Crusher',
   description: 'Complete 100 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Double Century',
   description: 'Complete 200 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Triple Century',
   description: 'Complete 300 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Quadruple Force',
   description: 'Complete 400 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Halfway Hero',
   description: 'Complete 500 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Six Hundred Successes',
   description: 'Complete 600 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Seven Hundred Star',
   description: 'Complete 700 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Elite Eight Hundred',
   description: 'Complete 800 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Nine Hundred Notches',
   description: 'Complete 900 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 },
 {
   name: 'Task Titan',
   description: 'Complete 1000 tasks',
   image: 'images/achievements/New_Beginning.jpeg',
-  achieved: false
+  achieved: false,
+  xpClaimed: false
 }];
 
 let userAtCard = 0;
@@ -440,7 +483,7 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
     
     userData.trackers = trackers;
     sortTasks();
-    updateUserData(userData.trackers, "trackers");
+    await updateUserData(userData.trackers, "trackers");
 
     userAtCard = userData.trackers.length - 1;
 
@@ -753,7 +796,9 @@ async function getUserData() {
         userData = {
 
           trackers: childSnapshot.val().trackers,
-          achievements: childSnapshot.val().achievements
+          achievements: childSnapshot.val().achievements,
+          additionalXP: childSnapshot.val().additionalXP,
+          latestCelebratedLevel: childSnapshot.val().latestCelebratedLevel
 
         };
 
@@ -762,7 +807,9 @@ async function getUserData() {
         userData = {
 
           trackers: [],
-          achievements: []
+          achievements: [],
+          additionalXP: 0,
+          latestCelebratedLevel: 1
       
         }
 
@@ -774,7 +821,10 @@ async function getUserData() {
 
     userData = {
 
-      trackers: []
+      trackers: [],
+      achievements: [],
+      additionalXP: 0,
+      latestCelebratedLevel: 1
   
     }
 
@@ -788,8 +838,44 @@ async function getUserData() {
   } else {
 
     userData.achievements = achievements;
-    updateUserData(userData.achievements, "achievements");
+    await updateUserData(userData.achievements, "achievements");
     // console.log(userData);
+
+  }
+
+  //Code to add xpClaimed in each achievement if doesnt exist
+  if(!userData.achievements[0].xpClaimed) {
+
+    userData.achievements.forEach((achievementItem) => {
+
+      achievementItem.xpClaimed = false;
+
+    });
+
+    await updateUserData(userData.achievements, "achievements");
+
+  }
+  
+  //Code to add additionalXP if doesnt exist
+  if(!userData.additionalXP) {
+
+    userData.additionalXP = additionalXP;
+    // await updateUserData(additionalXP, "additionalXP");
+
+  } else {
+
+    additionalXP = userData.additionalXP;
+
+  }
+
+  //Code to check last celebrated level up
+  if(!userData.latestCelebratedLevel) {
+
+    userData.latestCelebratedLevel = latestCelebratedLevel;
+
+  } else {
+
+    latestCelebratedLevel = userData.latestCelebratedLevel;
 
   }
 
@@ -995,12 +1081,14 @@ async function getUserData() {
     
       }
 
+      let currentXP;
       let nextLevelXP;
 
       levelCriteria.forEach((levelCriteriaItem) => {
 
         if(levelCriteriaItem.levelNumber === userLevel) {
 
+          currentXP = userXP - levelCriteriaItem.minimumXP;
           nextLevelXP = (levelCriteriaItem.maximumXP + 1) - levelCriteriaItem.minimumXP;
 
         }
@@ -1034,7 +1122,7 @@ async function getUserData() {
 
           <div class="xp-progress-label">
           
-            <p class="xp-gained">${userXP}XP</p>
+            <p class="xp-gained">${currentXP}XP</p>
           
             <p class="xp-target">${nextLevelXP}XP</p>
           
@@ -1111,7 +1199,7 @@ async function getUserData() {
 
         starExplodeAnimation(document.querySelector('.confetti-canvas'));
 
-        document.querySelector('.xp-progress-bar-actual').setAttribute('style', `width:${userXP}%`);
+        document.querySelector('.xp-progress-bar-actual').setAttribute('style', `width:${(currentXP/nextLevelXP) * 100}%`);
 
       }, 50);
 
@@ -1194,6 +1282,18 @@ async function updateUserData(userData, dataKey) {
 
           await update(userRef, {
             achievements
+          });
+
+        } else if(dataKey === "additionalXP") {
+
+          await update(userRef, {
+            additionalXP
+          });
+
+        } else if(dataKey === "latestCelebratedLevel") {
+
+          await update(userRef, {
+            latestCelebratedLevel
           });
 
         }
@@ -1880,21 +1980,7 @@ async function levelHandler() {
 
     if(userXP >= 100) {
 
-      userLevel++;
-      const diff = userXP - 100;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
 
@@ -1902,21 +1988,7 @@ async function levelHandler() {
 
     if(userXP >= 200) {
 
-      userLevel++;
-      const diff = userXP - 200;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -1924,21 +1996,7 @@ async function levelHandler() {
 
     if(userXP >= 300) {
 
-      userLevel++;
-      const diff = userXP - 300;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -1946,21 +2004,7 @@ async function levelHandler() {
 
     if(userXP >= 400) {
 
-      userLevel++;
-      const diff = userXP - 400;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -1968,21 +2012,7 @@ async function levelHandler() {
 
     if(userXP >= 500) {
 
-      userLevel++;
-      const diff = userXP - 500;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -1990,21 +2020,7 @@ async function levelHandler() {
 
     if(userXP >= 600) {
 
-      userLevel++;
-      const diff = userXP - 600;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2012,21 +2028,7 @@ async function levelHandler() {
 
     if(userXP >= 700) {
 
-      userLevel++;
-      const diff = userXP - 700;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2034,21 +2036,7 @@ async function levelHandler() {
 
     if(userXP >= 800) {
 
-      userLevel++;
-      const diff = userXP - 800;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2056,21 +2044,7 @@ async function levelHandler() {
 
     if(userXP >= 900) {
 
-      userLevel++;
-      const diff = userXP - 900;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2078,21 +2052,7 @@ async function levelHandler() {
 
     if(userXP >= 1000) {
 
-      userLevel++;
-      const diff = userXP - 1000;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2100,21 +2060,7 @@ async function levelHandler() {
 
     if(userXP >= 1100) {
 
-      userLevel++;
-      const diff = userXP - 1100;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2122,21 +2068,7 @@ async function levelHandler() {
 
     if(userXP >= 1200) {
 
-      userLevel++;
-      const diff = userXP - 1200;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2144,21 +2076,7 @@ async function levelHandler() {
 
     if(userXP >= 1300) {
 
-      userLevel++;
-      const diff = userXP - 1300;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification()
 
     }
     
@@ -2166,21 +2084,7 @@ async function levelHandler() {
 
     if(userXP >= 1400) {
 
-      userLevel++;
-      const diff = userXP - 1400;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2188,17 +2092,7 @@ async function levelHandler() {
 
     if(userXP >= 1500) {
 
-      userLevel++;
-      const diff = userXP - 1500;
-      userXP = diff;
-
-      levelUpScreen();
-
-      const notificationOptions = {
-        body: `You have reached Level ${userLevel} >:)`
-      }
-
-      pushNotification(`Level up!`, notificationOptions);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2206,21 +2100,7 @@ async function levelHandler() {
 
     if(userXP >= 1600) {
 
-      userLevel++;
-      const diff = userXP - 1600;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2228,21 +2108,7 @@ async function levelHandler() {
 
     if(userXP >= 1700) {
 
-      userLevel++;
-      const diff = userXP - 1700;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2250,21 +2116,7 @@ async function levelHandler() {
 
     if(userXP >= 1800) {
 
-      userLevel++;
-      const diff = userXP - 1800;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2272,21 +2124,7 @@ async function levelHandler() {
 
     if(userXP >= 1900) {
 
-      userLevel++;
-      const diff = userXP - 1900;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2294,21 +2132,7 @@ async function levelHandler() {
 
     if(userXP >= 2000) {
 
-      userLevel++;
-      const diff = userXP - 2000;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
@@ -2316,25 +2140,41 @@ async function levelHandler() {
 
     if(userXP >= 2500) {
 
-      userLevel++;
-      const diff = userXP - 2500;
-      userXP = diff;
-
-      setTimeout(() => {
-
-        levelUpScreen();
-
-        const notificationOptions = {
-          body: `You have reached Level ${userLevel} >:)`
-        }
-
-        pushNotification(`Level up!`, notificationOptions);
-
-      }, 11000);
+      levelUpAnimationWithNotification();
 
     }
     
   }
+
+  for(let i = 0; i < levelCriteria.length; i++) {
+    
+    if(userLevel === levelCriteria[i].levelNumber) {
+
+      if(userXP >= (levelCriteria[i].maximumXP + 1)) {
+
+        levelHandler();
+
+      } else {
+
+        break;
+
+      }
+
+    } else if(userLevel > 100) {
+
+      if(userXP >= levelCriteria[levelCriteria.length - 1].minimumXP) {
+
+        levelHandler();
+
+      } else {
+
+        break;
+
+      }
+
+    }
+
+  };
   
 }
 
@@ -2446,14 +2286,14 @@ async function calculateLevelAndXP() {
 
       if(userXP >= levelCriteriaItem.minimumXP && userXP <= levelCriteriaItem.maximumXP) {
         userLevel = levelCriteriaItem.levelNumber;
-        userXP -= levelCriteriaItem.minimumXP;
+        // userXP -= levelCriteriaItem.minimumXP;
       }
 
     } else {
 
       if(userXP >= levelCriteriaItem.minimumXP) {
 
-        userXP -= levelCriteriaItem.minimumXP;
+        // userXP -= levelCriteriaItem.minimumXP;
         userLevel = 100 + Math.ceil(userXP / 2500);
 
       }
@@ -3089,7 +2929,13 @@ async function displayLeaderboardScreen() {
 
   sortedUsers.forEach((sortedUserItem, sortedUserIndex) => {
 
-    let tempUserXP = extractedValues[sortedUserIndex].taskCount * 5;
+    if(!sortedUserItem.additionalXP) {
+
+      sortedUserItem.additionalXP = 0;
+
+    }
+
+    let tempUserXP = (extractedValues[sortedUserIndex].taskCount * 5) + sortedUserItem.additionalXP;
     let tempUserLevel;
 
     for(let i = 0; i < levelCriteria.length; i++) {
@@ -3120,7 +2966,7 @@ async function displayLeaderboardScreen() {
 
         <span class="user-name">${sortedUserItem.username}</span>
 
-        <span class="user-level">Level ${tempUserLevel}</span>
+        <span class="user-level">Level ${tempUserLevel} with ${(tempUserXP - sortedUserItem.additionalXP)/5} Tasks</span>
       
       </span>`;
       
@@ -3194,12 +3040,22 @@ async function checkAchievements() {
     achievements[0].achieved = true;
 
     userData.achievements = achievements;
-    updateUserData(userData.achievements, "achievements");
-    // console.log(userData);
+    await updateUserData(userData.achievements, "achievements");
 
-    // rewardNotification_Achievement(achievements[0].name);
     notificationToCall.push(achievements[0].name);
     console.log(`Achievement unlocked: ${achievements[0].name}`)
+
+  }
+
+  if(achievements[0].achieved === true && achievements[0].xpClaimed === false) {
+
+    additionalXP += 100;
+    additionalXP += additionalXPCummulative;
+    achievements[0].xpClaimed = true;
+
+    userData.achievements = achievements;
+    await updateUserData(userData.achievements, "achievements");
+    await updateUserData(additionalXP, "additionalXP");
 
   }
 
@@ -3209,12 +3065,22 @@ async function checkAchievements() {
     achievements[1].achieved = true;
 
     userData.achievements = achievements;
-    updateUserData(userData.achievements, "achievements");
-    // console.log(userData);
+    await updateUserData(userData.achievements, "achievements");
 
-    // rewardNotification_Achievement(achievements[1].name);
     notificationToCall.push(achievements[1].name);
     console.log(`Achievement unlocked: ${achievements[1].name}`);
+
+  }
+
+  if(achievements[1].achieved === true && achievements[1].xpClaimed === false) {
+
+    additionalXP += 100;
+    additionalXP += additionalXPCummulative;
+    achievements[1].xpClaimed = true;
+
+    userData.achievements = achievements;
+    await updateUserData(userData.achievements, "achievements");
+    await updateUserData(additionalXP, "additionalXP");
 
   }
 
@@ -3226,12 +3092,23 @@ async function checkAchievements() {
       achievements[(i+1)].achieved = true;
 
       userData.achievements = achievements;
-      updateUserData(userData.achievements, "achievements");
-      // console.log(userData);
+      await updateUserData(userData.achievements, "achievements");
 
       notificationToCall.push(achievements[(i+1)].name);
       console.log(`Achievement unlocked: ${achievements[(i+1)].name}`);
 
+    }
+
+    if(achievements[(i+1)].achieved === true && achievements[(i+1)].xpClaimed === false) {
+  
+      additionalXP += 100;
+      additionalXP += additionalXPCummulative;
+      achievements[(i+1)].xpClaimed = true;
+
+      userData.achievements = achievements;
+      await updateUserData(userData.achievements, "achievements");
+      await updateUserData(additionalXP, "additionalXP");
+  
     }
 
   }
@@ -3244,12 +3121,23 @@ async function checkAchievements() {
       achievements[(i+1)].achieved = true;
 
       userData.achievements = achievements;
-      updateUserData(userData.achievements, "achievements");
-      // console.log(userData);
+      await updateUserData(userData.achievements, "achievements");
 
       notificationToCall.push(achievements[(i+1)].name);
       console.log(`Achievement unlocked: ${achievements[(i+1)].name}`);
 
+    }
+
+    if(achievements[(i+1)].achieved === true && achievements[(i+1)].xpClaimed === false) {
+  
+      additionalXP += 100;
+      additionalXP += additionalXPCummulative;
+      achievements[(i+1)].xpClaimed = true;
+
+      userData.achievements = achievements;
+      await updateUserData(userData.achievements, "achievements");
+      await updateUserData(additionalXP, "additionalXP");
+  
     }
 
   }
@@ -3276,50 +3164,81 @@ async function checkAchievements() {
     levelToReach: 2000
   }];
 
-  levelToCheck.forEach((levelItem) => {
+  // levelToCheck.forEach((levelItem) => {
+  for(let i=0; i<levelToCheck.length; i++) {
 
-    if(userLevel >= levelItem.levelToReach && achievements[levelItem.achievementNo].achieved === false) {
+    if(userLevel >= levelToCheck[i].levelToReach && achievements[levelToCheck[i].achievementNo].achieved === false) {
 
-      achievements[levelItem.achievementNo].achieved = true;
+      achievements[levelToCheck[i].achievementNo].achieved = true;
 
       userData.achievements = achievements;
-      updateUserData(userData.achievements, "achievements");
-      // console.log(userData);
+      await updateUserData(userData.achievements, "achievements");
 
-      notificationToCall.push(achievements[levelItem.achievementNo].name);
-      console.log(`Achievement unlocked: ${achievements[levelItem.achievementNo].name}`);
+      notificationToCall.push(achievements[levelToCheck[i].achievementNo].name);
+      console.log(`Achievement unlocked: ${achievements[levelToCheck[i].achievementNo].name}`);
 
     }
 
-  });
+    if(achievements[levelToCheck[i].achievementNo].achieved === true && achievements[levelToCheck[i].achievementNo].xpClaimed === false) {
+  
+      additionalXP += 100;
+      additionalXP += additionalXPCummulative;
+      achievements[levelToCheck[i].achievementNo].xpClaimed = true;
+
+      userData.achievements = achievements;
+      await updateUserData(userData.achievements, "achievements");
+      await updateUserData(additionalXP, "additionalXP");
+  
+    }
+
+  }
 
   //Logic to check if user has completed n amount of tasks for achievement
   const taskCompletedByUser = await getTaskCompletedCount();
-  
   const taskToCheck = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
   
-  taskToCheck.forEach((taskItem, taskIndex) => {
+  // taskToCheck.forEach((taskItem, taskIndex) => {
+  for(let i=0; i<taskToCheck.length; i++) {
 
-    if(taskCompletedByUser >= taskItem && achievements[(taskIndex + 17)].achieved === false) {
+    if(taskCompletedByUser >= taskToCheck[i] && achievements[(i + 17)].achieved === false) {
 
-      achievements[(taskIndex + 17)].achieved = true;
+      achievements[(i + 17)].achieved = true;
 
       userData.achievements = achievements;
-      updateUserData(userData.achievements, "achievements");
-      // console.log(userData);
+      await updateUserData(userData.achievements, "achievements");
 
-      notificationToCall.push(achievements[(taskIndex + 17)].name);
-      console.log(`Achievement unlocked: ${achievements[(taskIndex + 17)].name}`);
+      notificationToCall.push(achievements[(i + 17)].name);
+      console.log(`Achievement unlocked: ${achievements[(i + 17)].name}`);
 
     }
 
-  });
+    if(achievements[(i + 17)].achieved === true && achievements[(i + 17)].xpClaimed === false) {
+  
+      additionalXP += 100;
+      additionalXP += additionalXPCummulative;
+      achievements[(i + 17)].xpClaimed = true;
+
+      userData.achievements = achievements;
+      await updateUserData(userData.achievements, "achievements");
+      await updateUserData(additionalXP, "additionalXP");
+  
+    }
+
+  }
 
   //Create notification for all achievements in interval of 2 secs
   for(let i = 0; i < notificationToCall.length; i++) {
 
     await rewardNotification_Achievement(notificationToCall[i]);
     await delay(10000);
+
+  }
+
+  if(additionalXP > 0) {
+
+    xpAddOrSubtract("add", additionalXP);
+    additionalXPCummulative = additionalXP;
+    additionalXP = 0;
 
   }
   
@@ -3353,6 +3272,34 @@ async function getTaskCompletedCount() {
   }
 
   return taskCompletedCount;
+  
+}
+
+async function levelUpAnimationWithNotification() {
+
+  userLevel++;
+
+  if(userLevel > latestCelebratedLevel) {
+
+    setTimeout(() => {
+  
+      levelUpScreen();
+  
+      const notificationOptions = {
+        body: `You have reached Level ${userLevel} >:)`
+      }
+  
+      pushNotification(`Level up!`, notificationOptions);
+  
+    }, 11000);
+
+    latestCelebratedLevel = userLevel;
+
+    updateUserData(latestCelebratedLevel, "latestCelebratedLevel");
+
+  }
+
+  
   
 }
 
