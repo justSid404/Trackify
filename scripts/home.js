@@ -1264,6 +1264,58 @@ async function getUserData() {
 
         });
 
+        achievementIcon.addEventListener("touchStart", (event) => {
+
+          event.preventDefault();
+
+          isIconClicked = true;
+
+          setTimeout(() => {
+
+            if(isIconClicked) {
+
+              let tempAchievementIcon = achievementIcon.src;
+
+              let previewIconHTML = `
+              
+              <div class="achievementIcon-preview-container">
+
+                <div class="achievementIcon-preview-close-container">
+                
+                  <div class="achievementIcon-preview-close">X</div>
+                
+                </div>
+              
+                <div class="achievementIcon-preview">
+                
+                  <img class="achievementIcon-preview-image" src="${tempAchievementIcon}">
+
+                </div>
+
+              </div>
+
+              `;
+
+              document.body.insertAdjacentHTML("afterbegin", previewIconHTML);
+
+              document.querySelector('.achievementIcon-preview-close').addEventListener("click", () => {
+
+                document.querySelector('.achievementIcon-preview-container').remove();
+
+              });
+
+            }
+
+          }, 2000);
+
+        });
+
+        achievementIcon.addEventListener("touchEnd", () => {
+
+          isIconClicked = false;
+
+        });
+
       });
 
       //Code to add xp progress bar transition
