@@ -1254,7 +1254,7 @@ async function getUserData() {
 
             }
 
-          }, 2000);
+          }, 1000);
 
         });
 
@@ -1306,7 +1306,7 @@ async function getUserData() {
 
             }
 
-          }, 2000);
+          }, 1000);
 
         });
 
