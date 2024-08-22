@@ -1156,7 +1156,7 @@ async function getUserData() {
 
           userMoreOptionsHTML += `
           
-          <div class="achievement-item" oncontextmenu="return false;">
+          <div class="achievement-item">
           
             <div class="achievement-item-image-container">
             
@@ -1178,7 +1178,7 @@ async function getUserData() {
 
           userMoreOptionsHTML += `
           
-          <div class="achievement-item" oncontextmenu="return false;">
+          <div class="achievement-item">
           
             <div class="achievement-item-image-container achievement-item-image-container-locked">
             
@@ -1212,11 +1212,9 @@ async function getUserData() {
 
       document.body.insertAdjacentHTML("afterbegin", userMoreOptionsHTML);
 
-      document.querySelectorAll('.achievement-item').forEach((achievementItem) => {
+      document.querySelectorAll('.achievement-item-image').forEach((achievementIcon) => {
 
-        const achievementIcon = achievementItem.querySelector('.achievement-item-image-container').querySelector('.achievement-item-image');
-
-        achievementItem.addEventListener("mousedown", () => {
+        achievementIcon.addEventListener("mousedown", () => {
 
           isIconClicked = true;
 
@@ -1256,17 +1254,17 @@ async function getUserData() {
 
             }
 
-          }, 1000);
+          }, 2000);
 
         });
 
-        achievementItem.addEventListener("mouseup", () => {
+        achievementIcon.addEventListener("mouseup", () => {
 
           isIconClicked = false;
 
         });
 
-        achievementItem.addEventListener("touchstart", (event) => {
+        achievementIcon.addEventListener("touchstart", (event) => {
 
           event.preventDefault();
 
@@ -1308,11 +1306,11 @@ async function getUserData() {
 
             }
 
-          }, 1000);
+          }, 2000);
 
         });
 
-        achievementItem.addEventListener("touchend", () => {
+        achievementIcon.addEventListener("touchend", () => {
 
           isIconClicked = false;
 
