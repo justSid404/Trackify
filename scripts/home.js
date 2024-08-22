@@ -1156,7 +1156,7 @@ async function getUserData() {
 
           userMoreOptionsHTML += `
           
-          <div class="achievement-item">
+          <div class="achievement-item" oncontextmenu="return false;">
           
             <div class="achievement-item-image-container">
             
@@ -1178,7 +1178,7 @@ async function getUserData() {
 
           userMoreOptionsHTML += `
           
-          <div class="achievement-item">
+          <div class="achievement-item" oncontextmenu="return false;">
           
             <div class="achievement-item-image-container achievement-item-image-container-locked">
             
@@ -1256,7 +1256,7 @@ async function getUserData() {
 
             }
 
-          }, 2000);
+          }, 1000);
 
         });
 
@@ -1266,7 +1266,7 @@ async function getUserData() {
 
         });
 
-        achievementItem.addEventListener("touchStart", (event) => {
+        achievementItem.addEventListener("touchstart", (event) => {
 
           event.preventDefault();
 
@@ -1308,11 +1308,11 @@ async function getUserData() {
 
             }
 
-          }, 2000);
+          }, 1000);
 
         });
 
-        achievementItem.addEventListener("touchEnd", () => {
+        achievementItem.addEventListener("touchend", () => {
 
           isIconClicked = false;
 
