@@ -15,9 +15,6 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
-let userLevelBefore;
-let userLevelAfter;
-
 let additionalXP = 0;
 let additionalXP_Old = 0;
 
@@ -1872,12 +1869,8 @@ async function xpAddOrSubtract(operation, value) {
 
     userXP += value;
     levelHandler();
-
-    if(userLevelBefore < userLevelAfter) {
-
-      levelUpAnimationWithNotification();
-
-    }
+    
+    levelUpAnimationWithNotification();
     
 
   } else if(operation === "-" || operation === "subtract" || operation === "minus") {
@@ -3234,8 +3227,6 @@ async function delay(ms) {
 //Code to handle level Increment decreament
 async function levelHandler() {
 
-  userLevelBefore = userLevel;
-
   levelCriteria.forEach((levelCriteriaItem) => {
 
     if(levelCriteriaItem.levelNumber !== "100+") {
@@ -3250,15 +3241,13 @@ async function levelHandler() {
 
       if(userXP >= levelCriteriaItem.minimumXP) {
 
-        userLevel = levelCriteriaItem.levelNumber;
+        userLevel = 100 + Math.ceil(userXP / 2500);
 
       }
 
     }
 
   });
-
-  userLevelAfter = userLevel;
 
 }
 
