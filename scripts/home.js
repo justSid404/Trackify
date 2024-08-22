@@ -15,8 +15,11 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
+let userLevelBefore;
+let userLevelAfter;
+
 let additionalXP = 0;
-let additionalXPCummulative = 0;
+let additionalXP_Old = 0;
 
 let latestCelebratedLevel = 1;
 
@@ -1868,113 +1871,29 @@ async function xpAddOrSubtract(operation, value) {
   if(operation === "+" || operation === "add") {
 
     userXP += value;
+    levelHandler();
+
+    if(userLevelBefore < userLevelAfter) {
+
+      levelUpAnimationWithNotification();
+
+    }
+    
 
   } else if(operation === "-" || operation === "subtract" || operation === "minus") {
 
     userXP -= value;
-
-  }
-
-  if(userXP > 0) {
-
     levelHandler();
 
-  } else if(userXP < 0) {
-
-    userLevel--;
-    
-    if(userLevel >= 1 && userLevel <= 5) {
-
-      userXP = 100 + userXP;
-  
-    } else if(userLevel >= 6 && userLevel <= 10) {
-
-      userXP = 200 + userXP;
-      
-    } else if(userLevel >= 10 && userLevel <= 15) {
-
-      userXP = 300 + userXP;
-      
-    } else if(userLevel >= 16 && userLevel <= 20) {
-
-      userXP = 400 + userXP;
-      
-    } else if(userLevel >= 21 && userLevel <= 25) {
-
-      userXP = 500 + userXP;
-      
-    } else if(userLevel >= 26 && userLevel <= 30) {
-
-      userXP = 600 + userXP;
-      
-    } else if(userLevel >= 31 && userLevel <= 35) {
-
-      userXP = 700 + userXP;
-      
-    } else if(userLevel >= 36 && userLevel <= 40) {
-
-      userXP = 800 + userXP;
-      
-    } else if(userLevel >= 41 && userLevel <= 45) {
-
-      userXP = 900 + userXP;
-      
-    } else if(userLevel >= 46 && userLevel <= 50) {
-
-      userXP = 1000 + userXP;
-      
-    } else if(userLevel >= 51 && userLevel <= 55) {
-
-      userXP = 1100 + userXP;
-      
-    } else if(userLevel >= 56 && userLevel <= 60) {
-
-      userXP = 1200 + userXP;
-      
-    } else if(userLevel >= 61 && userLevel <= 65) {
-
-      userXP = 1300 + userXP;
-      
-    } else if(userLevel >= 66 && userLevel <= 70) {
-
-      userXP = 1400 + userXP;
-      
-    } else if(userLevel >= 71 && userLevel <= 75) {
-
-      userXP = 1500 + userXP;
-      
-    } else if(userLevel >= 76 && userLevel <= 80) {
-
-      userXP = 1600 + userXP;
-      
-    } else if(userLevel >= 81 && userLevel <= 85) {
-
-      userXP = 1700 + userXP;
-      
-    } else if(userLevel >= 86 && userLevel <= 90) {
-
-      userXP = 1800 + userXP;
-      
-    } else if(userLevel >= 91 && userLevel <= 95) {
-
-      userXP = 1900 + userXP;
-      
-    } else if(userLevel >= 96 && userLevel <= 100) {
-
-      userXP = 2000 + userXP;
-      
-    } else if(userLevel > 100) {
-
-      userXP = 2500 + userXP;
-      
-    }
-
   }
+
+  console.log(userXP);
+  console.log(userLevel);
 
 }
 
 //Code to handle Level increament
-async function levelHandler() {
+async function levelHandler_old() {
 
   if(userLevel >= 1 && userLevel <= 5) {
 
@@ -3038,6 +2957,8 @@ async function checkAchievements() {
   if(userLogged.username.length > 0 && achievements[0].achieved === false) {
 
     achievements[0].achieved = true;
+    additionalXP += additionalXP_Old;
+    userXP-= additionalXP_Old;
 
     userData.achievements = achievements;
     await updateUserData(userData.achievements, "achievements");
@@ -3050,7 +2971,8 @@ async function checkAchievements() {
   if(achievements[0].achieved === true && achievements[0].xpClaimed === false) {
 
     additionalXP += 100;
-    additionalXP += additionalXPCummulative;
+    additionalXP += additionalXP_Old;
+    userXP-= additionalXP_Old;
     achievements[0].xpClaimed = true;
 
     userData.achievements = achievements;
@@ -3075,7 +2997,8 @@ async function checkAchievements() {
   if(achievements[1].achieved === true && achievements[1].xpClaimed === false) {
 
     additionalXP += 100;
-    additionalXP += additionalXPCummulative;
+    additionalXP += additionalXP_Old;
+    userXP-= additionalXP_Old;
     achievements[1].xpClaimed = true;
 
     userData.achievements = achievements;
@@ -3102,7 +3025,8 @@ async function checkAchievements() {
     if(achievements[(i+1)].achieved === true && achievements[(i+1)].xpClaimed === false) {
   
       additionalXP += 100;
-      additionalXP += additionalXPCummulative;
+      additionalXP += additionalXP_Old;
+      userXP-= additionalXP_Old;
       achievements[(i+1)].xpClaimed = true;
 
       userData.achievements = achievements;
@@ -3131,7 +3055,8 @@ async function checkAchievements() {
     if(achievements[(i+1)].achieved === true && achievements[(i+1)].xpClaimed === false) {
   
       additionalXP += 100;
-      additionalXP += additionalXPCummulative;
+      additionalXP += additionalXP_Old;
+      userXP-= additionalXP_Old;
       achievements[(i+1)].xpClaimed = true;
 
       userData.achievements = achievements;
@@ -3182,7 +3107,8 @@ async function checkAchievements() {
     if(achievements[levelToCheck[i].achievementNo].achieved === true && achievements[levelToCheck[i].achievementNo].xpClaimed === false) {
   
       additionalXP += 100;
-      additionalXP += additionalXPCummulative;
+      additionalXP += additionalXP_Old;
+      userXP-= additionalXP_Old;
       achievements[levelToCheck[i].achievementNo].xpClaimed = true;
 
       userData.achievements = achievements;
@@ -3215,7 +3141,8 @@ async function checkAchievements() {
     if(achievements[(i + 17)].achieved === true && achievements[(i + 17)].xpClaimed === false) {
   
       additionalXP += 100;
-      additionalXP += additionalXPCummulative;
+      additionalXP += additionalXP_Old;
+      userXP-= additionalXP_Old;
       achievements[(i + 17)].xpClaimed = true;
 
       userData.achievements = achievements;
@@ -3237,7 +3164,7 @@ async function checkAchievements() {
   if(additionalXP > 0) {
 
     xpAddOrSubtract("add", additionalXP);
-    additionalXPCummulative = additionalXP;
+    additionalXP_Old = additionalXP;
     additionalXP = 0;
 
   }
@@ -3277,8 +3204,6 @@ async function getTaskCompletedCount() {
 
 async function levelUpAnimationWithNotification() {
 
-  userLevel++;
-
   if(userLevel > latestCelebratedLevel) {
 
     setTimeout(() => {
@@ -3298,8 +3223,6 @@ async function levelUpAnimationWithNotification() {
     updateUserData(latestCelebratedLevel, "latestCelebratedLevel");
 
   }
-
-  
   
 }
 
@@ -3307,3 +3230,36 @@ async function levelUpAnimationWithNotification() {
 async function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+//Code to handle level Increment decreament
+async function levelHandler() {
+
+  userLevelBefore = userLevel;
+
+  levelCriteria.forEach((levelCriteriaItem) => {
+
+    if(levelCriteriaItem.levelNumber !== "100+") {
+
+      if(userXP >= levelCriteriaItem.minimumXP && userXP <= levelCriteriaItem.maximumXP) {
+  
+        userLevel = levelCriteriaItem.levelNumber;
+  
+      }
+
+    } else {
+
+      if(userXP >= levelCriteriaItem.minimumXP) {
+
+        userLevel = levelCriteriaItem.levelNumber;
+
+      }
+
+    }
+
+  });
+
+  userLevelAfter = userLevel;
+
+}
+
+console.log(levelCriteria);
