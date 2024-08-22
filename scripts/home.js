@@ -793,25 +793,41 @@ async function getUserData() {
 
       if(childSnapshot.val().trackers) {
 
-        userData = {
-
-          trackers: childSnapshot.val().trackers,
-          achievements: childSnapshot.val().achievements,
-          additionalXP: childSnapshot.val().additionalXP,
-          latestCelebratedLevel: childSnapshot.val().latestCelebratedLevel
-
-        };
+        userData.trackers = childSnapshot.val().trackers;
 
       } else {
 
-        userData = {
+        userData.trackers = [];
 
-          trackers: [],
-          achievements: [],
-          additionalXP: 0,
-          latestCelebratedLevel: 1
-      
-        }
+      }
+
+      if(childSnapshot.val().achievements) {
+
+        userData.achievements = childSnapshot.val().achievements;
+
+      } else {
+
+        userData.achievements = achievements;
+
+      }
+
+      if(childSnapshot.val().additionalXP) {
+
+        userData.additionalXP = childSnapshot.val().additionalXP;
+
+      } else {
+
+        userData.additionalXP = 0;
+
+      }
+
+      if(childSnapshot.val().latestCelebratedLevel) {
+
+        userData.latestCelebratedLevel = childSnapshot.val().latestCelebratedLevel;
+
+      } else {
+
+        userData.latestCelebratedLevel = 1;
 
       }
       
@@ -822,7 +838,7 @@ async function getUserData() {
     userData = {
 
       trackers: [],
-      achievements: [],
+      achievements: achievements,
       additionalXP: 0,
       latestCelebratedLevel: 1
   
