@@ -970,6 +970,17 @@ async function getUserData() {
   //Calculate level and XP
   calculateLevelAndXP();
 
+
+  //Calculate earned achievements
+  checkAchievements();
+
+  //Keep checking earned achievements every 5 seconds
+  setInterval(() => {
+
+    checkAchievements();
+
+  }, 5000);
+
   //User options button functionality
   userOptionsBtnElement.addEventListener('click', () => {
 
@@ -1357,12 +1368,6 @@ async function getUserData() {
     takeInputThroughPrompt();
   
   });
-
-  setInterval(() => {
-
-    checkAchievements();
-
-  }, 5000);
 
   //Home page default transition
   document.body.classList.add('fade-in');
@@ -2007,211 +2012,6 @@ async function xpAddOrSubtract(operation, value) {
   console.log(userXP);
   console.log(userLevel);
 
-}
-
-//Code to handle Level increament
-async function levelHandler_old() {
-
-  if(userLevel >= 1 && userLevel <= 5) {
-
-    if(userXP >= 100) {
-
-      levelUpAnimationWithNotification();
-
-    }
-
-  } else if(userLevel >= 6 && userLevel <= 10) {
-
-    if(userXP >= 200) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 10 && userLevel <= 15) {
-
-    if(userXP >= 300) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 16 && userLevel <= 20) {
-
-    if(userXP >= 400) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 21 && userLevel <= 25) {
-
-    if(userXP >= 500) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 26 && userLevel <= 30) {
-
-    if(userXP >= 600) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 31 && userLevel <= 35) {
-
-    if(userXP >= 700) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 36 && userLevel <= 40) {
-
-    if(userXP >= 800) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 41 && userLevel <= 45) {
-
-    if(userXP >= 900) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 46 && userLevel <= 50) {
-
-    if(userXP >= 1000) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 51 && userLevel <= 55) {
-
-    if(userXP >= 1100) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 56 && userLevel <= 60) {
-
-    if(userXP >= 1200) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 61 && userLevel <= 65) {
-
-    if(userXP >= 1300) {
-
-      levelUpAnimationWithNotification()
-
-    }
-    
-  } else if(userLevel >= 66 && userLevel <= 70) {
-
-    if(userXP >= 1400) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 71 && userLevel <= 75) {
-
-    if(userXP >= 1500) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 76 && userLevel <= 80) {
-
-    if(userXP >= 1600) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 81 && userLevel <= 85) {
-
-    if(userXP >= 1700) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 86 && userLevel <= 90) {
-
-    if(userXP >= 1800) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 91 && userLevel <= 95) {
-
-    if(userXP >= 1900) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel >= 96 && userLevel <= 100) {
-
-    if(userXP >= 2000) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  } else if(userLevel > 100) {
-
-    if(userXP >= 2500) {
-
-      levelUpAnimationWithNotification();
-
-    }
-    
-  }
-
-  for(let i = 0; i < levelCriteria.length; i++) {
-    
-    if(userLevel === levelCriteria[i].levelNumber) {
-
-      if(userXP >= (levelCriteria[i].maximumXP + 1)) {
-
-        levelHandler();
-
-      } else {
-
-        break;
-
-      }
-
-    } else if(userLevel > 100) {
-
-      if(userXP >= levelCriteria[levelCriteria.length - 1].minimumXP) {
-
-        levelHandler();
-
-      } else {
-
-        break;
-
-      }
-
-    }
-
-  };
-  
 }
 
 //Code to add Confetti animation
