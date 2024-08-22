@@ -1212,9 +1212,11 @@ async function getUserData() {
 
       document.body.insertAdjacentHTML("afterbegin", userMoreOptionsHTML);
 
-      document.querySelectorAll('.achievement-item-image').forEach((achievementIcon) => {
+      document.querySelectorAll('.achievement-item').forEach((achievementItem) => {
 
-        achievementIcon.addEventListener("mousedown", () => {
+        const achievementIcon = achievementItem.querySelector('.achievement-item-image-container').querySelector('.achievement-item-image');
+
+        achievementItem.addEventListener("mousedown", () => {
 
           isIconClicked = true;
 
@@ -1258,13 +1260,13 @@ async function getUserData() {
 
         });
 
-        achievementIcon.addEventListener("mouseup", () => {
+        achievementItem.addEventListener("mouseup", () => {
 
           isIconClicked = false;
 
         });
 
-        achievementIcon.addEventListener("touchStart", (event) => {
+        achievementItem.addEventListener("touchStart", (event) => {
 
           event.preventDefault();
 
@@ -1310,7 +1312,7 @@ async function getUserData() {
 
         });
 
-        achievementIcon.addEventListener("touchEnd", () => {
+        achievementItem.addEventListener("touchEnd", () => {
 
           isIconClicked = false;
 
