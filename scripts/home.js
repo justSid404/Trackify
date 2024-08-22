@@ -20,6 +20,8 @@ let additionalXP_Old = 0;
 
 let latestCelebratedLevel = 1;
 
+let isIconClicked = false;
+
 let achievements = [{
   name: 'New Beginning',
   description: 'Login for the first time',
@@ -1209,6 +1211,60 @@ async function getUserData() {
       `;
 
       document.body.insertAdjacentHTML("afterbegin", userMoreOptionsHTML);
+
+      document.querySelectorAll('.achievement-item-image').forEach((achievementIcon) => {
+
+        achievementIcon.addEventListener("mousedown", () => {
+
+          isIconClicked = true;
+
+          setTimeout(() => {
+
+            if(isIconClicked) {
+
+              let tempAchievementIcon = achievementIcon.src;
+
+              let previewIconHTML = `
+              
+              <div class="achievementIcon-preview-container">
+
+                <div class="achievementIcon-preview-close-container">
+                
+                  <div class="achievementIcon-preview-close">X</div>
+                
+                </div>
+              
+                <div class="achievementIcon-preview">
+                
+                  <img class="achievementIcon-preview-image" src="${tempAchievementIcon}">
+
+                </div>
+
+              </div>
+
+              `;
+
+              document.body.insertAdjacentHTML("afterbegin", previewIconHTML);
+
+              document.querySelector('.achievementIcon-preview-close').addEventListener("click", () => {
+
+                document.querySelector('.achievementIcon-preview-container').remove();
+
+              });
+
+            }
+
+          }, 2000);
+
+        });
+
+        achievementIcon.addEventListener("mouseup", () => {
+
+          isIconClicked = false;
+
+        });
+
+      });
 
       //Code to add xp progress bar transition
       setTimeout(() => {
