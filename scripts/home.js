@@ -15,6 +15,8 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
+const timerData = [];
+
 let additionalXP = 0;
 let additionalXP_Old = 0;
 
@@ -484,7 +486,7 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
     });
     
     userData.trackers = trackers;
-    sortTasks();
+    // sortTasks();
     await updateUserData(userData.trackers, "trackers");
 
     userAtCard = userData.trackers.length - 1;
@@ -559,7 +561,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       });
       
       userData.trackers = trackers;
-      sortTasks();
+      // sortTasks();
       updateUserData(userData.trackers, "trackers");
       trackers = userData.trackers;
 
@@ -568,6 +570,17 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       document.querySelector(`.content-tracker-card-${trackerLength}`).innerHTML = '';
 
       trackers[trackerLength].task.forEach((taskItem, taskIndex) => {
+
+        if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`]) {
+
+          timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`] = {
+            statusOld: '',
+            status: 'todo',
+            value: '00:00:00:00',
+            valueInSeconds: 0
+          }
+
+        }
 
         const taskHtml = `
       
@@ -586,13 +599,22 @@ async function addTask(trackerLength, tempAddTaskToCard) {
               <option value="remove">Remove</option>
             </select>
 
+            <div class="task-timer-container">
+
+              <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].value}</div>
+              
+            </div>
+
           </div>
           
         </div>`;
 
         document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
-
+        
+        timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].status = taskItem.status;
         document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+
+        handleTimer(taskIndex, trackerLength);
 
         addEventToTaskAction(document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`));
 
@@ -623,6 +645,8 @@ async function addEventToTaskAction(taskActionElement) {
 
   const tempTaskElement = document.querySelector(`.task-${tempTaskNo}-tracker-card-${tempTrackerNo}`);
 
+  const tempTimerElement = document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`);
+
   taskActionElement.addEventListener('change', () => {
 
     if(taskActionElement.value === "todo") {
@@ -633,10 +657,14 @@ async function addEventToTaskAction(taskActionElement) {
 
       }
 
+      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
+      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].status = "todo";
       trackers[tempTrackerNo].task[tempTaskNo].status = "todo";
       tempTaskElement.classList.add('task-todo');
       tempTaskElement.classList.remove('task-inpro');
       tempTaskElement.classList.remove('task-done');
+
+      handleTimer(tempTaskNo, tempTrackerNo);
 
     } else if(taskActionElement.value === "inpro") {
 
@@ -645,11 +673,15 @@ async function addEventToTaskAction(taskActionElement) {
         xpAddOrSubtract("subtract", 5);
 
       }
-
+      
+      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
+      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].status = "inpro";
       trackers[tempTrackerNo].task[tempTaskNo].status = "inpro";
       tempTaskElement.classList.remove('task-todo');
       tempTaskElement.classList.add('task-inpro');
       tempTaskElement.classList.remove('task-done');
+
+      handleTimer(tempTaskNo, tempTrackerNo);
 
     } else if(taskActionElement.value === "done") {
 
@@ -658,11 +690,15 @@ async function addEventToTaskAction(taskActionElement) {
         xpAddOrSubtract("add", 5);
 
       }
-
+      
+      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
+      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].status = "done";
       trackers[tempTrackerNo].task[tempTaskNo].status = "done";
       tempTaskElement.classList.remove('task-todo');
       tempTaskElement.classList.remove('task-inpro');
       tempTaskElement.classList.add('task-done');
+
+      handleTimer(tempTaskNo, tempTrackerNo);
 
       confettiAnimation(tempTrackerNo, tempTaskNo);
 
@@ -699,7 +735,7 @@ async function addEventToTaskAction(taskActionElement) {
     }
     
     userData.trackers = trackers;
-    sortTasks();
+    // sortTasks();
     updateUserData(userData.trackers, "trackers");
 
     userAtCard = userData.trackers.length - 1;
@@ -725,12 +761,19 @@ async function addEventToTaskAction(taskActionElement) {
             <option value="remove">Remove</option>
           </select>
 
+          <div class="task-timer-container">
+
+            <div class="task-timer task-${taskIndex}-timer-tracker-card-${tempTrackerNo}">${timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].value}</div>
+            
+          </div>
+
         </div>
         
       </div>`;
 
       document.querySelector(`.content-tracker-card-${tempTrackerNo}`).insertAdjacentHTML('beforeend', taskHtml);
-
+      
+      timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].status = taskItem.status;
       document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`).value = taskItem.status;
 
       addEventToTaskAction(document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`));
@@ -738,6 +781,9 @@ async function addEventToTaskAction(taskActionElement) {
     });
 
   });
+
+  console.log('Timer info:');
+  console.log(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
 
 }
 
@@ -926,6 +972,17 @@ async function getUserData() {
       if(tracker.task) {
     
         tracker.task.forEach((taskItem, taskIndex) => {
+
+          if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`]) {
+
+            timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`] = {
+              statusOld: '',
+              status: 'todo',
+              value: '00:00:00:00',
+              valueInSeconds: 0
+            }
+  
+          }
       
           const taskHtml = `
         
@@ -943,14 +1000,23 @@ async function getUserData() {
                 <option value="edit">Edit</option>
                 <option value="remove">Remove</option>
               </select>
+
+              <div class="task-timer-container">
+
+                <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].value}</div>
+                
+              </div>
       
             </div>
             
           </div>`;
       
           document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
-      
+          
+          timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].status = taskItem.status;
           document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+
+          handleTimer(taskIndex, trackerLength);
 
           if(taskItem.status === "done") {
             userXP += 5;
@@ -1626,6 +1692,17 @@ async function addTrackerOptions(trackerNumber) {
         if(tracker.task) {
       
           tracker.task.forEach((taskItem, taskIndex) => {
+
+            if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`]) {
+
+              timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`] = {
+                statusOld: '',
+                status: 'todo',
+                value: '00:00:00:00',
+                valueInSeconds: 0
+              }
+    
+            }
         
             const taskHtml = `
           
@@ -1643,14 +1720,23 @@ async function addTrackerOptions(trackerNumber) {
                   <option value="edit">Edit</option>
                   <option value="remove">Remove</option>
                 </select>
+
+                <div class="task-timer-container">
+
+                  <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerNumber}">${timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`].value}</div>
+                  
+                </div>
         
               </div>
               
             </div>`;
         
             document.querySelector(`.content-tracker-card-${trackerNumber}`).insertAdjacentHTML('beforeend', taskHtml);
-        
+            
+            timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`].status = taskItem.status;
             document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerNumber}`).value = taskItem.status;
+
+            handleTimer(taskIndex, trackerNumber);
               
             const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerNumber}`);
             addEventToTaskAction(tempTaskActionElement);
@@ -2009,8 +2095,8 @@ async function xpAddOrSubtract(operation, value) {
 
   }
 
-  console.log(userXP);
-  console.log(userLevel);
+  // console.log(userXP);
+  // console.log(userLevel);
 
 }
 
@@ -3173,6 +3259,167 @@ async function levelHandler() {
 
   });
 
+}
+
+async function handleTimer(tempTaskNo, tempTrackerNo) {
+
+  let tempTimerData = timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
+
+  //Code to handle timer behavior when status is changed from todo to todo
+  if(tempTimerData.statusOld === "todo" && tempTimerData.status === "todo") {
+
+    //if timer is other than '00:00:00:00' then It should reset timer
+    if(tempTimerData.value !== "00:00:00:00") {
+
+      clearInterval(tempTimerData.timerID);
+      tempTimerData.timerID = '';
+      
+      tempTimerData.value = "00:00:00:00";
+
+      document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+    }
+
+    //If timer is already '00:00:00:00' then It should do nothing
+    else {
+
+      //Do nothing
+
+    }
+
+  }
+  
+  //Code to handle timer behavior when status is changed from todo to inpro
+  else if(tempTimerData.statusOld === "todo" && tempTimerData.status === "inpro") {
+
+    //If timer is '00:00:00:00' then it should start timer from '00:00:00:00'
+    if(tempTimerData.value === "00:00:00:00") {
+
+      clearInterval(tempTimerData.timerID);
+      tempTimerData.timerID = '';
+  
+      tempTimerData.timerID = setInterval(() => {
+
+        tempTimerData.valueInSeconds++; 
+        const resultInSeconds = tempTimerData.valueInSeconds;
+        // const resultInSeconds = (new Date() - tempTimerData.startTime) / 1000;
+        const days = Math.floor(resultInSeconds / (24 * 3600));
+        const hours = Math.floor((resultInSeconds % (24 * 3600)) / 3600);
+        const minutes = Math.floor((resultInSeconds % 3600) / 60);
+        const seconds = Math.floor(resultInSeconds % 60);
+
+        tempTimerData.value = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+      }, 1000);
+
+    }
+    
+    //If timer is other than '00:00:00:00' then it should resume timer
+    else {
+  
+      tempTimerData.timerID = '';
+      tempTimerData.timerID = setInterval(() => {
+
+        tempTimerData.valueInSeconds++; 
+        const resultInSeconds = tempTimerData.valueInSeconds;
+        // const resultInSeconds = (new Date() - tempTimerData.startTime) / 1000;
+        const days = Math.floor(resultInSeconds / (24 * 3600));
+        const hours = Math.floor((resultInSeconds % (24 * 3600)) / 3600);
+        const minutes = Math.floor((resultInSeconds % 3600) / 60);
+        const seconds = Math.floor(resultInSeconds % 60);
+
+        tempTimerData.value = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+      }, 1000);
+
+    }
+
+  }
+  
+  //Code to handle timer behavior when status is changed from todo to done
+  else if(tempTimerData.statusOld === "todo" && tempTimerData.status === "done") {
+
+    //It should not start timer and timer should display '00:00:00:00'
+    clearInterval(tempTimerData.timerID);
+    tempTimerData.timerID = '';
+    
+    tempTimerData.value = "00:00:00:00";
+
+    document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+  }
+  
+  //Code to handle timer behavior when status is changed from inpro to todo
+  else if(tempTimerData.statusOld === "inpro" && tempTimerData.status === "todo") {
+
+    //It should pause timer to whatever time was recorded
+    clearInterval(tempTimerData.timerID);
+    tempTimerData.timerID = '';
+
+    document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+  }
+  
+  //Code to handle timer behavior when status is changed from inpro to inpro
+  else if(tempTimerData.statusOld === "inpro" && tempTimerData.status === "inpro") {
+
+    //Do nothing
+
+  }
+  
+  //Code to handle timer behavior when status is changed from inpro to done
+  else if(tempTimerData.statusOld === "inpro" && tempTimerData.status === "done") {
+
+    //It should stop timer and timer should display time since task was marked inpro
+    clearInterval(tempTimerData.timerID);
+    tempTimerData.timerID = '';
+
+  }
+  
+  //Code to handle timer behavior when status is changed from done to todo
+  else if(tempTimerData.statusOld === "done" && tempTimerData.status === "todo") {
+
+    //It should reset timer and timer should display '00:00:00:00'
+    clearInterval(tempTimerData.timerID);
+    tempTimerData.timerID = '';
+    
+    tempTimerData.value = "00:00:00:00";
+
+    document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+  }
+  
+  //Code to handle timer behavior when status is changed from done to inpro
+  else if(tempTimerData.statusOld === "done" && tempTimerData.status === "inpro") {
+
+    //It should resume timer and timer should display time continuing from when task was marked inpro
+    tempTimerData.timerID = '';
+    tempTimerData.timerID = setInterval(() => {
+
+      tempTimerData.valueInSeconds++; 
+      const resultInSeconds = tempTimerData.valueInSeconds;
+      // const resultInSeconds = (new Date() - tempTimerData.startTime) / 1000;
+      const days = Math.floor(resultInSeconds / (24 * 3600));
+      const hours = Math.floor((resultInSeconds % (24 * 3600)) / 3600);
+      const minutes = Math.floor((resultInSeconds % 3600) / 60);
+      const seconds = Math.floor(resultInSeconds % 60);
+
+      tempTimerData.value = `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
+
+    }, 1000);
+
+  }
+  
+  //Code to handle timer behavior when status is changed from done to done
+  else if(tempTimerData.statusOld === "done" && tempTimerData.status === "done") {
+
+    //Do nothing
+
+  }
+  
 }
 
 console.log(levelCriteria);

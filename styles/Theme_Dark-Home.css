@@ -2167,6 +2167,23 @@ body {
 
 }
 
+.task-timer-container {
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+
+}
+
+.task-timer {
+
+  margin: 1dvh 0px 1dvh 0px;
+  padding: 0px 0px 0px 0px;
+
+}
+
 .disable {
 
   pointer-events: none;
