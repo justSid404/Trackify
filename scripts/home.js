@@ -740,6 +740,7 @@ async function addEventToTaskAction(taskActionElement) {
           key: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`,
           value: timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]
         });
+        clearInterval(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].timerID);
         delete timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
 
       }
@@ -748,7 +749,6 @@ async function addEventToTaskAction(taskActionElement) {
 
         if(taskIndex >= tempTaskNo) {
           
-          clearInterval(timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].timerID);
           timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
           delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
 
@@ -771,6 +771,7 @@ async function addEventToTaskAction(taskActionElement) {
 
       if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
 
+        clearInterval(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].timerID);
         delete timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
 
       }
@@ -778,8 +779,7 @@ async function addEventToTaskAction(taskActionElement) {
       trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
 
         if(taskIndex >= tempTaskNo) {
-          
-          clearInterval(timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].timerID);
+
           timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
           delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
 
@@ -838,9 +838,6 @@ async function addEventToTaskAction(taskActionElement) {
     });
 
   });
-
-  // console.log('Timer info:');
-  // console.log(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
 
 }
 
@@ -960,7 +957,6 @@ async function getUserData() {
 
     userData.achievements = achievements;
     await updateUserData(userData.achievements, "achievements");
-    // console.log(userData);
 
   }
 
@@ -1017,7 +1013,6 @@ async function getUserData() {
   }
 
   //Get timer data from LocalStorage
-  console.log(JSON.parse(localStorage.getItem(`${userLogged.username}-timer-data`)));
   if(localStorage.getItem(`${userLogged.username}-timer-data`)) {
 
     timerData = JSON.parse(localStorage.getItem(`${userLogged.username}-timer-data`));
@@ -2159,9 +2154,6 @@ async function xpAddOrSubtract(operation, value) {
     levelHandler();
 
   }
-
-  // console.log(userXP);
-  // console.log(userLevel);
 
 }
 
@@ -3487,10 +3479,6 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
 
   }
 
-  console.log(timerData);
-
   localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
   
 }
-
-// console.log(levelCriteria);
