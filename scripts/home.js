@@ -16,6 +16,7 @@ const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
 let timerData = {};
+let editTimerData = [];
 
 let additionalXP = 0;
 let additionalXP_Old = 0;
@@ -516,6 +517,18 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       tempEditStatusValue = document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus;
     }
 
+    editTimerData.forEach((editTimerDataItem, editTimerDataIndex) => {
+
+      if(editTimerDataItem.key.includes(`timer-tracker-card-${trackerLength}`)) {
+
+        editTimerDataItem.key = `task-${trackers[trackerLength].task.length}-timer-tracker-card-${trackerLength}`;
+        timerData[`task-${trackers[trackerLength].task.length}-timer-tracker-card-${trackerLength}`] = editTimerDataItem.value;
+        delete editTimerData[editTimerDataIndex];
+
+      }
+
+    });
+
     if(tempControllerInputElement.value.length > 0 && tempControllerInputElement.value.length < 51) {
 
       trackers.forEach((tracker) => {
@@ -721,6 +734,30 @@ async function addEventToTaskAction(taskActionElement) {
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).tempStatus = trackers[tempTrackerNo].task[tempTaskNo].status;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
+      if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
+
+        editTimerData.push({
+          key: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`,
+          value: timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]
+        });
+        delete timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
+
+      }
+      
+      trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
+
+        if(taskIndex >= tempTaskNo) {
+          
+          clearInterval(timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].timerID);
+          timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
+          delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
+
+        }
+
+      });
+
+      localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
+
     } else if(taskActionElement.value === "remove") {
 
       if(trackers[tempTrackerNo].task[tempTaskNo].status === "done") {
@@ -741,7 +778,8 @@ async function addEventToTaskAction(taskActionElement) {
       trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
 
         if(taskIndex >= tempTaskNo) {
-
+          
+          clearInterval(timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].timerID);
           timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
           delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
 
