@@ -3345,6 +3345,7 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
     //If timer is other than '00:00:00:00' then it should resume timer
     else {
   
+      clearInterval(tempTimerData.timerID);
       tempTimerData.timerID = '';
       tempTimerData.timerID = setInterval(() => {
 
@@ -3422,6 +3423,7 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
   else if(tempTimerData.statusOld === "done" && tempTimerData.status === "inpro") {
 
     //It should resume timer and timer should display time continuing from when task was marked inpro
+    clearInterval(tempTimerData.timerID);
     tempTimerData.timerID = '';
     tempTimerData.timerID = setInterval(() => {
 
