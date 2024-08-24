@@ -732,6 +732,25 @@ async function addEventToTaskAction(taskActionElement) {
       trackers = userData.trackers;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
+      if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
+
+        delete timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
+
+      }
+      
+      trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
+
+        if(taskIndex >= tempTaskNo) {
+
+          timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
+          delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
+
+        }
+
+      });
+
+      localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
+
     }
     
     userData.trackers = trackers;
