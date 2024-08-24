@@ -15,7 +15,7 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
-const timerData = [];
+let timerData = {};
 
 let additionalXP = 0;
 let additionalXP_Old = 0;
@@ -570,7 +570,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       document.querySelector(`.content-tracker-card-${trackerLength}`).innerHTML = '';
 
       trackers[trackerLength].task.forEach((taskItem, taskIndex) => {
-
+        
         if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`]) {
 
           timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`] = {
@@ -782,8 +782,8 @@ async function addEventToTaskAction(taskActionElement) {
 
   });
 
-  console.log('Timer info:');
-  console.log(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
+  // console.log('Timer info:');
+  // console.log(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
 
 }
 
@@ -959,6 +959,14 @@ async function getUserData() {
     cardHolderElement.classList.remove('card-holder-zero');
   }
 
+  //Get timer data from LocalStorage
+  console.log(JSON.parse(localStorage.getItem(`${userLogged.username}-timer-data`)));
+  if(localStorage.getItem(`${userLogged.username}-timer-data`)) {
+
+    timerData = JSON.parse(localStorage.getItem(`${userLogged.username}-timer-data`));
+
+  }
+
   //Add trackers as per the trackers array
   if(trackers.length > 0) {
 
@@ -972,7 +980,7 @@ async function getUserData() {
       if(tracker.task) {
     
         tracker.task.forEach((taskItem, taskIndex) => {
-
+          
           if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`]) {
 
             timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`] = {
@@ -1692,7 +1700,7 @@ async function addTrackerOptions(trackerNumber) {
         if(tracker.task) {
       
           tracker.task.forEach((taskItem, taskIndex) => {
-
+            
             if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`]) {
 
               timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`] = {
@@ -3419,7 +3427,11 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
     //Do nothing
 
   }
+
+  console.log(timerData);
+
+  localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
   
 }
 
-console.log(levelCriteria);
+// console.log(levelCriteria);
