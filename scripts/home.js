@@ -17,6 +17,7 @@ const levelCriteria = [];
 
 let timerData = {};
 let editTimerData = [];
+let notificationTimerID = [];
 
 let additionalXP = 0;
 let additionalXP_Old = 0;
@@ -695,6 +696,18 @@ async function addEventToTaskAction(taskActionElement) {
       tempTaskElement.classList.remove('task-done');
 
       handleTimer(tempTaskNo, tempTrackerNo);
+      
+      clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
+      notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`] = setInterval(() => {
+
+        const notificationOptions = {
+          body: `Time: ${timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].value}`,
+          tag: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`
+        }
+  
+        pushNotification("Timer started!", notificationOptions);
+
+      }, 1000);
 
     } else if(taskActionElement.value === "done") {
 
@@ -714,9 +727,10 @@ async function addEventToTaskAction(taskActionElement) {
       handleTimer(tempTaskNo, tempTrackerNo);
 
       confettiAnimation(tempTrackerNo, tempTaskNo);
-
+      
+      clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
       const notificationOptions = {
-        body: "+5XP rewarded :)"
+        body: `Time: ${timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].value}\n+5XP rewarded :)`
       }
 
       pushNotification("Task Completed!", notificationOptions);
