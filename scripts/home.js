@@ -748,6 +748,8 @@ async function addEventToTaskAction(taskActionElement) {
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).tempStatus = trackers[tempTrackerNo].task[tempTaskNo].status;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
+      clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
+
       if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
 
         editTimerData.push({
@@ -782,6 +784,8 @@ async function addEventToTaskAction(taskActionElement) {
 
       trackers = userData.trackers;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
+
+      clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
 
       if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
 
