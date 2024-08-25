@@ -3399,7 +3399,6 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
 
         tempTimerData.valueInSeconds++; 
         const resultInSeconds = tempTimerData.valueInSeconds;
-        // const resultInSeconds = (new Date() - tempTimerData.startTime) / 1000;
         const days = Math.floor(resultInSeconds / (24 * 3600));
         const hours = Math.floor((resultInSeconds % (24 * 3600)) / 3600);
         const minutes = Math.floor((resultInSeconds % 3600) / 60);
@@ -3420,8 +3419,6 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
     //It should not start timer and timer should display '00:00:00:00'
     clearInterval(tempTimerData.timerID);
     tempTimerData.timerID = '';
-    
-    tempTimerData.value = "00:00:00:00";
 
     document.querySelector(`.task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`).innerHTML = tempTimerData.value;
 
