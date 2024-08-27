@@ -15,7 +15,6 @@ const leftArrowBtnElement = document.querySelector('.traverse-left-button');
 const leaderboardsBtnElement = document.querySelector('.leader-boards');
 const levelCriteria = [];
 
-let timerData = {};
 let editTimerData = [];
 let notificationTimerID = [];
 
@@ -518,18 +517,6 @@ async function addTask(trackerLength, tempAddTaskToCard) {
       tempEditStatusValue = document.querySelector(`.controller-input-tracker-card-${trackerLength}`).tempStatus;
     }
 
-    editTimerData.forEach((editTimerDataItem, editTimerDataIndex) => {
-
-      if(editTimerDataItem.key.includes(`timer-tracker-card-${trackerLength}`)) {
-
-        editTimerDataItem.key = `task-${trackers[trackerLength].task.length}-timer-tracker-card-${trackerLength}`;
-        timerData[`task-${trackers[trackerLength].task.length}-timer-tracker-card-${trackerLength}`] = editTimerDataItem.value;
-        delete editTimerData[editTimerDataIndex];
-
-      }
-
-    });
-
     if(tempControllerInputElement.value.length > 0 && tempControllerInputElement.value.length < 51) {
 
       trackers.forEach((tracker) => {
@@ -564,6 +551,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
             tracker.task.push(
               {
+                id: tracker.task.length,
                 name: tempControllerInputElement.value,
                 status: 'todo'
               }
@@ -572,6 +560,18 @@ async function addTask(trackerLength, tempAddTaskToCard) {
           }
         }
   
+      });      
+
+      editTimerData.forEach((editTimerDataItem, editTimerDataIndex) => {
+
+        if(editTimerDataItem.key.includes(`timer-tracker-card-${trackerLength}`)) {
+
+          editTimerDataItem.key = `task-${trackers[trackerLength].task.length - 1}-timer-tracker-card-${trackerLength}`;
+          trackers[trackerLength].task[trackers[trackerLength].task.length - 1].timerInfo = editTimerDataItem.value;
+          delete editTimerData[editTimerDataIndex];
+
+        }
+
       });
       
       userData.trackers = trackers;
@@ -585,9 +585,9 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
       trackers[trackerLength].task.forEach((taskItem, taskIndex) => {
         
-        if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`]) {
+        if(!taskItem.timerInfo) {
 
-          timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`] = {
+          taskItem.timerInfo = {
             statusOld: '',
             status: 'todo',
             value: '00:00:00:00',
@@ -615,7 +615,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
             <div class="task-timer-container">
 
-              <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].value}</div>
+              <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${taskItem.timerInfo.value}</div>
               
             </div>
 
@@ -625,7 +625,7 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
         document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
         
-        timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].status = taskItem.status;
+        taskItem.timerInfo.status = taskItem.status;
         document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
 
         handleTimer(taskIndex, trackerLength);
@@ -671,8 +671,8 @@ async function addEventToTaskAction(taskActionElement) {
 
       }
 
-      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
-      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].status = "todo";
+      trackers[tempTrackerNo].task[tempTaskNo].timerInfo.statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
+      trackers[tempTrackerNo].task[tempTaskNo].timerInfo.status = "todo";
       trackers[tempTrackerNo].task[tempTaskNo].status = "todo";
       tempTaskElement.classList.add('task-todo');
       tempTaskElement.classList.remove('task-inpro');
@@ -688,8 +688,8 @@ async function addEventToTaskAction(taskActionElement) {
 
       }
       
-      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
-      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].status = "inpro";
+      trackers[tempTrackerNo].task[tempTaskNo].timerInfo.statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
+      trackers[tempTrackerNo].task[tempTaskNo].timerInfo.status = "inpro";
       trackers[tempTrackerNo].task[tempTaskNo].status = "inpro";
       tempTaskElement.classList.remove('task-todo');
       tempTaskElement.classList.add('task-inpro');
@@ -698,16 +698,24 @@ async function addEventToTaskAction(taskActionElement) {
       handleTimer(tempTaskNo, tempTrackerNo);
       
       clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
-      notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`] = setInterval(() => {
 
-        const notificationOptions = {
-          body: `Time: ${timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].value}`,
-          tag: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`
-        }
+      const notificationOptions = {
+        body: `Task: ${trackers[tempTrackerNo].task[tempTaskNo].name}`,
+        tag: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`
+      }
+
+      pushNotification("Timer started!", notificationOptions);
+
+      // notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`] = setInterval(() => {
+
+      //   const notificationOptions = {
+      //     body: `Time: ${trackers[tempTrackerNo].task[tempTaskNo].timerInfo.value}`,
+      //     tag: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`
+      //   }
   
-        pushNotification("Timer started!", notificationOptions);
+      //   pushNotification("Timer started!", notificationOptions);
 
-      }, 1000);
+      // }, 1000);
 
     } else if(taskActionElement.value === "done") {
 
@@ -717,8 +725,8 @@ async function addEventToTaskAction(taskActionElement) {
 
       }
       
-      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
-      timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].status = "done";
+      trackers[tempTrackerNo].task[tempTaskNo].timerInfo.statusOld = trackers[tempTrackerNo].task[tempTaskNo].status
+      trackers[tempTrackerNo].task[tempTaskNo].timerInfo.status = "done";
       trackers[tempTrackerNo].task[tempTaskNo].status = "done";
       tempTaskElement.classList.remove('task-todo');
       tempTaskElement.classList.remove('task-inpro');
@@ -730,7 +738,7 @@ async function addEventToTaskAction(taskActionElement) {
       
       clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
       const notificationOptions = {
-        body: `Time: ${timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].value}\n+5XP rewarded :)`
+        body: `Time: ${trackers[tempTrackerNo].task[tempTaskNo].timerInfo.value}\n+5XP rewarded :)`
       }
 
       pushNotification("Task Completed!", notificationOptions);
@@ -743,36 +751,17 @@ async function addEventToTaskAction(taskActionElement) {
 
       }
 
+      editTimerData.push({
+        key: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`,
+        value: trackers[tempTrackerNo].task[tempTaskNo].timerInfo
+      });
+
       trackers = userData.trackers;
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).value = trackers[tempTrackerNo].task[tempTaskNo].name;
       document.querySelector(`.controller-input-tracker-card-${tempTrackerNo}`).tempStatus = trackers[tempTrackerNo].task[tempTaskNo].status;
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
       clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
-
-      if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
-
-        editTimerData.push({
-          key: `task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`,
-          value: timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]
-        });
-        clearInterval(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].timerID);
-        delete timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
-
-      }
-      
-      trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
-
-        if(taskIndex >= tempTaskNo) {
-          
-          timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
-          delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
-
-        }
-
-      });
-
-      localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
 
     } else if(taskActionElement.value === "remove") {
 
@@ -786,26 +775,6 @@ async function addEventToTaskAction(taskActionElement) {
       trackers[tempTrackerNo].task.splice(tempTaskNo, 1);
 
       clearInterval(notificationTimerID[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]);
-
-      if(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`]) {
-
-        clearInterval(timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`].timerID);
-        delete timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
-
-      }
-      
-      trackers[tempTrackerNo].task.forEach((taskItem, taskIndex) => {
-
-        if(taskIndex >= tempTaskNo) {
-
-          timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`] = timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
-          delete timerData[`task-${taskIndex + 1}-timer-tracker-card-${tempTrackerNo}`];
-
-        }
-
-      });
-
-      localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
 
     }
     
@@ -838,7 +807,7 @@ async function addEventToTaskAction(taskActionElement) {
 
           <div class="task-timer-container">
 
-            <div class="task-timer task-${taskIndex}-timer-tracker-card-${tempTrackerNo}">${timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].value}</div>
+            <div class="task-timer task-${taskIndex}-timer-tracker-card-${tempTrackerNo}">${taskItem.timerInfo.value}</div>
             
           </div>
 
@@ -848,48 +817,12 @@ async function addEventToTaskAction(taskActionElement) {
 
       document.querySelector(`.content-tracker-card-${tempTrackerNo}`).insertAdjacentHTML('beforeend', taskHtml);
       
-      timerData[`task-${taskIndex}-timer-tracker-card-${tempTrackerNo}`].status = taskItem.status;
+      taskItem.timerInfo.status = taskItem.status;
       document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`).value = taskItem.status;
 
       addEventToTaskAction(document.querySelector(`.task-${taskIndex}-action-tracker-card-${tempTrackerNo}`));
 
     });
-
-  });
-
-}
-
-//Code to sort all tasks according to inpro -> todo -> done
-async function sortTasks() {
-
-  userData.trackers.forEach((tracker, trackerIndex) => {
-
-    let sortedTasks = [];
-    const sortSequence = ['inpro', 'todo', 'done'];
-
-    //first adding all inpro tasks, then todo tasks and finally done tasks to sortedTask array which is temp array
-    sortSequence.forEach((sequenceItem) => {
-
-      if(tracker.task === undefined) {
-
-        tracker.task = [];
-
-      }
-
-      tracker.task.forEach((taskItem) => {
-
-        if(sequenceItem === taskItem.status) {
-  
-          sortedTasks.push(taskItem);
-  
-        }
-  
-      });
-
-    });
-
-    //Once array is sorted, we replace content of tracker array with sortedTasks array
-    userData.trackers[trackerIndex].task = sortedTasks;
 
   });
 
@@ -1030,13 +963,6 @@ async function getUserData() {
     cardHolderElement.classList.remove('card-holder-zero');
   }
 
-  //Get timer data from LocalStorage
-  if(localStorage.getItem(`${userLogged.username}-timer-data`)) {
-
-    timerData = JSON.parse(localStorage.getItem(`${userLogged.username}-timer-data`));
-
-  }
-
   //Add trackers as per the trackers array
   if(trackers.length > 0) {
 
@@ -1051,9 +977,9 @@ async function getUserData() {
     
         tracker.task.forEach((taskItem, taskIndex) => {
           
-          if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`]) {
+          if(!taskItem.timerInfo) {
 
-            timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`] = {
+            taskItem.timerInfo = {
               statusOld: '',
               status: 'todo',
               value: '00:00:00:00',
@@ -1081,7 +1007,7 @@ async function getUserData() {
 
               <div class="task-timer-container">
 
-                <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].value}</div>
+                <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${taskItem.timerInfo.value}</div>
                 
               </div>
       
@@ -1091,7 +1017,7 @@ async function getUserData() {
       
           document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
           
-          timerData[`task-${taskIndex}-timer-tracker-card-${trackerLength}`].status = taskItem.status;
+          taskItem.timerInfo.status = taskItem.status;
           document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
 
           handleTimer(taskIndex, trackerLength);
@@ -1571,8 +1497,8 @@ async function updateUserData(userData, dataKey) {
 
         }
 
-        //Delete localStorage data
-        localStorage.removeItem(userLogged.username);
+        // //Delete localStorage data
+        // localStorage.removeItem(userLogged.username);
 
       }
 
@@ -1771,9 +1697,9 @@ async function addTrackerOptions(trackerNumber) {
       
           tracker.task.forEach((taskItem, taskIndex) => {
             
-            if(!timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`]) {
+            if(!taskItem.timerInfo) {
 
-              timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`] = {
+              taskItem.timerInfo = {
                 statusOld: '',
                 status: 'todo',
                 value: '00:00:00:00',
@@ -1801,7 +1727,7 @@ async function addTrackerOptions(trackerNumber) {
 
                 <div class="task-timer-container">
 
-                  <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerNumber}">${timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`].value}</div>
+                  <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerNumber}">${taskItem.timerInfo.value}</div>
                   
                 </div>
         
@@ -1811,7 +1737,7 @@ async function addTrackerOptions(trackerNumber) {
         
             document.querySelector(`.content-tracker-card-${trackerNumber}`).insertAdjacentHTML('beforeend', taskHtml);
             
-            timerData[`task-${taskIndex}-timer-tracker-card-${trackerNumber}`].status = taskItem.status;
+            taskItem.timerInfo.status = taskItem.status;
             document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerNumber}`).value = taskItem.status;
 
             handleTimer(taskIndex, trackerNumber);
@@ -3338,7 +3264,7 @@ async function levelHandler() {
 
 async function handleTimer(tempTaskNo, tempTrackerNo) {
 
-  let tempTimerData = timerData[`task-${tempTaskNo}-timer-tracker-card-${tempTrackerNo}`];
+  let tempTimerData = trackers[tempTrackerNo].task[tempTaskNo].timerInfo;
 
   //Code to handle timer behavior when status is changed from todo to todo
   if(tempTimerData.statusOld === "todo" && tempTimerData.status === "todo") {
@@ -3494,6 +3420,7 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
 
   }
 
-  localStorage.setItem(`${userLogged.username}-timer-data`, JSON.stringify(timerData));
+  userData.trackers = trackers;
+  updateUserData(userData.trackers, "trackers");
   
 }
