@@ -422,13 +422,13 @@ async function takeInputThroughPrompt() {
   
   });
 
-  document.querySelector('.input-prompt-textbox').addEventListener('keydown', (event) => {
+  document.querySelector('.input-prompt-textbox').addEventListener('keydown', async (event) => {
 
     if(event.key === 'Enter') {
 
       const inputValue = document.querySelector('.input-prompt-textbox').value;
       document.querySelector('.input-prompt').remove();
-      addTrackerCardWithOption(inputValue, trackers.length, true);
+      await addTrackerCardWithOption(inputValue, trackers.length, true);
 
       //Code to open Option menu for a Tracker
       addTrackerOptions(trackers.length-1);
@@ -447,6 +447,25 @@ async function takeInputThroughPrompt() {
 
 //Code to add Tracker card to the card holder
 async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequired) {
+
+  if(isSaveRequired) {
+
+    trackers.push({
+      id: trackerNumber,
+      name: trackerName,
+      task: [],
+      isPinned: false
+    });
+
+    await sortTracker();
+    
+    userData.trackers = trackers;
+    await updateUserData(userData.trackers, "trackers");
+
+    userAtCard = userData.trackers.length - 1;
+
+  }
+  
   const newCardhtml = `
 
   <div class="tracker-card tracker-card-${trackerNumber}">
@@ -477,23 +496,6 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
 
   const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerNumber}`);
   addTask(trackerNumber, tempAddTaskToCard);
-
-  if(isSaveRequired) {
-
-    trackers.push({
-      id: trackerNumber,
-      name: trackerName,
-      task: []
-    });
-    
-    userData.trackers = trackers;
-    // sortTasks();
-    await updateUserData(userData.trackers, "trackers");
-
-    userAtCard = userData.trackers.length - 1;
-
-  }
-  
 
 }
 
@@ -933,6 +935,19 @@ async function getUserData() {
   } else {
 
     additionalXP = userData.additionalXP;
+
+  }
+
+  //Code to add isPinned if doesnt exist in trackers
+  for(let i = 0; i < userData.trackers.length; i++) {
+
+    if(!userData.trackers[i].hasOwnProperty('isPinned')) {
+
+      userData.trackers[i].isPinned = false;
+      trackers = userData.trackers;
+      await updateUserData(userData.trackers, "trackers");
+
+    }
 
   }
 
@@ -1529,6 +1544,17 @@ async function addTrackerOptions(trackerNumber) {
     let completeCount = 0;
     let inproCount = 0;
     let todoCount = 0;
+    let trackerPinnedText;
+    
+    if(userData.trackers[tempTrackerNum].isPinned) {
+
+      trackerPinnedText = "Unpin Tracker";
+
+    } else {
+
+      trackerPinnedText = "Pin Tracker";
+
+    }
 
     userData.trackers[tempTrackerNum].task.forEach((taskItem) => {
 
@@ -1551,6 +1577,22 @@ async function addTrackerOptions(trackerNumber) {
       <div class="tracker-option-container">
 
         <div class="tracker-option-box">
+
+          <div class="pin-tracker-button">
+
+            <div class="pin-tracker-svg">
+            
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19.1835 7.80516L16.2188 4.83755C14.1921 2.8089 13.1788 1.79457 12.0904 2.03468C11.0021 2.2748 10.5086 3.62155 9.5217 6.31506L8.85373 8.1381C8.59063 8.85617 8.45908 9.2152 8.22239 9.49292C8.11619 9.61754 7.99536 9.72887 7.86251 9.82451C7.56644 10.0377 7.19811 10.1392 6.46145 10.3423C4.80107 10.8 3.97088 11.0289 3.65804 11.5721C3.5228 11.8069 3.45242 12.0735 3.45413 12.3446C3.45809 12.9715 4.06698 13.581 5.28476 14.8L6.69935 16.2163L2.22345 20.6964C1.92552 20.9946 1.92552 21.4782 2.22345 21.7764C2.52138 22.0746 3.00443 22.0746 3.30236 21.7764L7.77841 17.2961L9.24441 18.7635C10.4699 19.9902 11.0827 20.6036 11.7134 20.6045C11.9792 20.6049 12.2404 20.5358 12.4713 20.4041C13.0192 20.0914 13.2493 19.2551 13.7095 17.5825C13.9119 16.8472 14.013 16.4795 14.2254 16.1835C14.3184 16.054 14.4262 15.9358 14.5468 15.8314C14.8221 15.593 15.1788 15.459 15.8922 15.191L17.7362 14.4981C20.4 13.4973 21.7319 12.9969 21.9667 11.9115C22.2014 10.826 21.1954 9.81905 19.1835 7.80516Z" fill="#FFFFFF"></path> </g></svg>
+
+            </div>
+
+            <div class="pin-tracker-text">
+
+              ${trackerPinnedText}
+
+            </div>
+          
+          </div>
         
           <div class="tracker-option-info">
 
@@ -1580,6 +1622,35 @@ async function addTrackerOptions(trackerNumber) {
     `;
 
     document.body.insertAdjacentHTML('afterbegin', optionHtml);
+
+    document.querySelector(`.pin-tracker-button`).addEventListener('click', async () => {
+
+      const pintBtnText = document.querySelector(`.pin-tracker-text`);
+
+      try {
+
+        if(userData.trackers[tempTrackerNum].isPinned) {
+
+          document.querySelector(`.pin-tracker-button`).classList.remove('pin-tracker-button-active');
+          pintBtnText.innerText = 'Pin Tracker';
+          await trackerPinner(trackerNumber, false);
+  
+        } else {
+  
+          document.querySelector(`.pin-tracker-button`).classList.add('pin-tracker-button-active');
+          pintBtnText.innerText = 'Unpin Tracker';
+          await trackerPinner(trackerNumber, true);
+  
+        }
+  
+        document.querySelector(`.tracker-option-container`).remove();
+        window.location.reload();
+
+      } catch (error) {
+        console.error('Error:', error);
+      }
+
+    });
 
     document.querySelector(`.edit-tracker-card-${trackerNumber}`).addEventListener('click', () => {
       
@@ -3422,5 +3493,38 @@ async function handleTimer(tempTaskNo, tempTrackerNo) {
 
   userData.trackers = trackers;
   updateUserData(userData.trackers, "trackers");
+  
+}
+
+async function trackerPinner(trackerNumber, updatePinValueTo) {
+
+  userData.trackers[trackerNumber].isPinned = updatePinValueTo;
+
+  await sortTracker();
+
+  await updateUserData(userData.trackers, "trackers");
+  
+}
+
+async function sortTracker() {
+
+  const pinnedTrackers = [];
+
+  for(let i = 0; i < userData.trackers.length; i++) {
+
+    if(userData.trackers[i].isPinned) {
+
+      const temp = userData.trackers.splice(i, 1);
+      pinnedTrackers.push(temp[0]);
+
+    }
+
+  }
+
+  pinnedTrackers.forEach((pinnedTrackerItem) => {
+
+    userData.trackers.push(pinnedTrackerItem);
+
+  });
   
 }

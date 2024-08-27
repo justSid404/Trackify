@@ -276,6 +276,8 @@ body {
 
 .tracker-option-box {
 
+  position: relative;
+
   background-color: #3f3f3f;
   color: white;
 
@@ -306,6 +308,60 @@ body {
   justify-content: space-around;
 
   margin: 10% 0px 0px 0px;
+
+}
+
+.pin-tracker-button {
+
+  position: absolute;
+  top: 5%;
+  right: 4.5%;
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-evenly;
+  align-items: center;
+
+  background-color: #7a5af5;
+
+  border-radius: 1000px;
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  transition: background-color 0.25s;
+
+  width: 42.5%;
+  height: 10%;
+
+  cursor: pointer;
+
+}
+
+.pin-tracker-button:hover {
+
+  background-color: #F55A7A;
+
+}
+
+.pin-tracker-svg {
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  width: 15%;
+  height: 80%;
+
+}
+
+.pin-tracker-text {
+
+  margin: 0px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
+
+  width: auto;
+  height: auto;
 
 }
 
