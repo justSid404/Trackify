@@ -447,25 +447,6 @@ async function takeInputThroughPrompt() {
 
 //Code to add Tracker card to the card holder
 async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequired) {
-
-  if(isSaveRequired) {
-
-    trackers.push({
-      id: trackerNumber,
-      name: trackerName,
-      task: [],
-      isPinned: false
-    });
-
-    await sortTracker();
-    
-    userData.trackers = trackers;
-    await updateUserData(userData.trackers, "trackers");
-
-    userAtCard = userData.trackers.length - 1;
-
-  }
-  
   const newCardhtml = `
 
   <div class="tracker-card tracker-card-${trackerNumber}">
@@ -496,6 +477,25 @@ async function addTrackerCardWithOption(trackerName, trackerNumber, isSaveRequir
 
   const tempAddTaskToCard = document.querySelector(`.add-task-tracker-card-${trackerNumber}`);
   addTask(trackerNumber, tempAddTaskToCard);
+
+  if(isSaveRequired) {
+
+    trackers.push({
+      id: trackerNumber,
+      name: trackerName,
+      task: [],
+      isPinned: false
+    });
+
+    await sortTracker();
+    
+    userData.trackers = trackers;
+    await updateUserData(userData.trackers, "trackers");
+
+    userAtCard = userData.trackers.length - 1;
+
+  }
+  
 
 }
 
@@ -1643,8 +1643,8 @@ async function addTrackerOptions(trackerNumber) {
   
         }
   
-        document.querySelector(`.tracker-option-container`).remove();
-        window.location.reload();
+        // document.querySelector(`.tracker-option-container`).remove();
+        // window.location.reload();
 
       } catch (error) {
         console.error('Error:', error);
@@ -2105,9 +2105,7 @@ async function initializeApp_phase2() {
   //Code to traverse using right arrow
   rightArrowBtnElement.addEventListener('click', () => {
   
-    const tempTrackerLength = userData.trackers.length;
-  
-    if(userAtCard > 0 && userAtCard <= tempTrackerLength ) {
+    if(userAtCard > 0 && userAtCard < userData.trackers.length ) {
   
       userAtCard--;
       scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
@@ -2119,7 +2117,7 @@ async function initializeApp_phase2() {
   
     } else if (userAtCard === "create") {
   
-      userAtCard = tempTrackerLength - 1;
+      userAtCard = userData.trackers.length - 1;
       scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
   
     }
@@ -2129,14 +2127,12 @@ async function initializeApp_phase2() {
   //Code to traverse using left arrow
   leftArrowBtnElement.addEventListener('click', () => {
   
-    const tempTrackerLength = userData.trackers.length;
-  
-    if(userAtCard >= 0 && userAtCard < (tempTrackerLength - 1) ) {
+    if(userAtCard >= 0 && userAtCard < (userData.trackers.length - 1) ) {
   
       userAtCard++;
       scrollToAnElementInCardPicker(document.querySelector(`.tracker-card-${userAtCard}`));
   
-    } else if (userAtCard === (tempTrackerLength - 1)) {
+    } else if (userAtCard === (userData.trackers.length - 1)) {
   
       scrollToAnElementInCardPicker(createTrackerElement);
       userAtCard = "create";
@@ -3502,7 +3498,82 @@ async function trackerPinner(trackerNumber, updatePinValueTo) {
 
   await sortTracker();
 
+  trackers = userData.trackers;
+
   await updateUserData(userData.trackers, "trackers");
+
+  cardHolderElement.innerHTML = '';
+
+  trackers.forEach((trackerItem, trackerIndex) => {
+
+    //Code to add Trackers
+    addTrackerCardWithOption(trackerItem.name, trackerIndex, false);
+
+    //Code to open Option menu for a Tracker
+    addTrackerOptions(trackerIndex);
+
+    //Code to add Tasks
+    if(trackerItem.task) {
+    
+      trackerItem.task.forEach((taskItem, taskIndex) => {
+        
+        if(!taskItem.timerInfo) {
+
+          taskItem.timerInfo = {
+            statusOld: '',
+            status: 'todo',
+            value: '00:00:00:00',
+            valueInSeconds: 0
+          }
+
+        }
+    
+        const taskHtml = `
+      
+        <div class="task task-${taskIndex}-tracker-card-${trackerIndex} task-${taskItem.status}">
+          <div class="task-info">
+            ${taskItem.name}
+          </div>
+          
+          <div class="task-action">
+    
+            <select class="task-action task-${taskIndex}-action-tracker-card-${trackerIndex}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerIndex}">
+              <option value="todo">ToDo</option>
+              <option value="inpro">In-Process</option>
+              <option value="done">Completed</option>
+              <option value="edit">Edit</option>
+              <option value="remove">Remove</option>
+            </select>
+
+            <div class="task-timer-container">
+
+              <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerIndex}">${taskItem.timerInfo.value}</div>
+              
+            </div>
+    
+          </div>
+          
+        </div>`;
+    
+        document.querySelector(`.content-tracker-card-${trackerIndex}`).insertAdjacentHTML('beforeend', taskHtml);
+        
+        taskItem.timerInfo.status = taskItem.status;
+        document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerIndex}`).value = taskItem.status;
+
+        handleTimer(taskIndex, trackerIndex);
+
+        if(taskItem.status === "done") {
+          userXP += 5;
+        }
+          
+        const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerIndex}`);
+        addEventToTaskAction(tempTaskActionElement);
+    
+      }); 
+
+    }
+
+  });
   
 }
 
