@@ -2899,7 +2899,11 @@ async function displayLeaderboardScreen() {
 
     extractedValues.forEach((valueItem) => {
 
-      sortedUsers.push(tempUsers[valueItem.arrayIndex]);
+      if(tempUsers[valueItem.arrayIndex].username !== "NA") {
+
+        sortedUsers.push(tempUsers[valueItem.arrayIndex]);
+
+      }
       
     });
 
