@@ -391,17 +391,112 @@ async function takeInputThroughPrompt() {
 
   document.querySelector(`.input-prompt-textbox`).focus();
 
-  document.querySelector('.input-prompt-save').addEventListener('click', () => {
+  document.querySelector('.input-prompt-save').addEventListener('click', async () => {
 
     const inputValue = document.querySelector('.input-prompt-textbox').value;
     if(inputValue.length > 0 && inputValue.length<31) {
 
       document.querySelector('.input-prompt').remove();
-      // addTrackerCard(inputValue);
-      addTrackerCardWithOption(inputValue, trackers.length, true);
 
-      //Code to open Option menu for a Tracker
-      addTrackerOptions(trackers.length - 1);
+      //Save new Tracker
+      trackers.push({
+        id: trackers.length,
+        name: inputValue,
+        task: [],
+        isPinned: false
+      });
+  
+      await sortTracker();
+      
+      userData.trackers = trackers;
+      await updateUserData(userData.trackers, "trackers");
+  
+      userAtCard = userData.trackers.length - 1;
+
+      cardHolderElement.innerHTML = `
+    
+      <div class="create-tracker-card">
+        <div class="create-tracker">
+          +
+        </div>
+      </div>`;
+    
+      //Code to add new Tracker
+      document.querySelector('.create-tracker-card').addEventListener('click', () => {
+      
+        takeInputThroughPrompt();
+      
+      });
+
+      //Render Tracker and Tasks
+      trackers.forEach((tracker, trackerLength) => {
+
+        addTrackerCardWithOption(tracker.name, trackerLength, false);
+  
+        //Code to open Option menu for a Tracker
+        addTrackerOptions(trackerLength);      
+
+        if(tracker.task) {
+      
+          tracker.task.forEach((taskItem, taskIndex) => {
+            
+            if(!taskItem.timerInfo) {
+  
+              taskItem.timerInfo = {
+                statusOld: '',
+                status: 'todo',
+                value: '00:00:00:00',
+                valueInSeconds: 0
+              }
+    
+            }
+        
+            const taskHtml = `
+          
+            <div class="task task-${taskIndex}-tracker-card-${trackerLength} task-${taskItem.status}">
+              <div class="task-info">
+                ${taskItem.name}
+              </div>
+              
+              <div class="task-action">
+        
+                <select class="task-action task-${taskIndex}-action-tracker-card-${trackerLength}" data-task-number="${taskIndex}" data-tracker-card-number="${trackerLength}">
+                  <option value="todo">ToDo</option>
+                  <option value="inpro">In-Process</option>
+                  <option value="done">Completed</option>
+                  <option value="edit">Edit</option>
+                  <option value="remove">Remove</option>
+                </select>
+  
+                <div class="task-timer-container">
+  
+                  <div class="task-timer task-${taskIndex}-timer-tracker-card-${trackerLength}">${taskItem.timerInfo.value}</div>
+                  
+                </div>
+        
+              </div>
+              
+            </div>`;
+        
+            document.querySelector(`.content-tracker-card-${trackerLength}`).insertAdjacentHTML('beforeend', taskHtml);
+            
+            taskItem.timerInfo.status = taskItem.status;
+            document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`).value = taskItem.status;
+  
+            handleTimer(taskIndex, trackerLength);
+  
+            if(taskItem.status === "done") {
+              userXP += 5;
+            }
+              
+            const tempTaskActionElement = document.querySelector(`.task-${taskIndex}-action-tracker-card-${trackerLength}`);
+            addEventToTaskAction(tempTaskActionElement);
+        
+          }); 
+  
+        }  
+
+      }); 
 
     } else if(inputValue.length>30) {
 
@@ -426,12 +521,7 @@ async function takeInputThroughPrompt() {
 
     if(event.key === 'Enter') {
 
-      const inputValue = document.querySelector('.input-prompt-textbox').value;
-      document.querySelector('.input-prompt').remove();
-      await addTrackerCardWithOption(inputValue, trackers.length, true);
-
-      //Code to open Option menu for a Tracker
-      addTrackerOptions(trackers.length-1);
+      document.querySelector('.input-prompt-save').click();
 
     }
 
@@ -3506,7 +3596,20 @@ async function trackerPinner(trackerNumber, updatePinValueTo) {
 
   await updateUserData(userData.trackers, "trackers");
 
-  cardHolderElement.innerHTML = '';
+  cardHolderElement.innerHTML = `
+
+  <div class="create-tracker-card">
+    <div class="create-tracker">
+      +
+    </div>
+  </div>`;
+
+  //Code to add new Tracker
+  document.querySelector('.create-tracker-card').addEventListener('click', () => {
+  
+    takeInputThroughPrompt();
+  
+  });
 
   trackers.forEach((trackerItem, trackerIndex) => {
 
@@ -3578,6 +3681,8 @@ async function trackerPinner(trackerNumber, updatePinValueTo) {
     }
 
   });
+
+  userAtCard = userData.trackers.length - 1;
   
 }
 
