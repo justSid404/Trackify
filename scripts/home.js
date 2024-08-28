@@ -521,9 +521,9 @@ async function addTask(trackerLength, tempAddTaskToCard) {
 
     if(tempControllerInputElement.value.length > 0 && tempControllerInputElement.value.length < 51) {
 
-      trackers.forEach((tracker) => {
+      trackers.forEach((tracker, trackerIndex) => {
 
-        if(tracker.id === trackerLength) {
+        if(trackerIndex === trackerLength) {
 
           if(tracker.task === undefined) {
 
