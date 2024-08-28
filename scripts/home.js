@@ -2112,7 +2112,7 @@ async function initializeApp_phase2() {
   
     } else if (userAtCard === 0) {
   
-      scrollToAnElementInCardPicker(createTrackerElement);
+      scrollToAnElementInCardPicker(document.querySelector('.create-tracker-card'));
       userAtCard = "create";
   
     } else if (userAtCard === "create") {
@@ -2134,7 +2134,7 @@ async function initializeApp_phase2() {
   
     } else if (userAtCard === (userData.trackers.length - 1)) {
   
-      scrollToAnElementInCardPicker(createTrackerElement);
+      scrollToAnElementInCardPicker(document.querySelector('.create-tracker-card'));
       userAtCard = "create";
   
     } else if (userAtCard === "create") {
